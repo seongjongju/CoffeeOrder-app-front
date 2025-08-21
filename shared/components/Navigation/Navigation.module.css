@@ -1,0 +1,36 @@
+#navigation_bar {
+    position: fixed;
+    width: 100%;
+    max-width: 600px;
+    bottom: 0;
+    z-index: 99;
+    border-top: 1px solid #2b2b2b;
+}
+
+.navigation_nav {
+    height: 100px;
+    padding: 0 3% 30px;
+    box-sizing: border-box;
+    background: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.navigation_item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    width: calc(100% / 3);
+}
+
+.navigation_item img {
+    width: 24px;
+    height: 24px;
+}
+
+.navigation_text {
+    font-size: 13px;
+    color: #2b2b2b;
+}

@@ -1,0 +1,28 @@
+/* common */
+.seemore_link {
+    font-size: 16px;
+    color: #2b2b2b;
+    font-weight: 600;
+}
+/* common */
+
+/* loginSection */
+.login_section {
+    padding-bottom: 40px;
+    border-bottom: 20px solid #f5f5f5;
+}
+/* loginSection */
+
+/* MoreLists */
+.morelist_item {
+    border-bottom: 1px solid #ddd;
+}
+
+.morelist_link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 39px;
+    padding: 0 20px;
+}
+/* MoreLists */
