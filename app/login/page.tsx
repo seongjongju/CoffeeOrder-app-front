@@ -4,7 +4,12 @@ import React from 'react';
 const LoginPage = () => {
     return (
         <main>
-            <LoginForm />
+            <section>
+                <div className='inner'>
+                    <h2 className='title' style={{ textAlign : 'center' }}>로그인</h2>
+                    <LoginForm />
+                </div> {/* inner */}
+            </section>
         </main>
     );
 };

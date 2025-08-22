@@ -6,6 +6,7 @@
 
 .common_input_wrap {
   margin-bottom: 6%;
+  position: relative;
 }
 
 .common_label {
@@ -24,6 +25,20 @@
     border-radius: 15px;
     box-sizing: border-box;
     outline: none;
+    font-size: 14px;
+}
+
+.duplication_button {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 14px;
+  color: #fff;
+  font-weight: 600;
+  background: #2b2b2b;
+  border-radius: 25px;
+  position: absolute;
+  top: 38.5px;
+  right: 15px;
 }
 
 @media screen and (max-width: 375px) {

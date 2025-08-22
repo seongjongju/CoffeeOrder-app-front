@@ -1,17 +1,17 @@
-import SignUpForm from '@/features/signUp/components/SignUpForm';
+import SignUpPolicy from '@/features/signUp/components/SignUpPolicy';
 import React from 'react';
 
-const SignUpPage = () => {
+const SignUpPolicyPage = () => {
     return (
         <main>
             <section>
                 <div className='inner'>
                     <h2 className='title' style={{ textAlign : 'center' }}>회원가입</h2>
-                    <SignUpForm />
+                    <SignUpPolicy />
                 </div> {/* inner */}
             </section>
         </main>
     );
 };
 
-export default SignUpPage
+export default SignUpPolicyPage;

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import styles from './Header.module.css';
 import Image from "next/image";
@@ -5,15 +7,32 @@ import Link from 'next/link';
 import bellIco from '../../assets/images/ico/bell.svg';
 import cartIco from '../../assets/images/ico/cart.svg';
 import logo from '../../assets/images/common/logo.svg';
+import backIco from '../../assets/images/ico/back_arrow.svg';
+import { usePathname, useRouter } from 'next/navigation';
 
 const Header = () => {
+    const pathName = usePathname();
+    const router = useRouter();
+
     return (
         <header id={styles.header}>
             <nav className={styles.header_nav}>
+
                 <h1 className={styles.logo}>
-                    <Link href={'/'} >
-                        <Image src={logo} priority alt="로고" />
-                    </Link>
+                    {   
+                        pathName === '/' || pathName === '/seeMore' ? (
+                            <Link href={'/'} >
+                                <Image src={logo} priority alt="로고" />
+                            </Link>
+                        ) : (
+                            <button 
+                                type='button'
+                                onClick={() => router.back()}
+                            >
+                                <Image src={backIco} priority alt='뒤로가기' />
+                            </button>
+                        )
+                    }
                 </h1>
                 <div className={styles.header_utils}>
                     <Link href={''}>

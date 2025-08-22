@@ -1,0 +1,11 @@
+.login_Links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px
+}
+
+.login_Links a {
+    font-size: 13px;
+}
