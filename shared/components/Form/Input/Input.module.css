@@ -25,7 +25,7 @@
     border-radius: 15px;
     box-sizing: border-box;
     outline: none;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .duplication_button {
@@ -37,7 +37,7 @@
   background: #2b2b2b;
   border-radius: 25px;
   position: absolute;
-  top: 38.5px;
+  top: 34.1px;
   right: 15px;
 }
 

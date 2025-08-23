@@ -6,7 +6,7 @@ const SignUpPolicyPage = () => {
         <main>
             <section>
                 <div className='inner'>
-                    <h2 className='title' style={{ textAlign : 'center' }}>회원가입</h2>
+                    <h2 className='sub_title'>회원가입</h2>
                     <SignUpPolicy />
                 </div> {/* inner */}
             </section>

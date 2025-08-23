@@ -16,6 +16,10 @@
     justify-content: space-between;
 }
 
+.logo {
+    height: 32px;
+}
+
 .header_utils {
     display: flex;
     justify-content: center;

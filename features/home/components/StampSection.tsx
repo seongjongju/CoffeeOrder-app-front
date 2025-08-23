@@ -45,7 +45,7 @@ const StampSection = () => {
                             <Image src={stampOff} alt="스탬프 이미지 off" />
                         </li>
                     </ul> {/* stamp */}
-                    <Link href={''} className="common_btn">
+                    <Link href={'/couponBox'} className="common_btn">
                         사용 가능한 쿠폰 : 0
                     </Link>
                 </div> {/* stamp_wrap */}

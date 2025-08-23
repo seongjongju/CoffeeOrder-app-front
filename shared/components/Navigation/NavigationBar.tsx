@@ -24,7 +24,7 @@ const NavigationBar = () => {
                     }
                     <p className={styles.navigation_text}>홈</p>
                 </Link>
-                <Link href={'/'} className={styles.navigation_item}>
+                <Link href={'/product'} className={styles.navigation_item}>
                     <Image src={coffeeIco} priority alt="주문하기" />
                     <p className={styles.navigation_text}>주문</p>
                 </Link>

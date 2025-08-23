@@ -14,13 +14,13 @@ const MoreLists = () => {
                 </Link>
             </li> {/* .morelist_item */}
             <li className={seeMoreStyles.morelist_item}>
-                <Link href={''} className={`${seeMoreStyles.seemore_link} ${seeMoreStyles.morelist_link}`}>
+                <Link href={'/couponBox'} className={`${seeMoreStyles.seemore_link} ${seeMoreStyles.morelist_link}`}>
                     쿠폰함
                     <Image  src={moreArrow} alt='화살표' />
                 </Link>
             </li> {/* .morelist_item */}
             <li className={seeMoreStyles.morelist_item}>
-                <Link href={''} className={`${seeMoreStyles.seemore_link} ${seeMoreStyles.morelist_link}`}>
+                <Link href={'/notice'} className={`${seeMoreStyles.seemore_link} ${seeMoreStyles.morelist_link}`}>
                     공지사항
                     <Image  src={moreArrow} alt='화살표' />
                 </Link>

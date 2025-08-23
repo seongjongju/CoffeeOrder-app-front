@@ -6,7 +6,7 @@ const LoginPage = () => {
         <main>
             <section>
                 <div className='inner'>
-                    <h2 className='title' style={{ textAlign : 'center' }}>로그인</h2>
+                    <h2 className='sub_title'>로그인</h2>
                     <LoginForm />
                 </div> {/* inner */}
             </section>

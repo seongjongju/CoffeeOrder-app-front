@@ -19,7 +19,7 @@
 }
 
 .main_visual :global(.swiper-pagination-bullet) {
-  background: #fff !important;
+    background: #fff !important;
 }
 /* visual */
 
@@ -122,8 +122,10 @@
 
 /* NoticeSection */
 .more_link {
+    display: inline-block;
     font-size: 13px;
     color: #444;
+    margin-bottom: 5%;
 }
 
 .notice {
