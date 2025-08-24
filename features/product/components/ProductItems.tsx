@@ -7,7 +7,7 @@ import newHotImg1 from '@/shared/assets/images/contents/newhot_img1.svg';
 const ProductItems = () => {
     return (
         <div className={productStyles.product_item}>
-            <Link href={''}>
+            <Link href={'/productView'}>
                 <div className={productStyles.product_item_inner}>
                     <div className={productStyles.product_image}>
                         <Image src={newHotImg1} alt='제품 이미지' />
