@@ -1,3 +1,20 @@
-.tan_btns {
-    margin-bottom: 20px;
+.tab_btns {
+    margin-bottom: 20px !important;
+}
+
+.tab_btn_slide {
+    width: fit-content;
+}
+
+.tab_btn {
+    padding: 4px 14px;
+    border-radius: 25px;
+    background: #f5f5f5;
+    color: #2b2b2b;
+    font-weight: 800;
+}
+
+.tab_btn.on {
+    background: #2b2b2b;
+    color: #fff;
 }
