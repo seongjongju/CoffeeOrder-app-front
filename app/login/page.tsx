@@ -3,12 +3,9 @@ import React from 'react';
 
 const LoginPage = () => {
     return (
-        <main>
+        <main style={{ position: 'relative', height: '100vh'}}>
             <section>
-                <div className='inner'>
-                    <h2 className='sub_title'>로그인</h2>
-                    <LoginForm />
-                </div> {/* inner */}
+                <LoginForm />
             </section>
         </main>
     );

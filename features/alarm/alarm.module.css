@@ -1,0 +1,26 @@
+.alarm_item {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 3px 10px;
+}
+
+.alarm_item:last-child {
+    margin-bottom: 0;
+}
+
+.alarm_item_wrap {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 3px;
+}
+
+.alarm_item img {
+    width: 24px;
+}
+
+.alarm_text {
+    font-size: 14px;
+    color: #2b2b2b;
+    word-break: keep-all;
+}

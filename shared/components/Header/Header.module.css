@@ -7,7 +7,7 @@
 }
 
 .header_nav {
-    height: 60px;
+    height: 48px;
     padding: 0 15px;
     box-sizing: border-box;
     background: #2B2B2B;
@@ -31,4 +31,14 @@
 
 .header_utils a > img {
     width: 24px;
+}
+
+.header_title {
+    font-size: 25px;
+    color: #fff;
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

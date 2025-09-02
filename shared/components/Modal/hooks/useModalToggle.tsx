@@ -10,10 +10,10 @@ const useModalToggle = (): ModalTypes => {
 
     console.log(modalActive);
 
-    const signUpNextOnClick = (e:React.MouseEvent<HTMLButtonElement>, policyIsChecked: boolean) => {
+    const signUpNextOnClick = (e:React.MouseEvent<HTMLButtonElement>, checked: boolean) => {
         e.preventDefault();
 
-        if(policyIsChecked === false) {
+        if(checked === false) {
             setModalActive(true);
         } else {
             router.push('/signUp');

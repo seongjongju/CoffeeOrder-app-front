@@ -6,6 +6,6 @@ export type ModalPropsTypes = {
 export type ModalTypes = {
     modalActive: boolean;
     setModalActive: React.Dispatch<React.SetStateAction<boolean>>;
-    signUpNextOnClick: (e: React.MouseEvent<HTMLButtonElement>, policyIsChecked: boolean) => void;
+    signUpNextOnClick: (e: React.MouseEvent<HTMLButtonElement>, checked: boolean) => void;
     modalClose: () => void;
 };

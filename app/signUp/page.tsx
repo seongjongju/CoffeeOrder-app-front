@@ -6,7 +6,6 @@ const SignUpPage = () => {
         <main>
             <section>
                 <div className='inner'>
-                    <h2 className='sub_title'>회원가입</h2>
                     <SignUpForm />
                 </div> {/* inner */}
             </section>

@@ -6,7 +6,6 @@ const NoticePage = () => {
         <main>
             <section>
                 <div className='inner'>
-                    <h2 className='sub_title'>공지사항</h2>
                     <NoticeLists />
                 </div> {/* inner */}
             </section>
