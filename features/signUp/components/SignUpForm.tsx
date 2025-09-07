@@ -13,7 +13,7 @@ const initialState = {
     emailCertification: '',
     id: '',
     password: '',
-    passwordCheck: '',s
+    passwordCheck: '',
 };
 
 type ReducerType = {

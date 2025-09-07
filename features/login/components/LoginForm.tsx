@@ -10,14 +10,14 @@ import Link from 'next/link';
 const LoginForm = () => {
     return (
         <form className={`${formStyles.common_form} ${loginStyles.login_form}`}>
-            <InputWrap 
+            {/* <InputWrap 
                 label={'아이디'}
                 placeholder={'아이디를 입력해주세요.'}
             />
             <InputWrap 
                 label={'비밀번호'}
                 placeholder={'비밀번호를 입력해주세요.'}
-            />
+            /> */}
             <Button 
                 buttonText={'로그인'}
             />
