@@ -5,7 +5,7 @@ import formStyles from '@/shared/components/Form/Input/Input.module.css';
 import { FormElementTypes } from '../types/formTypes';
 import { usePathname } from 'next/navigation';
 
-const InputWrap = ({ label, placeholder }:FormElementTypes) => {
+const InputWrap = ({ label, placeholder, value, onChange }:FormElementTypes) => {
     const pathName = usePathname();
 
     return (
@@ -14,6 +14,8 @@ const InputWrap = ({ label, placeholder }:FormElementTypes) => {
             <input 
                 className={formStyles.common_input}
                 placeholder={placeholder}
+                value={value}
+                onChange={onChange}
             />
             {
                 pathName === '/signUp' && label === '아이디' ? (<button className={formStyles.duplication_button}>중복확인</button>)
