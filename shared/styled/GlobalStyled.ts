@@ -3,19 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import styled, { createGlobalStyle } from "styled-components";
 
-//common
-export const mainColor = '#2B1B16';
-export const subGray = '#ddd';
-
-export const Inner = styled.div`
-    padding: 0 20px;
-    margin: 0 auto;
-`;
-export const Title = styled.h2`
-    font-size: 20px;
-    color: ${mainColor};
-`;
-
 //global
 const GlobalStyle = createGlobalStyle`
   * {
@@ -46,6 +33,45 @@ const GlobalStyle = createGlobalStyle`
         border: none;
         cursor: pointer;
     }
+`;
+
+//common
+export const mainColor = '#2B1B16';
+export const subGray = '#ddd';
+export const errColor = '#FF4040';
+export const subColor1 = '#555555';
+export const subColor2 = '#888888';
+
+export const TextBody = styled.p `
+    font-size: 14px;
+    color: #333;
+    word-break: keep-all;
+    font-weight: 400;
+`;
+
+export const Inner = styled.div`
+    padding: 0 20px;
+    margin: 0 auto;
+`;
+export const Title = styled.h2`
+    font-size: 20px;
+    color: ${mainColor};
+    margin-bottom: 30px;
+`;
+export const CommonLabel = styled.label `
+    display: block; 
+    font-size: 14px;
+    font-weight: 600;
+    color: ${mainColor};
+    width: fit-content;
+`;
+export const CommonButton = styled.button `
+    width: 100%;
+    height: 48px;
+    background-color: ${mainColor};
+    color: #fff;
+    border-radius: 5px;
+    font-size: 14px;
 `;
 
 //intro
@@ -85,6 +111,7 @@ export const IntroLink = styled(Link)`
     border-radius: 5px;
 `;
 
+//AppBar
 export const AppBarContainer = styled.div`
     position: sticky;
     top: 0;
@@ -112,6 +139,54 @@ export const AppBarTitle = styled.h2`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+`;
+
+//NavigationBar
+export const NaviContainer = styled.div `
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 600px;
+    padding: 10px 20px 30px;
+    background-color: #fff;
+`;
+
+//Modal
+export const ModalContainer = styled.div `
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100vh;
+    max-width: 600px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+`;
+
+export const ModalItem = styled.div `
+    width: 100%;
+    height: 200px;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+
+    & button {
+        border-radius: 0;
+    }
+`;
+
+export const ModalInfo = styled.div `
+    height: calc(100% - 48px);
+    display: flex; 
+    justify-content: center;
+    align-items: center;
 `;
 
 export default GlobalStyle

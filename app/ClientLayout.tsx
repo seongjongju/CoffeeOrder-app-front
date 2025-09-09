@@ -1,5 +1,6 @@
 'use client';
 import AppBar from '@/shared/components/AppBar';
+import NavigationBar from '@/shared/components/NavigationBar';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
@@ -15,6 +16,8 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
         <>
             {pathName !== '/' && <AppBar appBarTitle={appBarTitles()}/>}
             {children}
+            {
+                pathName !== '/' && <NavigationBar />}
         </>
     );
 };
