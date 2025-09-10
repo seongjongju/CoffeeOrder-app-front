@@ -1,121 +1,23 @@
 'use client';
+import useSignUpInputState from '@/features/signUp/hook/useSignUpInputState';
+import useSignUpValidation from '@/features/signUp/hook/useSignUpValidation';
 import Button from '@/shared/components/Button';
 import CertificationFormField from '@/shared/components/CertificationFormField';
 import FormField from '@/shared/components/FormField';
+import Modal from '@/shared/components/Modal';
+import useModalShow from '@/shared/hook/useModalShow';
 import { Inner, NextButtonContainer } from '@/shared/styled/GlobalStyled';
-import React, { useCallback, useReducer, useState } from 'react';
-
-const initialvalue = {
-    id: '',
-    password: '',
-    passwordCheck: '',
-    name: '',
-    phoneNumber: '',
-    email: '',
-    certificationNumber: '',
-    birth: ''
-} 
-
-const reducerActionTypes = {
-    userId: 'USER_ID',
-    userPassword: 'USER_PASSWORD',
-    userPasswordCheck: 'USER_PASSWORD_CHECK',
-    userName: 'USER_NAME',
-    userPhoneNumber: 'USER_PHONE_NUMBER',
-    userEmail: 'USER_EMAIL',
-    userCertificationNumber: 'USER_CERTIFICATION_NUMBER',
-    userBirth: 'USER_BIRTH'
-} 
-
-type ReducerType = {
-    state: typeof initialvalue,
-    action: {type: string, payload: string}
-};
-
-const reducer = (state: ReducerType['state'], action: ReducerType['action']) => {
-    switch(action.type) {
-        case reducerActionTypes.userId:
-            return {...state, id: action.payload};
-        case reducerActionTypes.userPassword:
-            return {...state, password: action.payload};
-        case reducerActionTypes.userPasswordCheck:
-            return {...state, passwordCheck: action.payload};
-        case reducerActionTypes.userName:
-            return {...state, name: action.payload};
-        case reducerActionTypes.userPhoneNumber:
-            return {...state, phoneNumber: action.payload};
-        case reducerActionTypes.userEmail: 
-            return {...state, email: action.payload};
-        case reducerActionTypes.userCertificationNumber:
-            return {...state, certificationNumber: action.payload};
-        case reducerActionTypes.userBirth:
-            return {...state, birth: action.payload};
-        default:
-            return state;
-    }; 
-};
-
-type ErrorTypes = {
-    idErrorMessage: string,
-    passwordErrorMessage: string,
-    passwordCheckErrorMessage: string,
-    nameErrorMessage: string,
-    phoneNumberErrorMessage: string,
-    emailErrorMessage: string,
-    certificationNumberErrorMessage: string,
-    birthErrorMessage: string,
-};
 
 const SignUpPage = () => {
-    const [signUpState, dispatch] = useReducer(reducer, initialvalue);
-    const [signUpErrorMsg, setSignUpErrorMsg] = useState<ErrorTypes>({
-        idErrorMessage: '',
-        passwordErrorMessage: '',
-        passwordCheckErrorMessage: '',
-        nameErrorMessage: '',
-        phoneNumberErrorMessage: '',
-        emailErrorMessage: '',
-        certificationNumberErrorMessage: '',
-        birthErrorMessage: '',
-    });
+    const {signUpState, signUpInputChange, reducerActionTypes} = useSignUpInputState();
+    const {signUpErrorMsg, onBlur} = useSignUpValidation(signUpState);
+    const {modalShow, setModalShow} = useModalShow();
 
-    const signUpInputChange = useCallback((e:React.ChangeEvent<HTMLInputElement>, type:string) => {
-        dispatch({ type: type, payload: e.target.value });
-    }, [signUpState]);
-
-    const onBlur = (field:string, value: string) => {
-        if(field === 'id') {
-            const idRegex = /^[a-zA-Z0-9]{5,12}$/;
-            if(!idRegex.test(signUpState.id.trim())) return setSignUpErrorMsg(prev => ({...prev, idErrorMessage: '유효하지 않은 아이디입니다.'}));
-            else return setSignUpErrorMsg(prev => ({...prev, idErrorMessage: ''}));;
-        };
-        
-        if(field === 'password') {
-            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
-            if(!passwordRegex.test(signUpState.password.trim())) return setSignUpErrorMsg(prev => ({...prev, passwordErrorMessage: '유효하지 않은 비밀번호입니다.'}));
-            else return setSignUpErrorMsg(prev => ({...prev, passwordErrorMessage: ''}));
-        };
-
-        if(field === 'passwordCheck') {
-            if(signUpState.password !== signUpState.passwordCheck) return setSignUpErrorMsg(prev => ({ ...prev, passwordCheckErrorMessage: '비밀번호가 일치하지 않습니다.' }));
-            else return setSignUpErrorMsg(prev => ({ ...prev, passwordCheckErrorMessage: '' }));
-        };
-
-        if(field === 'name') {
-            const nameRegex = /^[가-힣]{2,10}$/;
-            if(!nameRegex.test(signUpState.name.trim())) return setSignUpErrorMsg(prev => ({ ...prev, nameErrorMessage: '유효하지 않은 이름입니다.' }));
-            else return setSignUpErrorMsg(prev => ({ ...prev, nameErrorMessage: '' }));
-        };
-
-        if(field === 'phoneNumber') {
-            const phoneNumberRegex = /^010[0-9]{8}$/;
-            if(!phoneNumberRegex.test(signUpState.phoneNumber.trim())) return setSignUpErrorMsg(prev => ({ ...prev, phoneNumberErrorMessage: '유효하지 않은 전화번호입니다.' }));
-            else return setSignUpErrorMsg(prev => ({ ...prev, phoneNumberErrorMessage: '' }));
-        };
-
-        if(field === 'email') {
-            const emailRegex = / /
-        };  
+    const signUpInputChcke = (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        const hasError = Object.values(signUpErrorMsg).some((msg) => msg !== '');
+        const hasInput = Object.values(signUpState).some((state) => state === '');
+        if(hasError || hasInput) return setModalShow(true);
     };
 
     return (
@@ -193,15 +95,26 @@ const SignUpPage = () => {
                         placeholder='8자리 입력'
                         value={signUpState.birth}
                         onChange={(e) => signUpInputChange(e, reducerActionTypes.userBirth)}
-                        errMessage=''
+                        onBlur={(e) => onBlur('birth', e.currentTarget.value)}
+                        errMessage={signUpErrorMsg.birthErrorMessage}
                     />
                     <NextButtonContainer>
                         <Button 
                             buttonText='가입하기'
+                            onClick={signUpInputChcke}
                         />
                     </NextButtonContainer>
                 </form>
             </Inner>
+
+            {
+                modalShow && 
+                <Modal 
+                    modalShow={modalShow}
+                    setModalShow={setModalShow}
+                    modalText='필수 입력창을 확인해주세요.'
+                />
+            }
         </>
     );
 };

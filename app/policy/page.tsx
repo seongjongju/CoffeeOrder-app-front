@@ -16,11 +16,11 @@ import usePolicyChecked from '@/features/policy/hook/usePolicyChecked';
 import { useRouter } from 'next/navigation';
 import Button from '@/shared/components/Button';
 import Modal from '@/shared/components/Modal';
-import { useState } from 'react';
+import useModalShow from '@/shared/hook/useModalShow';
 
 const PolicyPage = () => {
     const {checkedState, checkedFunction} = usePolicyChecked();
-    const [modalShow, setModalShow] = useState(false);
+    const {modalShow, setModalShow} = useModalShow();
     const router = useRouter();
 
     const nextMoveClick = (e:React.MouseEvent<HTMLButtonElement>) => {
@@ -106,6 +106,7 @@ const PolicyPage = () => {
                 <Modal 
                     modalShow={modalShow}
                     setModalShow={setModalShow}
+                    modalText='약관에 동의해주세요.'
                 />
             }
         </>

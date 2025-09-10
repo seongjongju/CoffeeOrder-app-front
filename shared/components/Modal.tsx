@@ -5,14 +5,15 @@ import Button from './Button';
 interface ModalProps {
     modalShow: boolean;
     setModalShow: React.Dispatch<React.SetStateAction<boolean>>;
+    modalText: string;
 };
 
-const Modal = ({ modalShow, setModalShow } : ModalProps) => {
+const Modal = ({ modalShow, setModalShow, modalText } : ModalProps) => {
     return (
         <ModalContainer>
             <ModalItem>
                 <ModalInfo>
-                    <TextBody>약관에 동의해주세요.</TextBody>
+                    <TextBody>{modalText}</TextBody>
                 </ModalInfo>
                 <Button 
                     buttonText='확인'

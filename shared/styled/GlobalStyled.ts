@@ -218,6 +218,7 @@ export const FormFieldInput = styled.input `
     border: none;
     border-bottom: 1px solid ${subGray};
     color: #333;
+    font-size: 16px;
 `;
 
 export const FormFieldFlex = styled.div `
