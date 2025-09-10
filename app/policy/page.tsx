@@ -1,5 +1,5 @@
 'use client';
-import {Inner, Title, CommonLabel, errColor} from '@/shared/styled/GlobalStyled';
+import {Inner, Title, CommonLabel, errColor, NextButtonContainer} from '@/shared/styled/GlobalStyled';
 import {
     PolicyForm, 
     AllCheckedContainer, 
@@ -10,8 +10,7 @@ import {
     CheckedCustom,
     PolicyInfo,
     PolicyHeading,
-    Policytext,
-    NextButtonContainer
+    Policytext
 } from '@/features/styled/policyStyled';
 import usePolicyChecked from '@/features/policy/hook/usePolicyChecked';
 import { useRouter } from 'next/navigation';
@@ -30,12 +29,12 @@ const PolicyPage = () => {
         if(checkedState.isAllChecked === false) {
             setModalShow(true);
         } else {
-            return router.push('/');
+            return router.push('/signUp');
         }
     };
 
     return (
-        <section>
+        <>
             <Inner>
                 <Title>약관에 동의해주세요.</Title>
                 <PolicyForm>
@@ -93,14 +92,14 @@ const PolicyPage = () => {
                         </PolicyInfo>
                     </CheckedContainer>
                 </PolicyForm>
-                
-                <NextButtonContainer>
-                    <Button 
-                        buttonText='다음으로'
-                        onClick={nextMoveClick}
-                    />
-                </NextButtonContainer>
             </Inner>
+
+            <NextButtonContainer>
+                <Button 
+                    buttonText='다음으로'
+                    onClick={nextMoveClick}
+                />
+            </NextButtonContainer>
 
             {
                 modalShow && 
@@ -109,7 +108,7 @@ const PolicyPage = () => {
                     setModalShow={setModalShow}
                 />
             }
-        </section>
+        </>
     );
 };
 

@@ -97,13 +97,3 @@ export const Policytext = styled.p `
     }
 `;
 
-export const NextButtonContainer = styled.div`
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    padding: 10px 20px 30px;
-    z-index: 1;
-    max-width: 600px;
-`;

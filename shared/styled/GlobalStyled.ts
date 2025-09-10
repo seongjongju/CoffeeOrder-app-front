@@ -153,6 +153,18 @@ export const NaviContainer = styled.div `
     background-color: #fff;
 `;
 
+//NextButtonContainer
+export const NextButtonContainer = styled.div`
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    padding: 10px 20px 30px;
+    z-index: 1;
+    max-width: 600px;
+`;
+
 //Modal
 export const ModalContainer = styled.div `
     position: fixed;
@@ -189,4 +201,40 @@ export const ModalInfo = styled.div `
     align-items: center;
 `;
 
+//FormField
+export const FormFieldContainer = styled.div `
+    margin-bottom: 10px;
+
+    &:last-child {
+        margin-bottom: 0;
+    };
+`;
+
+export const FormFieldInput = styled.input `
+    display: block;
+    width: 100%;
+    height: 35px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid ${subGray};
+    color: #333;
+`;
+
+export const FormFieldFlex = styled.div `
+    display: flex;
+    align-items: center;
+
+    & input {
+        width: calc(100% - 100px);
+    }
+`;
+
+export const CertificationButton = styled.button `
+    width: 100px;
+    height: 34px;
+    background-color: ${mainColor};
+    color: #fff;
+    font-size: 12px;
+    border-radius: 34px;
+`;
 export default GlobalStyle

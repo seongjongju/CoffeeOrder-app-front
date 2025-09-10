@@ -9,6 +9,7 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
 
     const appBarTitles = () => {
         if(pathName === '/policy') return '이용약관';
+        if(pathName === '/signUp') return '회원가입';
         return '';
     };
 
@@ -16,8 +17,7 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
         <>
             {pathName !== '/' && <AppBar appBarTitle={appBarTitles()}/>}
             {children}
-            {
-                pathName !== '/' && <NavigationBar />}
+            {pathName !== '/' && <NavigationBar />}
         </>
     );
 };
