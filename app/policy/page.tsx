@@ -20,13 +20,14 @@ import useModalShow from '@/shared/hook/useModalShow';
 
 const PolicyPage = () => {
     const {checkedState, checkedFunction} = usePolicyChecked();
-    const {modalShow, setModalShow} = useModalShow();
+    const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
     const router = useRouter();
 
     const nextMoveClick = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         if(checkedState.isAllChecked === false) {
+            setModalText('약관에 동의해주세요.')
             setModalShow(true);
         } else {
             return router.push('/signUp');
@@ -106,7 +107,8 @@ const PolicyPage = () => {
                 <Modal 
                     modalShow={modalShow}
                     setModalShow={setModalShow}
-                    modalText='약관에 동의해주세요.'
+                    modalText={modalText}
+                    setModalText={setModalText}
                 />
             }
         </>
