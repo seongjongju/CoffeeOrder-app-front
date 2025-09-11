@@ -6,10 +6,11 @@ export interface FormFieldProps {
     placeholder: string;
     type: string;
     buttonText?: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e:React.ChangeEvent<HTMLInputElement>) => void;
     value: string;
-    errMessage: string;
+    errMessage?: string;
     onBlur?: (e:React.FocusEvent<HTMLInputElement>) => void;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 const FormField = ({ label, placeholder, type, onChange, value, errMessage, onBlur}:FormFieldProps) => {

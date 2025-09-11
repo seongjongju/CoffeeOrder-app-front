@@ -19,7 +19,8 @@ const GlobalStyle = createGlobalStyle`
         font-family: 'Pretendard', sans-serif;
         background: #fff;
         max-width: 600px;
-        height: 100vh;
+        height: auto;
+        min-height: 100vh;
         margin: 0 auto;
     }
 
@@ -52,6 +53,10 @@ export const TextBody = styled.p `
 export const Inner = styled.div`
     padding: 0 20px;
     margin: 0 auto;
+`;
+export const Section = styled.section `
+    padding-bottom: 90px;
+    box-sizing: border-box;
 `;
 export const Title = styled.h2`
     font-size: 20px;
@@ -163,6 +168,7 @@ export const NextButtonContainer = styled.div`
     padding: 10px 20px 30px;
     z-index: 1;
     max-width: 600px;
+    background-color: #fff;
 `;
 
 //Modal
@@ -184,7 +190,7 @@ export const ModalContainer = styled.div `
 
 export const ModalItem = styled.div `
     width: 100%;
-    height: 200px;
+    height: 170px;
     background-color: #fff;
     border-radius: 5px;
     overflow: hidden;
@@ -219,6 +225,10 @@ export const FormFieldInput = styled.input `
     border-bottom: 1px solid ${subGray};
     color: #333;
     font-size: 16px;
+
+    &::placeholder {
+        font-size: 14px;
+    }
 `;
 
 export const FormFieldFlex = styled.div `

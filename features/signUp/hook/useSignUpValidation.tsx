@@ -14,7 +14,6 @@ interface SignUpStateProps {
 
 const useSignUpValidation = (signUpState:SignUpStateProps) => {
     type ErrorTypes = {
-        idErrorMessage: string,
         passwordErrorMessage: string,
         passwordCheckErrorMessage: string,
         nameErrorMessage: string,
@@ -25,7 +24,6 @@ const useSignUpValidation = (signUpState:SignUpStateProps) => {
     };
 
     const [signUpErrorMsg, setSignUpErrorMsg] = useState<ErrorTypes>({
-        idErrorMessage: '',
         passwordErrorMessage: '',
         passwordCheckErrorMessage: '',
         nameErrorMessage: '',
@@ -35,13 +33,7 @@ const useSignUpValidation = (signUpState:SignUpStateProps) => {
         birthErrorMessage: '',
     });
 
-    const onBlur = (field:string, value: string) => {
-        if(field === 'id') {
-            const idRegex = /^[a-zA-Z0-9]{5,12}$/;
-            if(!idRegex.test(signUpState.id.trim())) return setSignUpErrorMsg(prev => ({...prev, idErrorMessage: '유효하지 않은 아이디입니다.'}))
-            else return setSignUpErrorMsg(prev => ({...prev, idErrorMessage: ''}));;
-        };
-        
+    const onBlur = (field:string, value: string) => {        
         if(field === 'password') {
             const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
             if(!passwordRegex.test(signUpState.password.trim())) return setSignUpErrorMsg(prev => ({...prev, passwordErrorMessage: '유효하지 않은 비밀번호입니다.'}));

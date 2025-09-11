@@ -6,9 +6,17 @@ interface ModalProps {
     modalShow: boolean;
     setModalShow: React.Dispatch<React.SetStateAction<boolean>>;
     modalText: string;
+    setModalText: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Modal = ({ modalShow, setModalShow, modalText } : ModalProps) => {
+const Modal = ({ modalShow, setModalShow, modalText, setModalText } : ModalProps) => {
+    const modalInit = () => {
+        if(modalShow) {
+            setModalShow(false);
+            setModalText('');
+        };
+    }; 
+
     return (
         <ModalContainer>
             <ModalItem>
@@ -17,10 +25,7 @@ const Modal = ({ modalShow, setModalShow, modalText } : ModalProps) => {
                 </ModalInfo>
                 <Button 
                     buttonText='확인'
-                    onClick={(e) => {
-                        e.preventDefault();
-                        modalShow === true ? setModalShow(false) : null
-                    }}
+                    onClick={modalInit}
                 />
             </ModalItem>
         </ModalContainer>

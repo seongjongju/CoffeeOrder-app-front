@@ -13,55 +13,43 @@ const initialvalue = {
 } 
 
 const reducerActionTypes = {
-    userId: 'USER_ID',
-    userPassword: 'USER_PASSWORD',
-    userPasswordCheck: 'USER_PASSWORD_CHECK',
-    userName: 'USER_NAME',
-    userPhoneNumber: 'USER_PHONE_NUMBER',
-    userEmail: 'USER_EMAIL',
-    userCertificationNumber: 'USER_CERTIFICATION_NUMBER',
-    userBirth: 'USER_BIRTH'
-}
+    setField: "SET_FIELD",
+    resetField: "RESET_FIELD",
+} as const
 
-type ReducerType = {
-    state: typeof initialvalue,
-    action: {type: string, payload: string}
-};
+type State = typeof initialvalue;
 
-const reducer = (state: ReducerType['state'], action: ReducerType['action']) => {
+type Action = 
+    | {type: "SET_FIELD"; field: keyof State; payload: string}
+    | {type: "RESET_FIELD"; field: keyof State; payload?: string}
+
+const reducer = (state: State, action: Action) => {
     switch(action.type) {
-        case reducerActionTypes.userId:
-            return {...state, id: action.payload};
-        case reducerActionTypes.userPassword:
-            return {...state, password: action.payload};
-        case reducerActionTypes.userPasswordCheck:
-            return {...state, passwordCheck: action.payload};
-        case reducerActionTypes.userName:
-            return {...state, name: action.payload};
-        case reducerActionTypes.userPhoneNumber:
-            return {...state, phoneNumber: action.payload};
-        case reducerActionTypes.userEmail: 
-            return {...state, email: action.payload};
-        case reducerActionTypes.userCertificationNumber:
-            return {...state, certificationNumber: action.payload};
-        case reducerActionTypes.userBirth:
-            return {...state, birth: action.payload};
+        case "SET_FIELD":
+            return {...state, [action.field]: action.payload};
+
+        case "RESET_FIELD":
+            return {...state, [action.field]: action.payload ?? initialvalue[action.field]};
+        
         default:
             return state;
-    }; 
+    }
 };
 
 const useSignUpInputState = () => {
     const [signUpState, dispatch] = useReducer(reducer, initialvalue);
 
-    console.log(signUpState);
-
-    const signUpInputChange = useCallback((e:React.ChangeEvent<HTMLInputElement>, type:string) => {
-            dispatch({ type: type, payload: e.target.value });
-        }, [signUpState]);
+    const signUpInputChange = useCallback((e:React.ChangeEvent<HTMLInputElement>, field: keyof State) => {
+        dispatch({ type: reducerActionTypes.setField, field, payload: e.target.value });
+    }, []);
+    
+    const signUpInputReset = useCallback((field: keyof State, value?: string) => {
+        dispatch({ type: reducerActionTypes.resetField, field, payload: value })
+    }, []);
+    
 
     return {
-        signUpState, dispatch, signUpInputChange, reducerActionTypes
+        signUpState, signUpInputChange, signUpInputReset
     }
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { CommonLabel, errColor, FormFieldContainer, FormFieldInput, CertificationButton, FormFieldFlex } from '../styled/GlobalStyled';
 import { FormFieldProps } from './FormField';
 
-const CertificationFormField = ({ label, placeholder, type, buttonText, onChange, value, errMessage, onBlur}:FormFieldProps) => {
+const CertificationFormField = ({ label, placeholder, type, buttonText, onChange, value, onClick}:FormFieldProps) => {
     return (
         <FormFieldContainer>
             <CommonLabel>{label}<span style={{ color: errColor }}>*</span></CommonLabel>
@@ -12,13 +12,14 @@ const CertificationFormField = ({ label, placeholder, type, buttonText, onChange
                     placeholder={placeholder}
                     onChange={onChange}
                     value={value}
-                    onBlur={onBlur}
                 />
-                <CertificationButton>{buttonText}</CertificationButton>
+                <CertificationButton 
+                    onClick={onClick}
+                >
+                    {buttonText}
+                </CertificationButton>
             </FormFieldFlex>
-            <p style={{ color: errColor, fontSize: '12px', height: '17px' }}>
-                {errMessage}
-            </p>
+            <p style={{ color: errColor, fontSize: '12px', height: '17px' }}><br /></p>
         </FormFieldContainer>
     );
 };
