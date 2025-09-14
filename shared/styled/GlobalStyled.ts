@@ -12,16 +12,25 @@ const GlobalStyle = createGlobalStyle`
     }
 
     html {
+        height: 100vh;
         background-color: #f5f5f5;
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
     }
 
     body {
         font-family: 'Pretendard', sans-serif;
         background: #fff;
         max-width: 600px;
-        height: auto;
+        height: 100vh;
         min-height: 100vh;
         margin: 0 auto;
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
     }
 
     a {

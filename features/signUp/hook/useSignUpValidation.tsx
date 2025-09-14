@@ -1,4 +1,5 @@
 'use client';
+import { validations } from '@/shared/vaildation/Validation';
 import React, { useState } from 'react';
 
 interface SignUpStateProps {
@@ -12,17 +13,17 @@ interface SignUpStateProps {
     birth: string;
 };
 
-const useSignUpValidation = (signUpState:SignUpStateProps) => {
-    type ErrorTypes = {
-        passwordErrorMessage: string,
-        passwordCheckErrorMessage: string,
-        nameErrorMessage: string,
-        phoneNumberErrorMessage: string,
-        emailErrorMessage: string,
-        certificationNumberErrorMessage: string,
-        birthErrorMessage: string,
-    };
+type ErrorTypes = {
+    passwordErrorMessage: string,
+    passwordCheckErrorMessage: string,
+    nameErrorMessage: string,
+    phoneNumberErrorMessage: string,
+    emailErrorMessage: string,
+    certificationNumberErrorMessage: string,
+    birthErrorMessage: string,
+};
 
+const useSignUpValidation = (signUpState:SignUpStateProps) => {
     const [signUpErrorMsg, setSignUpErrorMsg] = useState<ErrorTypes>({
         passwordErrorMessage: '',
         passwordCheckErrorMessage: '',
@@ -35,8 +36,7 @@ const useSignUpValidation = (signUpState:SignUpStateProps) => {
 
     const onBlur = (field:string, value: string) => {        
         if(field === 'password') {
-            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
-            if(!passwordRegex.test(signUpState.password.trim())) return setSignUpErrorMsg(prev => ({...prev, passwordErrorMessage: '유효하지 않은 비밀번호입니다.'}));
+            if(!validations.passwordRegex.test(signUpState.password.trim())) return setSignUpErrorMsg(prev => ({...prev, passwordErrorMessage: '유효하지 않은 비밀번호입니다.'}));
             else return setSignUpErrorMsg(prev => ({...prev, passwordErrorMessage: ''}));
         };
 
@@ -46,26 +46,17 @@ const useSignUpValidation = (signUpState:SignUpStateProps) => {
         };
 
         if(field === 'name') {
-            const nameRegex = /^[가-힣]{2,10}$/;
-            if(!nameRegex.test(signUpState.name.trim())) return setSignUpErrorMsg(prev => ({ ...prev, nameErrorMessage: '유효하지 않은 이름입니다.' }));
+            if(!validations.nameRegex.test(signUpState.name.trim())) return setSignUpErrorMsg(prev => ({ ...prev, nameErrorMessage: '유효하지 않은 이름입니다.' }));
             else return setSignUpErrorMsg(prev => ({ ...prev, nameErrorMessage: '' }));
         };
 
         if(field === 'phoneNumber') {
-            const phoneNumberRegex = /^010[0-9]{8}$/;
-            if(!phoneNumberRegex.test(signUpState.phoneNumber.trim())) return setSignUpErrorMsg(prev => ({ ...prev, phoneNumberErrorMessage: '유효하지 않은 전화번호입니다.' }));
+            if(!validations.phoneNumberRegex.test(signUpState.phoneNumber.trim())) return setSignUpErrorMsg(prev => ({ ...prev, phoneNumberErrorMessage: '유효하지 않은 전화번호입니다.' }));
             else return setSignUpErrorMsg(prev => ({ ...prev, phoneNumberErrorMessage: '' }));
         };
 
-        if(field === 'email') {
-            const emailRegex = /^(?!.*\.\.)(?!\.)(?!.*\.$)[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*\.[A-Za-z]{2,}$/;
-            if(!emailRegex.test(signUpState.email.trim())) return setSignUpErrorMsg(prev => ({ ...prev, emailErrorMessage: '유효하지 않은 이메일입니다.' }));
-            else return setSignUpErrorMsg(prev => ({ ...prev, emailErrorMessage: '' }));
-        };  
-
         if(field === 'birth') {
-            const birthRegex = /^\d{8}$/;
-            if(!birthRegex.test(signUpState.birth.trim())) return setSignUpErrorMsg(prev => ({ ...prev, birthErrorMessage: '유효하지 않은 생년월일입니다.' }));
+            if(!validations.birthRegex.test(signUpState.birth.trim())) return setSignUpErrorMsg(prev => ({ ...prev, birthErrorMessage: '유효하지 않은 생년월일입니다.' }));
             else return setSignUpErrorMsg(prev => ({ ...prev, birthErrorMessage: '' }));
         }
     };

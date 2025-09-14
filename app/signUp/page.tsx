@@ -7,23 +7,21 @@ import FormField from '@/shared/components/FormField';
 import Modal from '@/shared/components/Modal';
 import useModalShow from '@/shared/hook/useModalShow';
 import { Inner, NextButtonContainer, Section } from '@/shared/styled/GlobalStyled';
+import { validations } from '@/shared/vaildation/Validation';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const SignUpPage = () => {
     const {signUpState, signUpInputChange, signUpInputReset} = useSignUpInputState();
     const {signUpErrorMsg, onBlur} = useSignUpValidation(signUpState);
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
+    const [isIdChecked, setIsIdChecked] = useState(false);
+    const [isCertificationChecked, setIsCertificationChecked] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
-    const signUpInputChcke = (e:React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        const hasError = Object.values(signUpErrorMsg).some((msg) => msg !== '');
-        const hasInput = Object.values(signUpState).some((state) => state === '');
-        if(hasError || hasInput) {
-            setModalText('필수 입력창을 확인해주세요.')
-            setModalShow(true);
-        };
-    };
-
+    //아이디 중복검사
     const idDuplicationCheck = async (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
@@ -34,8 +32,7 @@ const SignUpPage = () => {
             return;
         };
 
-        const idRegex = /^[a-zA-Z0-9]{5,12}$/;
-        if(!idRegex.test(signUpState.id.trim())) {
+        if(!validations.idRegex.test(signUpState.id.trim())) {
             setModalText('유효하지 않은 아이디입니다.');
             setModalShow(true);
             signUpInputReset('id');
@@ -47,18 +44,138 @@ const SignUpPage = () => {
                 params: {id: signUpState.id}
             });
             if(res.data.isTaken) setModalText('이미 사용중인 아이디입니다.');
-            else setModalText('사용가능한 아이디입니다.');
+            else setModalText('사용 가능한 아이디입니다.');
             setModalShow(true);
-            console.log(res.data);
+            setIsIdChecked(true);
+            return;
         }catch(err: any) {
             console.error('아이디 중복확인 서버 오류', err);
+            return;
         }
+    };
+
+    //이메일 중복검사
+    const emailDuplicationCheck = async () => {
+        try {
+            const res = await axios.get('http://localhost:4000/api/users/check-email',{
+                params: {email: signUpState.email}
+            });
+            if(res.data.isTaken) {
+                setModalText('이미 가입된 이메일입니다.');
+                setModalShow(true);
+                return false;
+            } 
+
+            return true;
+        } catch(err) {
+            console.error('이메일 중복확인 서버 오류', err);
+            return false;
+        };
+    };
+
+    //이메일 인증
+    const emailCertificationForwarding = async (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        if(!validations.emailRegex.test(signUpState.email.trim())) {
+            setModalText('이메일을 확인해 주세요.');
+            setModalShow(true);
+            return false;
+        };     
+
+        try {
+            const isAvailable = await emailDuplicationCheck();
+            if(!isAvailable) return false;
+
+            setIsLoading(true);
+            setModalText('인증번호 발송 중… 소요시간 최대 1분');
+            setModalShow(true);
+
+            const res = await axios.post('http://localhost:4000/api/users/mail', 
+                {email: signUpState.email}
+            );
+            console.log(res.data);
+            return;
+        }catch(err: any) {
+            console.error('인증번호 발송 서버 오류', err);
+            setModalText('서버 오류로 인증번호 전송 실패');
+            return false;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const emailCertificationNumberPost = async (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        if(!validations.sixDigitRegex.test(signUpState.certificationNumber.trim())) {
+            setModalText('인증번호를 확인해주세요.');
+            setModalShow(true);
+            signUpInputReset('certificationNumber');
+            return;
+        }
+
+        try{
+            const res = await axios.post('http://localhost:4000/api/users/certification-check',
+                {   email: signUpState.email,
+                    certificationNumber: signUpState.certificationNumber
+                }
+            );
+
+            setModalText(res.data.message);
+            setModalShow(true);
+
+            console.log(res.data);
+            if(res.status === 200) {
+                setIsCertificationChecked(true);
+            }
+            return;
+        } catch(err:any) {
+            console.log('인증번호 확인 서버 오류', err);
+            return;
+        }
+    };
+
+    //회원가입 submit
+    const signUpSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const hasError = Object.values(signUpErrorMsg).some((msg) => msg !== '');
+        const hasInput = Object.values(signUpState).some((state) => state === '');
+        if(hasError || hasInput) {
+            setModalText('필수 입력창을 확인해주세요.')
+            setModalShow(true);
+            return false;
+        };
+
+        if (!isIdChecked || !isCertificationChecked) {
+            setModalText('아이디 중복확인 및 인증번호 확인을 진행해주세요.');
+            setModalShow(true);
+            return false;
+        }
+
+        try {
+            const res = await axios.post('http://localhost:4000/api/users/register', 
+                {
+                    id: signUpState.id,
+                    password: signUpState.password,
+                    name: signUpState.name,
+                    phoneNumber: signUpState.phoneNumber,
+                    email: signUpState.email,
+                    certificationNumber: signUpState.certificationNumber,
+                    birth: signUpState.birth
+                }
+            );
+
+            console.log(res.data);
+            router.push('/signUpFinish');
+        } catch(err: any) {
+            console.error('회원가입 서버오류', err);
+        };
     };
 
     return (
         <Section>
             <Inner>
-                <form>
+                <form onSubmit={signUpSubmit}>
                     <CertificationFormField 
                         label='아이디'
                         type='text'
@@ -71,7 +188,7 @@ const SignUpPage = () => {
                     <FormField 
                         label='비밀번호'
                         type='password'
-                        placeholder='영문 + 숫자 총 8자리'
+                        placeholder='영문 + 숫자 + 기호 총 8자리'
                         value={signUpState.password}
                         onChange={(e) => signUpInputChange(e, 'password')}
                         onBlur={(e) => onBlur('password', e.currentTarget.value)}
@@ -111,14 +228,16 @@ const SignUpPage = () => {
                         buttonText='인증번호 발송'
                         value={signUpState.email}
                         onChange={(e) => signUpInputChange(e, 'email')}
+                        onClick={emailCertificationForwarding}
                     />
                     <CertificationFormField 
                         label='인증번호'
                         type='text'
-                        placeholder='인증번호 입력'
+                        placeholder='인증번호 입력 숫자 6자리'
                         buttonText='인증번호 확인'
                         value={signUpState.certificationNumber}
                         onChange={(e) => signUpInputChange(e, 'certificationNumber')}
+                        onClick={emailCertificationNumberPost}
                     />
                     <FormField 
                         label='생년월일'
@@ -132,7 +251,6 @@ const SignUpPage = () => {
                     <NextButtonContainer>
                         <Button 
                             buttonText='가입하기'
-                            onClick={signUpInputChcke}
                         />
                     </NextButtonContainer>
                 </form>
