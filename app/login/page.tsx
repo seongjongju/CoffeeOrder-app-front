@@ -24,24 +24,24 @@ const LoginPage = () => {
                         </AuthText>
                     </AuthTop>
                     <form>
-                        <FormField 
+                        {/* <FormField 
                             label='아이디'
                             type='text'
                             placeholder='아이디 입력'
-                            // value={''}
-                            // onChange={''}
-                            // onBlur={(e) => onBlur('birth', e.currentTarget.value)}
-                            // errMessage={signUpErrorMsg.birthErrorMessage}
+                            value={''}
+                            onChange={''}
+                            onBlur={(e) => onBlur('birth', e.currentTarget.value)}
+                            errMessage={signUpErrorMsg.birthErrorMessage}
                         />
                         <FormField 
                             label='비밀번호'
                             type='password'
                             placeholder='비밀번호 입력'
-                            // value={''}
-                            // onChange={''}
-                            // onBlur={(e) => onBlur('birth', e.currentTarget.value)}
-                            // errMessage={signUpErrorMsg.birthErrorMessage}
-                        />
+                            value={''}
+                            onChange={''}
+                            onBlur={(e) => onBlur('birth', e.currentTarget.value)}
+                            errMessage={signUpErrorMsg.birthErrorMessage}
+                        /> */}
                         <Button 
                             buttonText='로그인'
                         />
