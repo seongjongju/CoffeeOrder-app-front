@@ -166,7 +166,7 @@ const SignUpPage = () => {
             );
 
             console.log(res.data);
-            router.push(`/signUpFinish?name=${encodeURIComponent(signUpState.name)}`);
+            router.push('/signUpFinish?name');
         } catch(err: any) {
             console.error('회원가입 서버오류', err);
         };

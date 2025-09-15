@@ -3,6 +3,8 @@ import AppBar from '@/shared/components/AppBar';
 import NavigationBar from '@/shared/components/NavigationBar';
 import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
+import { Provider } from "react-redux";
+import { store } from "@/features/login/store/store";
 
 const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     const pathName = usePathname();
@@ -10,6 +12,7 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     const appBarTitles = () => {
         if(pathName === '/policy') return '이용약관';
         if(pathName === '/signUp') return '회원가입';
+        if(pathName === '/login') return '로그인';
         return '';
     };
 
@@ -25,9 +28,11 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
 
     return (
         <>
-            {pathName !== '/' && pathName !== '/signUpFinish' ? <AppBar appBarTitle={appBarTitles()}/> : null}
-            {children}
-            {pathName !== '/' && <NavigationBar />}
+            <Provider store={store}>
+                {pathName !== '/' && pathName !== '/signUpFinish' ? <AppBar appBarTitle={appBarTitles()}/> : null}
+                {children}
+                {pathName !== '/' && <NavigationBar />}
+            </Provider>
         </>
     );
 };

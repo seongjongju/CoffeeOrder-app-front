@@ -33,7 +33,9 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <GlobalStyle />
-        <ClientLayout>{children}</ClientLayout>
+        <ClientLayout>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );
