@@ -1,14 +1,9 @@
-'use client';
 import Image from 'next/image';
 import React from 'react';
 import circleCheck from '@/shared/assets/images/icon/circle_check.svg';
 import { mainColor } from '@/shared/styled/GlobalStyled';
-import { useSearchParams } from 'next/navigation';
 
 const SignUpFinishPage = () => {
-    const sp = useSearchParams();
-    const name = sp.get('name');
-
     return (
         <div
             style={{ 
@@ -24,13 +19,13 @@ const SignUpFinishPage = () => {
             <Image src={circleCheck} alt='체크표시' />
             <p
                 style={{ 
-                    fontSize: '18px',
+                    fontSize: '25px',
                     color: mainColor,
-                    textAlign: 'center' 
+                    textAlign: 'center',
+                    fontWeight: 600 
                 }}
             >
-                가입완료!!<br />
-                <strong style={{ fontSize: '25px' }}>{name ? name : null}환영해요</strong>
+                회원가입이 완료되었습니다.
             </p>
         </div>
     );
