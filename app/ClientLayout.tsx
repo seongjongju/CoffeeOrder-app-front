@@ -25,7 +25,7 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
 
     return (
         <>
-            {pathName !== '/' && <AppBar appBarTitle={appBarTitles()}/>}
+            {pathName !== '/' && pathName !== '/signUpFinish' ? <AppBar appBarTitle={appBarTitles()}/> : null}
             {children}
             {pathName !== '/' && <NavigationBar />}
         </>

@@ -4,7 +4,7 @@ import {NaviContainer} from '../styled/GlobalStyled';
 const NavigationBar = () => {
     return (
         <NaviContainer>
-            
+    
         </NaviContainer>
     );
 };
