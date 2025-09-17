@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { Provider } from "react-redux";
 import { store } from "@/features/login/store/store";
-import AuthProvider from './globalProvider/authProvider';
+import AuthProvider from './globalProvider/AuthProvider';
 
 const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     const pathName = usePathname();
