@@ -10,6 +10,10 @@ import Link from 'next/link';
 import { validations } from '@/shared/vaildation/Validation';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/features/login/store/hooks';
+import { loginSuccess } from '@/features/login/store/authSlice';
+import useModalShow from '@/shared/hook/useModalShow';
+import Modal from '@/shared/components/Modal';
 
 const LoginPage = () => {
     const [userId, setUserId] = useState('');
@@ -18,6 +22,8 @@ const LoginPage = () => {
         idErrorMsg: '',
         passwordErrorMsg: ''
     });
+    const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
+    const dispatch = useAppDispatch();
     const router = useRouter();
 
     const loginUserId = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +57,12 @@ const LoginPage = () => {
     const loginSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        if(!userId.trim() || !userPwd.trim()) {
+            setModalText('아이디와 비밀번호를 모두 입력해주세요.');
+            setModalShow(true);
+            return;
+        }
+
         try{
             const res = await axios.post('http://localhost:4000/api/users/login', 
                 {
@@ -61,10 +73,26 @@ const LoginPage = () => {
             );
 
             console.log(res.data);
+
             if(res.status === 200) {
+                dispatch(loginSuccess({
+                    _id: res.data.user._id,
+                    id: res.data.user.id,
+                    name: res.data.user.name,
+                    phoneNumber: res.data.user.phoneNumber,
+                    email: res.data.user.email,
+                    birth: res.data.user.birth
+                }));
                 router.push('/main');
             };
-        } catch(err) {
+
+            return;
+        } catch(err: any) {
+            if(err.response?.status === 400) {
+                setModalText('아이디 또는 비밀번호가 일치하지 않습니다.');
+                setModalShow(true);
+                return;
+            } 
             console.error('로그인 서버 오류', err);
         };
     };
@@ -74,7 +102,7 @@ const LoginPage = () => {
             <Inner>
                 <AuthContainer>
                     <AuthTop>
-                        <Image  src={mascot} alt='마스코트' />
+                        <Image src={mascot} alt='마스코트' />
                         <AuthText>
                             서비스 이용을 위해 <br />
                             로그인 해주세요!!
@@ -109,7 +137,17 @@ const LoginPage = () => {
                         </AuthLinks>
                     </form>
                 </AuthContainer>
-            </Inner>   
+            </Inner> 
+
+            {
+                modalShow && 
+                <Modal 
+                    modalShow={modalShow}
+                    setModalShow={setModalShow}
+                    modalText={modalText}
+                    setModalText={setModalText}
+                />
+            }  
         </>
     );
 };

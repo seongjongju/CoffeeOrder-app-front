@@ -1,9 +1,12 @@
+'use client';
+import { useAppSelector } from '@/features/login/store/hooks';
 import React from 'react';
 
 const MainPage = () => {
+    const {user, isLoggedIn} = useAppSelector(state => state.auth);
     return (
         <div>
-            메인페이지
+            {isLoggedIn === true ? <p>{user?.name}</p> : null}
         </div>
     );
 };

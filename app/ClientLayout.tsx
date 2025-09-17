@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { Provider } from "react-redux";
 import { store } from "@/features/login/store/store";
+import AuthProvider from './globalProvider/authProvider';
 
 const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     const pathName = usePathname();
@@ -29,6 +30,7 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     return (
         <>
             <Provider store={store}>
+                <AuthProvider />
                 {pathName !== '/' && pathName !== '/signUpFinish' ? <AppBar appBarTitle={appBarTitles()}/> : null}
                 {children}
                 {pathName !== '/' && <NavigationBar />}

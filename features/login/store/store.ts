@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userSlice from './userSlice';
+import authReducer from './authSlice';
+
 
 export const store = configureStore({
-    reducer: {user: userSlice},
-    middleware: getDefaultMiddleware => getDefaultMiddleware({serializableCheck:false}),
+    reducer: {
+        auth: authReducer,
+    },
 });
 
 export type RootState = ReturnType<typeof store.getState>
