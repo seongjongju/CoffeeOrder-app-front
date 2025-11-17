@@ -1,3 +1,4 @@
+'use client';
 import Button from '@/shared/components/Button';
 import React from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
