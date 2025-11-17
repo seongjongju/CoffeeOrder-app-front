@@ -3,6 +3,7 @@ import { AuthText, AuthTop } from '@/features/styled/authStyled';
 import { Inner } from '@/shared/styled/GlobalStyled';
 import Image from 'next/image';
 import mascot from '@/shared/assets/images/contents/mascot.png';
+import { Suspense } from 'react';
 import FindIdResult from '@/features/userFind/components/FindIdResult';
 
 const IdFindResultPage = () => {
@@ -17,7 +18,9 @@ const IdFindResultPage = () => {
                             아이디를 찾았어요!!
                         </AuthText>
                     </AuthTop>
-                    <FindIdResult />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <FindIdResult />
+                    </Suspense>
                 </div>
             </Inner> 
         </>
