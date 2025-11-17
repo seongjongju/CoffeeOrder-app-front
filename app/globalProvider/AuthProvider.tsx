@@ -1,18 +1,22 @@
 'use client';
 import { loginSuccess, logout } from "@/features/login/store/authSlice";
+import { useAppSelector } from "@/features/login/store/hooks";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 const AuthProvider = () => {
     const dispatch = useDispatch();
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+
 
     useEffect(() => {
         const authCheck = async () => {
+            if (!isLoggedIn) return;
+
             try {
-                console.log("인증 체크 시작");
                 const res = await axios.get("http://localhost:4000/api/users/me", {
-                withCredentials: true,
+                    withCredentials: true,
                 });
                 dispatch(loginSuccess(res.data.user));
             } catch (err) {
@@ -22,7 +26,7 @@ const AuthProvider = () => {
         };
 
         authCheck();
-    }, [dispatch]);
+    }, [dispatch, isLoggedIn]);
 
     return null;
 };
