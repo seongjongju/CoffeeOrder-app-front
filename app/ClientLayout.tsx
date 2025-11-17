@@ -14,6 +14,8 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
         if(pathName === '/policy') return '이용약관';
         if(pathName === '/signUp') return '회원가입';
         if(pathName === '/login') return '로그인';
+        if(pathName === '/userFind/idFind' || pathName === '/userFind/idFindResult') return '아이디 찾기';
+        if(pathName === '/userFind/passwordFind' || pathName === '/userFind/passwordFindResult') return '비밀번호 찾기';
         return '';
     };
 

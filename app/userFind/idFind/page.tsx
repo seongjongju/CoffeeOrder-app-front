@@ -24,7 +24,7 @@ const IdFindPage = () => {
     const findIdSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if(findIdInput.trim() !== '') {
+        if(findIdInput.trim() === '') {
             setModalText('이메일을 입력해 주세요.');
             setModalShow(true);
             return;
@@ -45,14 +45,14 @@ const IdFindPage = () => {
             );
 
             if(res.status === 200) {
-                setModalText('');
-                setModalShow(false);
-
-                router.push('/');
+                router.push(`/userFind/idFindResult?userId=${res.data.userId}`);
             }
         } catch(err) {
-            
-        }
+            console.error(err);
+            setModalText('가입되지 않은 이메일입니다.');
+            setModalShow(true);
+            return;
+        } 
     };
 
     return (
