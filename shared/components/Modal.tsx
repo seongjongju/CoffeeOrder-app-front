@@ -1,6 +1,8 @@
+'use client';
 import React from 'react';
 import {ModalContainer, ModalItem, ModalInfo, TextBody} from '../styled/GlobalStyled';
 import Button from './Button';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface ModalProps {
     modalShow: boolean;
@@ -10,10 +12,17 @@ interface ModalProps {
 };
 
 const Modal = ({ modalShow, setModalShow, modalText, setModalText } : ModalProps) => {
+    const pathName = usePathname();
+    const router = useRouter();
+
     const modalInit = () => {
         if(modalShow) {
             setModalShow(false);
             setModalText('');
+
+            if(pathName === '/userFind/passwordFind') {
+                router.push('/login');
+            }
         };
     }; 
 

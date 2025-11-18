@@ -15,7 +15,8 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
         if(pathName === '/signUp') return '회원가입';
         if(pathName === '/login') return '로그인';
         if(pathName === '/userFind/idFind' || pathName === '/userFind/idFindResult') return '아이디 찾기';
-        if(pathName === '/userFind/passwordFind' || pathName === '/userFind/passwordFindResult') return '비밀번호 찾기';
+        if(pathName === '/userFind/passwordFind') return '비밀번호 찾기/변경';
+        if(pathName === '/changeInfo/changePassword') return '비밀번호 변경';
         return '';
     };
 

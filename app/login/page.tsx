@@ -132,7 +132,7 @@ const LoginPage = () => {
                         />
                         <AuthLinks>
                             <Link href={'/userFind/idFind'} >아이디 찾기</Link>
-                            <Link href={'/'} >비밀번호 찾기</Link>
+                            <Link href={'/userFind/passwordFind'} >비밀번호 찾기</Link>
                             <Link href={'/policy'} >회원가입</Link>
                         </AuthLinks>
                     </form>
