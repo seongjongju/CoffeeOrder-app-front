@@ -1,5 +1,4 @@
 'use client';
-import AppBar from '@/shared/components/AppBar';
 import NavigationBar from '@/shared/components/NavigationBar';
 import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
@@ -9,16 +8,6 @@ import AuthProvider from './globalProvider/AuthProvider';
 
 const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     const pathName = usePathname();
-
-    const appBarTitles = () => {
-        if(pathName === '/policy') return '이용약관';
-        if(pathName === '/signUp') return '회원가입';
-        if(pathName === '/login') return '로그인';
-        if(pathName === '/userFind/idFind' || pathName === '/userFind/idFindResult') return '아이디 찾기';
-        if(pathName === '/userFind/passwordFind') return '비밀번호 찾기/변경';
-        if(pathName === '/changeInfo/changePassword') return '비밀번호 변경';
-        return '';
-    };
 
     useEffect(() => {
         if ('serviceWorker' in navigator) {
@@ -34,7 +23,6 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
         <>
             <Provider store={store}>
                 <AuthProvider />
-                {pathName !== '/' && pathName !== '/signUpFinish' ? <AppBar appBarTitle={appBarTitles()}/> : null}
                 {children}
                 {pathName !== '/' && <NavigationBar />}
             </Provider>

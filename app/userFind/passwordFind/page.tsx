@@ -11,6 +11,7 @@ import Modal from '@/shared/components/Modal';
 import { validations } from '@/shared/vaildation/Validation';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import AppBar from '@/shared/components/AppBar';
 
 const PasswordFindPage = () => {
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
@@ -119,6 +120,7 @@ const PasswordFindPage = () => {
 
     return (
         <>
+            <AppBar />
             <Inner>
                 <AuthContainer>
                     <AuthTop>

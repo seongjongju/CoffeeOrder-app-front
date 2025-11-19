@@ -11,6 +11,7 @@ import useModalShow from '@/shared/hook/useModalShow';
 import Modal from '@/shared/components/Modal';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import AppBar from '@/shared/components/AppBar';
 
 const IdFindPage = () => {
     const [findIdInput, setFindIdInput] = useState('');
@@ -57,6 +58,7 @@ const IdFindPage = () => {
 
     return (
         <>
+            <AppBar />
             <Inner>
                 <AuthContainer>
                     <AuthTop>

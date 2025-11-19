@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import Button from '@/shared/components/Button';
 import Modal from '@/shared/components/Modal';
 import useModalShow from '@/shared/hook/useModalShow';
+import AppBar from '@/shared/components/AppBar';
 
 const PolicyPage = () => {
     const {checkedState, checkedFunction} = usePolicyChecked();
@@ -36,6 +37,7 @@ const PolicyPage = () => {
 
     return (
         <>
+            <AppBar />
             <Inner>
                 <Title>약관에 동의해주세요.</Title>
                 <PolicyForm>

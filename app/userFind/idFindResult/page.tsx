@@ -5,10 +5,12 @@ import Image from 'next/image';
 import mascot from '@/shared/assets/images/contents/mascot.png';
 import { Suspense } from 'react';
 import FindIdResult from '@/features/userFind/components/FindIdResult';
+import AppBar from '@/shared/components/AppBar';
 
 const IdFindResultPage = () => {
     return (
         <>
+            <AppBar />
             <Inner>
                 <div>
                     <AuthTop>

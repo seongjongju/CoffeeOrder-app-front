@@ -14,6 +14,7 @@ import { useAppDispatch } from '@/features/login/store/hooks';
 import { loginSuccess } from '@/features/login/store/authSlice';
 import useModalShow from '@/shared/hook/useModalShow';
 import Modal from '@/shared/components/Modal';
+import AppBar from '@/shared/components/AppBar';
 
 const LoginPage = () => {
     const [userId, setUserId] = useState('');
@@ -72,8 +73,6 @@ const LoginPage = () => {
                 {withCredentials: true}
             );
 
-            console.log(res.data);
-
             if(res.status === 200) {
                 dispatch(loginSuccess({
                     _id: res.data.user._id,
@@ -99,6 +98,7 @@ const LoginPage = () => {
 
     return (
         <>
+            <AppBar />
             <Inner>
                 <AuthContainer>
                     <AuthTop>
