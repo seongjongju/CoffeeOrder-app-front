@@ -1,10 +1,13 @@
 'use client';
-import NavigationBar from '@/shared/components/NavigationBar';
 import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { Provider } from "react-redux";
 import { store } from "@/features/login/store/store";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import AuthProvider from './globalProvider/AuthProvider';
+import MainAppBar from '@/shared/components/MainAppBar';
 
 const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     const pathName = usePathname();
@@ -23,8 +26,8 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
         <>
             <Provider store={store}>
                 <AuthProvider />
+                {pathName === '/main' && <MainAppBar />}
                 {children}
-                {pathName !== '/' && <NavigationBar />}
             </Provider>
         </>
     );

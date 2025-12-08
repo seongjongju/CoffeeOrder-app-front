@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import React from 'react';
-import circleCheck from '@/shared/assets/images/icon/circle_check.svg';
+import circleCheck from '@/public/icons/circle_check.svg';
 import { mainColor, NextButtonContainer } from '@/shared/styled/GlobalStyled';
 import Button from '@/shared/components/Button';
 import { useRouter } from 'next/navigation';

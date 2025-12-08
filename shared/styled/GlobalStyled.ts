@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
         font-family: 'Pretendard', sans-serif;
         background: #fff;
         max-width: 600px;
-        height: 100vh;
+        
         min-height: 100vh;
         margin: 0 auto;
         padding-top: env(safe-area-inset-top);
@@ -257,4 +257,20 @@ export const CertificationButton = styled.button `
     font-size: 12px;
     border-radius: 34px;
 `;
+
+//mainAppBar
+export const HeaderNav = styled.nav `
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 48px;
+`;
+
+export const HeaderUtil = styled.div `
+    display: flex;
+    align-items: center;
+    gap: 5px;
+`;
+
 export default GlobalStyle

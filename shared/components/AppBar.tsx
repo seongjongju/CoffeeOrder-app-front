@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import {AppBarContainer, BackButton, AppBarTitle} from '../styled/GlobalStyled';
-import BackIco from '../assets/images/icon/back_ico.png';
+import BackIco from '@/public/icons/back_ico.png';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 

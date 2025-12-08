@@ -2,7 +2,7 @@
 import { AuthText, AuthTop } from '@/features/styled/authStyled';
 import { Inner } from '@/shared/styled/GlobalStyled';
 import Image from 'next/image';
-import mascot from '@/shared/assets/images/contents/mascot.png';
+import mascot from '@/public/images/mascot.png';
 import { Suspense } from 'react';
 import FindIdResult from '@/features/userFind/components/FindIdResult';
 import AppBar from '@/shared/components/AppBar';

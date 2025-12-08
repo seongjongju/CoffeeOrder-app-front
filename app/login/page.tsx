@@ -3,7 +3,7 @@ import { Inner } from '@/shared/styled/GlobalStyled';
 import { AuthContainer, AuthTop, AuthText, AuthLinks } from '@/features/styled/authStyled';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import mascot from '@/shared/assets/images/contents/mascot.png';
+import mascot from '@/public/images/mascot.png';
 import FormField from '@/shared/components/FormField';
 import Button from '@/shared/components/Button';
 import Link from 'next/link';

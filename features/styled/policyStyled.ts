@@ -1,8 +1,8 @@
 'use client';
 import { subColor1, subColor2, subGray } from "@/shared/styled/GlobalStyled";
 import styled from "styled-components";
-import checkOffIco from '@/shared/assets/images/icon/check_off.svg';
-import checkOnIco from '@/shared/assets/images/icon/check_on.svg';
+import checkOffIco from '@/public/icons/check_off.svg';
+import checkOnIco from '@/public/icons/check_on.svg';
 
 export const PolicyForm = styled.form `
 

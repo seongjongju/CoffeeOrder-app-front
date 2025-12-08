@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "type": "juice",
+        "img": "/images/tomato_juice.png",
+        "menuname": "토마토주스",
+        "price": 3000,
+        "info": [
+            {
+                "volume": 100,
+                "calorie": 17,
+                "carbohydrate": 4,
+                "protein": 1,
+                "fat": 0,
+                "sodium": 10,
+                "sugar": 3,
+                "saturatedfat": 0
+            }
+        ],
+        "origin": "토마토 (국내산)"
+    },
+    {
+        "id": 2,
+        "type": "juice",
+        "img": "/images/orenge_juice.png",
+        "menuname": "오렌지주스",
+        "price": 3500,
+        "info": [
+            {
+                "volume": 100,
+                "calorie": 45,
+                "carbohydrate": 10,
+                "protein": 1,
+                "fat": 0,
+                "sodium": 1,
+                "sugar": 8,
+                "saturatedfat": 0
+            }
+        ],
+        "origin": "오렌지 (미국/칠레)"
+    },
+    {
+        "id": 3,
+        "type": "juice",
+        "img": "/images/apple_juice.png",
+        "menuname": "사과주스",
+        "price": 3500,
+        "info": [
+            {
+                "volume": 100,
+                "calorie": 46,
+                "carbohydrate": 11,
+                "protein": 0,
+                "fat": 0,
+                "sodium": 2,
+                "sugar": 10,
+                "saturatedfat": 0
+            }
+        ],
+        "origin": "사과 (국내산 및 뉴질랜드)"
+    }
+]

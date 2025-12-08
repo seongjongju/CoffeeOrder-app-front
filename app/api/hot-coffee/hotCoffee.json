@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "type": "coffee",
+        "img": "/images/americano_hot.png",
+        "menuname": "아메리카노(HOT)",
+        "price": 3000,
+        "info": [
+            {
+                "volume": 100,
+                "calorie": 2,
+                "carbohydrate": 0,
+                "protein": 0,
+                "fat": 0,
+                "caffeine": 40,
+                "sodium": 5,
+                "sugar": 0,
+                "saturatedfat": 0
+            }
+        ],
+        "origin": "커피원두 (에티오피아 등 중남미 혼합)"
+    },
+    {
+        "id": 2,
+        "type": "coffee",
+        "img": "/images/cafelatte_hot.png",
+        "menuname": "카페라떼(HOT)",
+        "price": 4500,
+        "info": [
+            {
+                "volume": 100,
+                "calorie": 30,
+                "carbohydrate": 2,
+                "protein": 1,
+                "fat": 1.5,
+                "caffeine": 40,
+                "sodium": 40,
+                "sugar": 2,
+                "saturatedfat": 1
+            }
+        ],
+        "origin": "커피원두 (에티오피아/콜롬비아 혼합)"
+    }
+]

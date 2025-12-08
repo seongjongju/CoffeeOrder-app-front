@@ -1,0 +1,59 @@
+[
+    {
+        "id": 1,
+        "type": "dessert",
+        "img": "/images/cheesecake.png",
+        "menuname": "치즈케이크",
+        "price": 6000,
+        "info": [
+            {
+                "volume": 100,
+                "calorie": 320,
+                "carbohydrate": 25,
+                "protein": 6,
+                "fat": 22,
+                "sodium": 250,
+                "sugar": 20,
+                "saturatedfat": 12
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "type": "dessert",
+        "img": "/images/chocolate_brownie.png",
+        "menuname": "초코 브라우니",
+        "price": 5500,
+        "info": [
+            {
+                "volume": 100,
+                "calorie": 400,
+                "carbohydrate": 45,
+                "protein": 5,
+                "fat": 22,
+                "sodium": 150,
+                "sugar": 35,
+                "saturatedfat": 12
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "type": "dessert",
+        "img": "",
+        "menuname": "크루아상",
+        "price": 4500,
+        "info": [
+            {
+                "volume": 100,
+                "calorie": 406,
+                "carbohydrate": 45,
+                "protein": 8,
+                "fat": 21,
+                "sodium": 180,
+                "sugar": 7,
+                "saturatedfat": 13
+            }
+        ]
+    }
+]
