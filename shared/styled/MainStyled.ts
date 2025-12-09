@@ -91,6 +91,8 @@ export const MenuItem = styled.div `
     & img {
         width: 95%;
         height: 95%;
+        display: block;
+        margin: 0 auto;
     }
 
     & p {
@@ -100,6 +102,21 @@ export const MenuItem = styled.div `
         position: absolute;
         bottom: 5%;
         width: 100%;
+    }
+`;
+
+export const FailTextWrap = styled.div `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    height: 300px;
+
+    & p {
+        font-siez: 18px;
+        color: ${mainColor};
+        font-weight: 600;
     }
 `;
 

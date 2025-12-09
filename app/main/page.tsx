@@ -1,10 +1,10 @@
 'use client';
-import { Inner } from '@/shared/styled/GlobalStyled';
+import { Inner, mainColor } from '@/shared/styled/GlobalStyled';
 import {Main, Visual, MainTitle, MenuSwiperLink, TabBtns, TabBtn} from '@/shared/styled/MainStyled';
 import Image from 'next/image';
 import mainBanner from '@/public/images/mainBanner.jpg';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Autoplay } from 'swiper/modules';
 import useMenu from '@/app/api/hook/useMenu';
@@ -12,6 +12,11 @@ import MenuTabItems from '@/features/menuTab/components/MenuTabItems';
 
 const MainPage = () => {
     const {iceCoffeeState, hotCoffeeState, juiceState, dessertState} = useMenu();
+    const [tabState, setTabState] = useState<{coffee: boolean, juice: boolean, dessert: boolean}>({
+        coffee: true,
+        juice: false,
+        dessert: false
+    });
 
     return (
         <Main>
@@ -72,13 +77,45 @@ const MainPage = () => {
                 <MainTitle>주문 하기!!</MainTitle>
                 {/* 주문하기 탭 */}
                 <TabBtns>
-                    <TabBtn>커피</TabBtn>
-                    <TabBtn>주스</TabBtn>
-                    <TabBtn>디저트</TabBtn>
+                    <TabBtn 
+                        style={
+                            {backgroundColor: (tabState.coffee && mainColor) || undefined, color: (tabState.coffee && "#fff") || undefined,} 
+                        }
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                            e.preventDefault();
+                            setTabState(prev => ({ ...prev, coffee: true, juice: false, dessert: false }))
+                        }}>
+                        커피
+                    </TabBtn>
+                    <TabBtn 
+                        style={
+                            {backgroundColor: (tabState.juice && mainColor) || undefined, color: (tabState.juice && "#fff") || undefined,}
+                        }
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                            e.preventDefault();
+                            setTabState(prev => ({ ...prev, coffee: false, juice: true, dessert: false }))
+                        }}
+                    >
+                        주스
+                    </TabBtn>
+                    <TabBtn 
+                        style={
+                            {backgroundColor: (tabState.dessert && mainColor) || undefined, color: (tabState.dessert && "#fff") || undefined,} 
+                        }
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                            e.preventDefault();
+                            setTabState(prev => ({ ...prev, coffee: false, juice: false, dessert: true }))
+                        }}>
+                        디저트
+                    </TabBtn>
                 </TabBtns>
 
                 {/* 주문하기 메뉴 */}
-                <MenuTabItems />
+                <MenuTabItems 
+                    coffee={tabState.coffee}
+                    juice={tabState.juice}
+                    dessert={tabState.dessert}
+                />
             </Inner>
         </Main>
     );

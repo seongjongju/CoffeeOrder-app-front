@@ -40,7 +40,7 @@
     {
         "id": 3,
         "type": "dessert",
-        "img": "",
+        "img": "/images/croissant.png",
         "menuname": "크루아상",
         "price": 4500,
         "info": [

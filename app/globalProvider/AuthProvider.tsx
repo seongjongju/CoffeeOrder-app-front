@@ -18,7 +18,6 @@ const AuthProvider = () => {
                 });
                 dispatch(loginSuccess(res.data.user));
             } catch (err) {
-                console.log("인증 실패");
                 dispatch(logout());
             }
         };
