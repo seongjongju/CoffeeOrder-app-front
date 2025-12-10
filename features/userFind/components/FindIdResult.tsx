@@ -1,5 +1,5 @@
 'use client';
-import Button from '@/shared/components/Button';
+import Button from '@/shared/components/button/Button';
 import React from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 
