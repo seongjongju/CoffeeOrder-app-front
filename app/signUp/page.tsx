@@ -1,12 +1,12 @@
 'use client';
 import useSignUpInputState from '@/features/signUp/hook/useSignUpInputState';
 import useSignUpValidation from '@/features/signUp/hook/useSignUpValidation';
-import AppBar from '@/shared/components/AppBar';
-import Button from '@/shared/components/Button';
-import CertificationFormField from '@/shared/components/CertificationFormField';
-import FormField from '@/shared/components/FormField';
-import Modal from '@/shared/components/Modal';
-import useModalShow from '@/shared/hook/useModalShow';
+import AppBar from '@/shared/components/appbar/AppBar';
+import Button from '@/shared/components/button/Button';
+import CertificationFormField from '@/shared/components/formField/CertificationFormField';
+import FormField from '@/shared/components/formField/FormField';
+import Modal from '@/shared/components/modal/Modal';
+import useModalShow from '@/shared/components/modal/hook/useModalShow';
 import { Inner, NextButtonContainer, Section } from '@/shared/styled/GlobalStyled';
 import { validations } from '@/shared/vaildation/Validation';
 import axios from 'axios';

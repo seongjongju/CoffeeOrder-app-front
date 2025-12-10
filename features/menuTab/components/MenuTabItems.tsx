@@ -58,7 +58,7 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
                                         ));
 
     return (
-        <div>
+        <div style={{ marginBottom: "20px" }}>
             <MenuTabInput 
                 type="text" 
                 placeholder={coffee ? "커피 검색" : juice ? "주스 검색" : dessert ? "디저트 검색" : ""}

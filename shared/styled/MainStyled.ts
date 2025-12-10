@@ -120,4 +120,18 @@ export const FailTextWrap = styled.div `
     }
 `;
 
+//EVENT
+export const EventSwiperLink = styled(Link) `
+    display: block;
+    aspect-ratio: 335 / 150;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #000;
+
+    & img {
+        width: 100%;
+        height: 100%;
+    }
+`;
+
 export default styled;

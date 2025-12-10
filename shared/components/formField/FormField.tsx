@@ -1,5 +1,5 @@
 import React from 'react';
-import {CommonLabel, errColor, FormFieldContainer, FormFieldInput} from '../styled/GlobalStyled';
+import {CommonLabel, errColor, FormFieldContainer, FormFieldInput} from '../../styled/GlobalStyled';
 import { usePathname } from 'next/navigation';
 
 export interface FormFieldProps {

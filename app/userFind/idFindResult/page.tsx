@@ -5,7 +5,7 @@ import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import { Suspense } from 'react';
 import FindIdResult from '@/features/userFind/components/FindIdResult';
-import AppBar from '@/shared/components/AppBar';
+import AppBar from '@/shared/components/appbar/AppBar';
 
 const IdFindResultPage = () => {
     return (

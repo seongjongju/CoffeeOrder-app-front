@@ -14,10 +14,10 @@ import {
 } from '@/features/styled/policyStyled';
 import usePolicyChecked from '@/features/policy/hook/usePolicyChecked';
 import { useRouter } from 'next/navigation';
-import Button from '@/shared/components/Button';
-import Modal from '@/shared/components/Modal';
-import useModalShow from '@/shared/hook/useModalShow';
-import AppBar from '@/shared/components/AppBar';
+import Button from '@/shared/components/button/Button';
+import Modal from '@/shared/components/modal/Modal';
+import useModalShow from '@/shared/components/modal/hook/useModalShow';
+import AppBar from '@/shared/components/appbar/AppBar';
 
 const PolicyPage = () => {
     const {checkedState, checkedFunction} = usePolicyChecked();

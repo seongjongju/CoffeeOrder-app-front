@@ -3,15 +3,15 @@ import { AuthContainer, AuthText, AuthTop } from '@/features/styled/authStyled';
 import { Inner } from '@/shared/styled/GlobalStyled';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
-import Button from '@/shared/components/Button';
+import Button from '@/shared/components/button/Button';
 import FindInput from '@/features/userFind/components/FindInput';
 import { useState } from 'react';
 import { validations } from '@/shared/vaildation/Validation';
-import useModalShow from '@/shared/hook/useModalShow';
-import Modal from '@/shared/components/Modal';
+import useModalShow from '@/shared/components/modal/hook/useModalShow';
+import Modal from '@/shared/components/modal/Modal';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import AppBar from '@/shared/components/AppBar';
+import AppBar from '@/shared/components/appbar/AppBar';
 
 const IdFindPage = () => {
     const [findIdInput, setFindIdInput] = useState('');

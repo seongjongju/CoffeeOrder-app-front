@@ -4,17 +4,17 @@ import { AuthContainer, AuthTop, AuthText, AuthLinks } from '@/features/styled/a
 import React, { useState } from 'react';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
-import FormField from '@/shared/components/FormField';
-import Button from '@/shared/components/Button';
+import FormField from '@/shared/components/formField/FormField';
+import Button from '@/shared/components/button/Button';
 import Link from 'next/link';
 import { validations } from '@/shared/vaildation/Validation';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/features/login/store/hooks';
 import { loginSuccess } from '@/features/login/store/authSlice';
-import useModalShow from '@/shared/hook/useModalShow';
-import Modal from '@/shared/components/Modal';
-import AppBar from '@/shared/components/AppBar';
+import useModalShow from '@/shared/components/modal/hook/useModalShow';
+import Modal from '@/shared/components/modal/Modal';
+import AppBar from '@/shared/components/appbar/AppBar';
 
 const LoginPage = () => {
     const [userId, setUserId] = useState('');

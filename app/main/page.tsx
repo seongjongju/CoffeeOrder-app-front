@@ -1,6 +1,6 @@
 'use client';
 import { Inner, mainColor } from '@/shared/styled/GlobalStyled';
-import {Main, Visual, MainTitle, MenuSwiperLink, TabBtns, TabBtn} from '@/shared/styled/MainStyled';
+import {Main, Visual, MainTitle, MenuSwiperLink, TabBtns, TabBtn, EventSwiperLink} from '@/shared/styled/MainStyled';
 import Image from 'next/image';
 import mainBanner from '@/public/images/mainBanner.jpg';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -117,6 +117,30 @@ const MainPage = () => {
                     dessert={tabState.dessert}
                 />
             </Inner>
+
+            <Inner>
+                {/* EVENT */}
+                <MainTitle>EVENT!!</MainTitle>
+            </Inner>
+            {/* EventSwiper */}
+            <Swiper
+                spaceBetween={12}
+                slidesPerView={1.3}
+                modules={[Autoplay]}
+                autoplay={{delay: 1500}}
+                speed={1200}
+            >
+                <SwiperSlide>
+                    <EventSwiperLink href={''}>
+                        <img src={iceCoffeeState[0]?.img} alt={iceCoffeeState[0]?.menuname} />
+                    </EventSwiperLink>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <EventSwiperLink href={''}>
+                        <img src={iceCoffeeState[0]?.img} alt={iceCoffeeState[0]?.menuname} />
+                    </EventSwiperLink>
+                </SwiperSlide>
+            </Swiper>
         </Main>
     );
 };

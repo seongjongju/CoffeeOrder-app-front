@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import circleCheck from '@/public/icons/circle_check.svg';
 import { mainColor, NextButtonContainer } from '@/shared/styled/GlobalStyled';
-import Button from '@/shared/components/Button';
+import Button from '@/shared/components/button/Button';
 import { useRouter } from 'next/navigation';
 
 const SignUpFinishPage = () => {

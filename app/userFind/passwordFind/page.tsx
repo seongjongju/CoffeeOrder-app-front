@@ -5,13 +5,13 @@ import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import React, { useState } from 'react';
 import FindInput from '@/features/userFind/components/FindInput';
-import Button from '@/shared/components/Button';
-import useModalShow from '@/shared/hook/useModalShow';
-import Modal from '@/shared/components/Modal';
+import Button from '@/shared/components/button/Button';
+import useModalShow from '@/shared/components/modal/hook/useModalShow';
+import Modal from '@/shared/components/modal/Modal';
 import { validations } from '@/shared/vaildation/Validation';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import AppBar from '@/shared/components/AppBar';
+import AppBar from '@/shared/components/appbar/AppBar';
 
 const PasswordFindPage = () => {
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();

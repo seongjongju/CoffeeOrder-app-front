@@ -273,4 +273,74 @@ export const HeaderUtil = styled.div `
     gap: 5px;
 `;
 
+//sideGnb
+export const SideGnbContainer = styled.div `
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100vh;
+    z-index: 9999;
+    transition: right .3s ease;
+`;
+
+export const SideGnbDim = styled.div `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    z-index: 9998;
+`;
+
+export const SideGnb = styled.div `
+    width: 100%;
+    height: 100%;
+    background: ${mainColor};
+    padding: 150px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+`;
+
+export const SideGnbLink = styled.a `
+    display: inline-block;
+    width: fit-content;
+    color: #fff;
+    font-size: 25px;
+    font-weight: 500;
+`;
+
+export const SideGnbCloseBtn = styled.button `
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 25px;
+    height: 25px;
+    background: none;
+    cursor: pointer;
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    & span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background: #fff;
+        position: relative;
+    }
+
+    & span:first-child {
+        transform: rotate(45deg);
+    }
+
+    & span:last-child {
+        transform: rotate(-45deg);
+        bottom: 1.5px;
+    }
+`;
+
 export default GlobalStyle

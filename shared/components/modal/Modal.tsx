@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import {ModalContainer, ModalItem, ModalInfo, TextBody} from '../styled/GlobalStyled';
-import Button from './Button';
+import {ModalContainer, ModalItem, ModalInfo, TextBody} from '../../styled/GlobalStyled';
+import Button from '../button/Button';
 import { usePathname, useRouter } from 'next/navigation';
 
 interface ModalProps {

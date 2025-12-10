@@ -1,5 +1,5 @@
 import React from 'react';
-import {CommonButton} from '../styled/GlobalStyled';
+import {CommonButton} from '../../styled/GlobalStyled';
 
 interface ButtonProps {
     buttonText: string;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommonLabel, errColor, FormFieldContainer, FormFieldInput, CertificationButton, FormFieldFlex } from '../styled/GlobalStyled';
+import { CommonLabel, errColor, FormFieldContainer, FormFieldInput, CertificationButton, FormFieldFlex } from '../../styled/GlobalStyled';
 import { FormFieldProps } from './FormField';
 
 const CertificationFormField = ({ label, placeholder, type, buttonText, onChange, value, onClick}:FormFieldProps) => {

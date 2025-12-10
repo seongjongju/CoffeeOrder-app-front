@@ -1,5 +1,5 @@
 import React from 'react';
-import { IntroContainer, IntroImage, IntroButtons, IntroLink } from '../styled/GlobalStyled';
+import { IntroContainer, IntroImage, IntroButtons, IntroLink } from '../../styled/GlobalStyled';
 import BigMascot from '@/public/icons/big_mascot.png';
 
 const Intro = () => {
