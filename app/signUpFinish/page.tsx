@@ -1,8 +1,8 @@
 'use client';
 import Image from 'next/image';
 import React from 'react';
+import '@/shared/styled/authStyle/.authStyle.css';
 import circleCheck from '@/public/icons/circle_check.svg';
-import { mainColor, NextButtonContainer } from '@/shared/styled/GlobalStyled';
 import Button from '@/shared/components/button/Button';
 import { useRouter } from 'next/navigation';
 
@@ -30,7 +30,7 @@ const SignUpFinishPage = () => {
                 <p
                     style={{ 
                         fontSize: '22px',
-                        color: mainColor,
+                        color: "#2B1B16",
                         textAlign: 'center',
                         fontWeight: 600,
                         marginTop: '10px' 
@@ -39,12 +39,12 @@ const SignUpFinishPage = () => {
                     회원가입이 완료되었습니다.
                 </p>
             </div>
-            <NextButtonContainer>
+            <div className='next-button-container'>
                 <Button 
                     buttonText='로그인하러 가기'
                     onClick={moveLoginPage}
                 />
-            </NextButtonContainer>
+            </div>
         </>
     );
 };
