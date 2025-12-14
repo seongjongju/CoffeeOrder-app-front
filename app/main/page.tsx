@@ -1,6 +1,5 @@
 'use client';
-import { Inner, mainColor } from '@/shared/styled/GlobalStyled';
-import {Main, Visual, MainTitle, MenuSwiperLink, TabBtns, TabBtn, EventSwiperLink} from '@/shared/styled/MainStyled';
+import '@/shared/styled/main/main.css';
 import Image from 'next/image';
 import mainBanner from '@/public/images/mainBanner.jpg';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -19,15 +18,15 @@ const MainPage = () => {
     });
 
     return (
-        <Main>
-            <Inner>
+        <main className='main'>
+            <div className='inner'>
                 {/* visual */}
-                <Visual>
+                <div className='visual'>
                     <Image src={mainBanner} alt='메인 배너' />
-                </Visual>
+                </div>
 
-                <MainTitle>추천 메뉴!!</MainTitle>
-            </Inner>
+                <h2 className='main-title'>추천 메뉴!!</h2>
+            </div>
 
             {/* menuSwiper */}
             <Swiper
@@ -42,54 +41,56 @@ const MainPage = () => {
                 }}
             >
                 <SwiperSlide>
-                    <MenuSwiperLink href={''}>
+                    <Link className='menu-swiper-link' href={''}>
                         <img src={iceCoffeeState[0]?.img} alt={iceCoffeeState[0]?.menuname} />
                         <p>{iceCoffeeState[0]?.menuname}</p>
-                    </MenuSwiperLink>
+                    </Link>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <MenuSwiperLink href={''}>
+                    <Link className='menu-swiper-link' href={''}>
                         <img src={hotCoffeeState[1]?.img} alt={hotCoffeeState[1]?.menuname} />
                         <p>{hotCoffeeState[1]?.menuname}</p>
-                    </MenuSwiperLink>
+                    </Link>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <MenuSwiperLink href={''}>
+                    <Link className='menu-swiper-link' href={''}>
                         <img src={juiceState[0]?.img} alt={juiceState[0]?.menuname} />
                         <p>{juiceState[0]?.menuname}</p>
-                    </MenuSwiperLink>
+                    </Link>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <MenuSwiperLink href={''}>
+                    <Link className='menu-swiper-link' href={''}>
                         <img src={dessertState[0]?.img} alt={dessertState[0]?.menuname} />
                         <p>{dessertState[0]?.menuname}</p>
-                    </MenuSwiperLink>
+                    </Link>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <MenuSwiperLink href={''}>
+                    <Link className='menu-swiper-link' href={''}>
                         <img src={iceCoffeeState[1]?.img} alt={iceCoffeeState[1]?.menuname} />
                         <p>{iceCoffeeState[1]?.menuname}</p>
-                    </MenuSwiperLink>
+                    </Link>
                 </SwiperSlide>
             </Swiper>
 
-            <Inner>
-                <MainTitle>주문 하기!!</MainTitle>
+            <div className='inner'>
+                <h2 className='main-title'>주문 하기!!</h2>
                 {/* 주문하기 탭 */}
-                <TabBtns>
-                    <TabBtn 
+                <div className='tab-btns'>
+                    <button 
+                        className='tab-btn' 
                         style={
-                            {backgroundColor: (tabState.coffee && mainColor) || undefined, color: (tabState.coffee && "#fff") || undefined,} 
+                            {backgroundColor: (tabState.coffee && "#2B1B16") || undefined, color: (tabState.coffee && "#fff") || undefined,} 
                         }
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
                             e.preventDefault();
                             setTabState(prev => ({ ...prev, coffee: true, juice: false, dessert: false }))
                         }}>
                         커피
-                    </TabBtn>
-                    <TabBtn 
+                    </button>
+                    <button
+                        className='tab-btn'
                         style={
-                            {backgroundColor: (tabState.juice && mainColor) || undefined, color: (tabState.juice && "#fff") || undefined,}
+                            {backgroundColor: (tabState.juice && "#2B1B16") || undefined, color: (tabState.juice && "#fff") || undefined,}
                         }
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
                             e.preventDefault();
@@ -97,18 +98,19 @@ const MainPage = () => {
                         }}
                     >
                         주스
-                    </TabBtn>
-                    <TabBtn 
+                    </button>
+                    <button
+                        className='tab-btn' 
                         style={
-                            {backgroundColor: (tabState.dessert && mainColor) || undefined, color: (tabState.dessert && "#fff") || undefined,} 
+                            {backgroundColor: (tabState.dessert && "#2B1B16") || undefined, color: (tabState.dessert && "#fff") || undefined,} 
                         }
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
                             e.preventDefault();
                             setTabState(prev => ({ ...prev, coffee: false, juice: false, dessert: true }))
                         }}>
                         디저트
-                    </TabBtn>
-                </TabBtns>
+                    </button>
+                </div>
 
                 {/* 주문하기 메뉴 */}
                 <MenuTabItems 
@@ -116,12 +118,12 @@ const MainPage = () => {
                     juice={tabState.juice}
                     dessert={tabState.dessert}
                 />
-            </Inner>
+            </div>
 
-            <Inner>
+            <div className='inner'>
                 {/* EVENT */}
-                <MainTitle>EVENT!!</MainTitle>
-            </Inner>
+                <h2 className='main-title'>EVENT!!</h2>
+            </div>
             {/* EventSwiper */}
             <Swiper
                 spaceBetween={12}
@@ -131,17 +133,17 @@ const MainPage = () => {
                 speed={1200}
             >
                 <SwiperSlide>
-                    <EventSwiperLink href={''}>
+                    <Link className='event-swiper-link' href={''}>
                         <img src={iceCoffeeState[0]?.img} alt={iceCoffeeState[0]?.menuname} />
-                    </EventSwiperLink>
+                    </Link>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <EventSwiperLink href={''}>
+                    <Link className='event-swiper-link' href={''}>
                         <img src={iceCoffeeState[0]?.img} alt={iceCoffeeState[0]?.menuname} />
-                    </EventSwiperLink>
+                    </Link>
                 </SwiperSlide>
             </Swiper>
-        </Main>
+        </main>
     );
 };
 

@@ -1,14 +1,11 @@
 'use client';
 import { loginSuccess, logout } from "@/features/login/store/authSlice";
-import { useAppSelector } from "@/features/login/store/hooks";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 const AuthProvider = () => {
     const dispatch = useDispatch();
-    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-
 
     useEffect(() => {
         const authCheck = async () => {
@@ -23,7 +20,7 @@ const AuthProvider = () => {
         };
 
         authCheck();
-    }, [dispatch, isLoggedIn]);
+    }, [dispatch]);
 
     return null;
 };

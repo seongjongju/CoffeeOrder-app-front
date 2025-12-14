@@ -1,6 +1,5 @@
-import { CommonLabel, errColor, FormFieldContainer, FormFieldInput } from '@/shared/styled/GlobalStyled';
+import '@/shared/styled/formField/formField.css';
 import React from 'react';
-
 export interface changeInfoInputProps {
     label: string,
     placeholder: string,
@@ -10,17 +9,18 @@ export interface changeInfoInputProps {
 
 const ChangeInfoInput = ({ label, placeholder, value, onChange }: changeInfoInputProps) => {
     return (
-        <FormFieldContainer>
-            <CommonLabel>   
+        <div className='form-field-container'>
+            <label className='label'>   
                 {label}
-                <span style={{ color: errColor }}>*</span>
-            </CommonLabel>
-            <FormFieldInput 
+                <span style={{ color: "#FF4040" }}>*</span>
+            </label>
+            <input
+                className='form-field-input' 
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
             />
-        </FormFieldContainer>
+        </div>
     );
 };
 

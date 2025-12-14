@@ -1,5 +1,4 @@
 import React from 'react';
-import {CommonButton} from '../../styled/GlobalStyled';
 
 interface ButtonProps {
     buttonText: string;
@@ -8,11 +7,12 @@ interface ButtonProps {
 
 const Button = ({ buttonText, onClick }:ButtonProps) => {
     return (
-        <CommonButton
+        <button 
+            className='common-button'
             onClick={onClick}
         >
             {buttonText}
-        </CommonButton>
+        </button>
     );
 };
 

@@ -1,6 +1,5 @@
 'use client';
-import { AuthContainer, AuthText, AuthTop } from '@/features/styled/authStyled';
-import { Inner } from '@/shared/styled/GlobalStyled';
+import '@/shared/styled/authStyle/authStyle.css';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import React, { useState } from 'react';
@@ -121,15 +120,15 @@ const PasswordFindPage = () => {
     return (
         <>
             <AppBar />
-            <Inner>
-                <AuthContainer>
-                    <AuthTop>
+            <div className='inner'>
+                <div className='auth-container'>
+                    <div className='auth-top'>
                         <Image src={mascot} alt='마스코트' />
-                        <AuthText>
+                        <p className='auth-text'>
                             비밀번호 찾기/변경을 위해 <br />
                             아이디를 입력해 주세요!!
-                        </AuthText>
-                    </AuthTop>
+                        </p>
+                    </div>
                     <form onSubmit={handleCertificationSubmit}>
                         <FindInput 
                             placeholder='아이디 입력'
@@ -163,7 +162,7 @@ const PasswordFindPage = () => {
                             buttonText='확인'
                         />
                     </form>
-                </AuthContainer>
+                </div>
 
                 {
                     modalShow && 
@@ -174,7 +173,7 @@ const PasswordFindPage = () => {
                         setModalText={setModalText}
                     />
                 }
-            </Inner>
+            </div>
         </>
     );
 };

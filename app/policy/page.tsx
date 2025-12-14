@@ -1,17 +1,6 @@
 'use client';
-import {Inner, Title, CommonLabel, errColor, NextButtonContainer} from '@/shared/styled/GlobalStyled';
-import {
-    PolicyForm, 
-    AllCheckedContainer, 
-    CheckedInput, 
-    AllCheckedCustom, 
-    CheckedShowHide,
-    CheckedContainer,
-    CheckedCustom,
-    PolicyInfo,
-    PolicyHeading,
-    Policytext
-} from '@/features/styled/policyStyled';
+import '@/shared/styled/authStyle/authStyle.css';
+import '@/shared/styled/policyStyle/policyStyle.css';
 import usePolicyChecked from '@/features/policy/hook/usePolicyChecked';
 import { useRouter } from 'next/navigation';
 import Button from '@/shared/components/button/Button';
@@ -38,71 +27,74 @@ const PolicyPage = () => {
     return (
         <>
             <AppBar />
-            <Inner>
-                <Title>약관에 동의해주세요.</Title>
-                <PolicyForm>
-                    <AllCheckedContainer>
-                        <CommonLabel>
-                            <AllCheckedCustom>
-                                <CheckedInput 
+            <div className='inner'>
+                <h2 className='title'>약관에 동의해주세요.</h2>
+                <form>
+                    <div className='all-checked-container'>
+                        <label className='label'>
+                            <div className='all-checked-custom'>
+                                <input
+                                    className='checked-input' 
                                     type='checkbox'
                                     checked={checkedState.isAllChecked}
                                     onChange={() => checkedFunction.allCheck()}
                                 />
-                                <CheckedShowHide />
-                            </AllCheckedCustom>
+                                <span className='checked-show-hide'></span>
+                            </div>
                             모두 동의하기
-                        </CommonLabel>
-                    </AllCheckedContainer>
+                        </label>
+                    </div>
 
-                    <CheckedContainer>
-                        <CommonLabel>
-                            <CheckedCustom>
-                                <CheckedInput 
+                    <div className='checked-container'>
+                        <label className='label'>
+                            <div className='checked-custom'>
+                                <input
+                                    className='checked-input' 
                                     type='checkbox'
                                     checked={checkedState.isPolicyChecked}
                                     onChange={() => checkedFunction.policyCheck()}
                                 />
-                                <CheckedShowHide />
-                            </CheckedCustom>
-                            약관동의 <span style={{ color: errColor }}>*</span>
-                        </CommonLabel>
-                        <PolicyInfo>
-                            <PolicyHeading>1. 이용약관</PolicyHeading>
-                            <Policytext>
+                                <span className='checked-show-hide'></span>
+                            </div>
+                            약관동의 <span style={{ color: "#FF4040" }}>*</span>
+                        </label>
+                        <div className='policy-info'>
+                            <p className='policy-heading'>1. 이용약관</p>
+                            <p className='policy-text'>
                                 약관내용 약관내용 약관내용 약관내용 약관내용 약관내용 약관내용
-                            </Policytext>
-                        </PolicyInfo>
-                    </CheckedContainer>
+                            </p>
+                        </div>
+                    </div>
 
-                    <CheckedContainer>
-                        <CommonLabel>
-                            <CheckedCustom>
-                                <CheckedInput 
+                    <div className='checked-container'>
+                        <label className='label'>
+                            <div className='checked-custom'>
+                                <input 
+                                    className='checked-input'
                                     type='checkbox'
                                     checked={checkedState.isPrivacyChecked}
                                     onChange={() => checkedFunction.privacyCheck()}
                                 />
-                                <CheckedShowHide />
-                            </CheckedCustom>
-                            개인정보처리방침 <span style={{ color: errColor }}>*</span>
-                        </CommonLabel>
-                        <PolicyInfo>
-                            <PolicyHeading>1. 개인정보처리방침</PolicyHeading>
-                            <Policytext>
+                                <span className='checked-show-hide'></span>
+                            </div>
+                            개인정보처리방침 <span style={{ color: "#FF4040" }}>*</span>
+                        </label>
+                        <div className='policy-info'>
+                            <p className='policy-heading'>1. 개인정보처리방침</p>
+                            <p className='policy-text'>
                                 약관내용 약관내용 약관내용 약관내용 약관내용 약관내용 약관내용
-                            </Policytext>
-                        </PolicyInfo>
-                    </CheckedContainer>
-                </PolicyForm>
-            </Inner>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-            <NextButtonContainer>
+            <div className='next-button-container'>
                 <Button 
                     buttonText='다음으로'
                     onClick={nextMoveClick}
                 />
-            </NextButtonContainer>
+            </div>
 
             {
                 modalShow && 

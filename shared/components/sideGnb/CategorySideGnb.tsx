@@ -1,5 +1,5 @@
 import React from 'react';
-import { SideGnbContainer, SideGnb, SideGnbLink, SideGnbCloseBtn } from '@/shared/styled/GlobalStyled';
+import '@/shared/styled/sideGnb/sideGnb.css';
 import Link from 'next/link';
 
 interface CategorySideGnbOnProps {
@@ -9,9 +9,12 @@ interface CategorySideGnbOnProps {
 
 const CategorySideGnb = ({categorySideOn, setCategorySideOn}:CategorySideGnbOnProps) => {
     return (
-        <SideGnbContainer style={{ right: categorySideOn ? "0" : "-300px" }}>
-            <SideGnb>
-                <SideGnbCloseBtn
+        <div 
+            className='side-gnb-container'
+            style={{ right: categorySideOn ? "0" : "-300px" }}
+        >
+            <div className='side-gnb'>
+                <button className='side-gnb-close-btn'
                     onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
                         e.preventDefault();
                         setCategorySideOn(false);
@@ -19,22 +22,34 @@ const CategorySideGnb = ({categorySideOn, setCategorySideOn}:CategorySideGnbOnPr
                 >
                     <span></span>
                     <span></span>
-                </SideGnbCloseBtn>
+                </button>
 
-                <SideGnbLink href={'/main'}>
+                <Link 
+                    className='side-gnb-link' href={'/main'}
+                    onClick={() => {setCategorySideOn(false);}}
+                >
                     HOME
-                </SideGnbLink>
-                <SideGnbLink href={'/mypage'}>
+                </Link>
+                <Link 
+                    className='side-gnb-link' href={'/mypage'} 
+                    onClick={() => {setCategorySideOn(false);}}
+                >
                     MY PAGE
-                </SideGnbLink>
-                <SideGnbLink href={'/'}>
+                </Link>
+                <Link 
+                    className='side-gnb-link' href={'/'}
+                    onClick={() => {setCategorySideOn(false);}}
+                >
                     ORDER HISTORY
-                </SideGnbLink>
-                <SideGnbLink href={'/'}>
+                </Link>
+                <Link 
+                    className='side-gnb-link' href={'/'}
+                    onClick={() => {setCategorySideOn(false);}}
+                >
                     EVENT
-                </SideGnbLink>
-            </SideGnb>
-        </SideGnbContainer>
+                </Link>
+            </div>
+        </div>
     );
 };
 

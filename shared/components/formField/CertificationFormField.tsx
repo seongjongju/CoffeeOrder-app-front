@@ -1,26 +1,30 @@
 import React from 'react';
-import { CommonLabel, errColor, FormFieldContainer, FormFieldInput, CertificationButton, FormFieldFlex } from '../../styled/GlobalStyled';
+import '@/shared/styled/formField/formField.css';
 import { FormFieldProps } from './FormField';
 
 const CertificationFormField = ({ label, placeholder, type, buttonText, onChange, value, onClick}:FormFieldProps) => {
     return (
-        <FormFieldContainer>
-            <CommonLabel>{label}<span style={{ color: errColor }}>*</span></CommonLabel>
-            <FormFieldFlex>
-                <FormFieldInput 
+        <div className='form-field-container'>
+            <label className='label'>
+                {label}<span style={{ color: "#FF4040" }}>*</span>
+            </label>
+            <div className='form-field-flex'>
+                <input
+                    className='form-field-input' 
                     type={type}
                     placeholder={placeholder}
                     onChange={onChange}
                     value={value}
                 />
-                <CertificationButton 
+                <button
+                    className='certification-button' 
                     onClick={onClick}
                 >
                     {buttonText}
-                </CertificationButton>
-            </FormFieldFlex>
-            <p style={{ color: errColor, fontSize: '12px', height: '17px' }}><br /></p>
-        </FormFieldContainer>
+                </button>
+            </div>
+            <p style={{ color: "#FF4040", fontSize: '12px', height: '17px' }}><br /></p>
+        </div>
     );
 };
 

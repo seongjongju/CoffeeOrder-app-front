@@ -1,0 +1,29 @@
+.mypage-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 11px;
+}
+
+.mypage-user img {
+    width: 30px;
+}
+
+.mypage-name {
+    font-size: 20px;
+    color: #2B1B16;
+    font-weight: 600;
+}
+
+.mypage-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 16px;
+    color: #444;
+    padding: 4px 0;
+}

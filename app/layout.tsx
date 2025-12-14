@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import GlobalStyle from "@/shared/styled/GlobalStyled";
+import '@/shared/styled/common/common.css';
 import ClientLayout from "./ClientLayout";
 import viewport from "./viewport";
 
@@ -32,7 +32,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <GlobalStyle />
         <ClientLayout>
           {children}
         </ClientLayout>

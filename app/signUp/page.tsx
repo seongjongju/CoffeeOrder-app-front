@@ -1,4 +1,5 @@
 'use client';
+import '@/shared/styled/authStyle/authStyle.css';
 import useSignUpInputState from '@/features/signUp/hook/useSignUpInputState';
 import useSignUpValidation from '@/features/signUp/hook/useSignUpValidation';
 import AppBar from '@/shared/components/appbar/AppBar';
@@ -7,7 +8,6 @@ import CertificationFormField from '@/shared/components/formField/CertificationF
 import FormField from '@/shared/components/formField/FormField';
 import Modal from '@/shared/components/modal/Modal';
 import useModalShow from '@/shared/components/modal/hook/useModalShow';
-import { Inner, NextButtonContainer, Section } from '@/shared/styled/GlobalStyled';
 import { validations } from '@/shared/vaildation/Validation';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -176,8 +176,8 @@ const SignUpPage = () => {
     return (
         <>
             <AppBar />
-            <Section>
-                <Inner>
+            <section className='section'>
+                <div className='inner'>
                     <form onSubmit={signUpSubmit}>
                         <CertificationFormField 
                             label='아이디'
@@ -251,13 +251,13 @@ const SignUpPage = () => {
                             onBlur={(e) => onBlur('birth', e.currentTarget.value)}
                             errMessage={signUpErrorMsg.birthErrorMessage}
                         />
-                        <NextButtonContainer>
+                        <div className='next-button-container'>
                             <Button 
                                 buttonText='가입하기'
                             />
-                        </NextButtonContainer>
+                        </div>
                     </form>
-                </Inner>
+                </div>
 
                 {
                     modalShow && 
@@ -268,7 +268,7 @@ const SignUpPage = () => {
                         setModalText={setModalText}
                     />
                 }
-            </Section>
+            </section>
         </>
     );
 };

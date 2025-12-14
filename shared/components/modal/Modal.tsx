@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import {ModalContainer, ModalItem, ModalInfo, TextBody} from '../../styled/GlobalStyled';
+import '@/shared/styled/modal/modal.css';
 import Button from '../button/Button';
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -19,25 +19,27 @@ const Modal = ({ modalShow, setModalShow, modalText, setModalText } : ModalProps
         if(modalShow) {
             setModalShow(false);
             setModalText('');
-
-            if(pathName === '/userFind/passwordFind') {
+            
+            if(modalText === '아이디, 휴대폰 번호, 새 비밀번호를 입력해주세요.') {
+                return;
+            } else if (modalText === '비밀번호가 변경되었습니다.') {
                 router.push('/login');
             }
         };
     }; 
 
     return (
-        <ModalContainer>
-            <ModalItem>
-                <ModalInfo>
-                    <TextBody>{modalText}</TextBody>
-                </ModalInfo>
+        <div className='modal-container'>
+            <div className='modal-item'>
+                <div className='modal-info'>
+                    <p className='text-body'>{modalText}</p>
+                </div>
                 <Button 
                     buttonText='확인'
                     onClick={modalInit}
                 />
-            </ModalItem>
-        </ModalContainer>
+            </div>
+        </div>
     );
 };
 

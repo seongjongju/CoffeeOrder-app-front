@@ -1,5 +1,5 @@
 import React from 'react';
-import {CommonLabel, errColor, FormFieldContainer, FormFieldInput} from '../../styled/GlobalStyled';
+import '@/shared/styled/formField/formField.css';
 import { usePathname } from 'next/navigation';
 
 export interface FormFieldProps {
@@ -17,22 +17,23 @@ export interface FormFieldProps {
 const FormField = ({ label, placeholder, type, onChange, value, errMessage, onBlur}:FormFieldProps) => {
     const pathName = usePathname();
     return (
-        <FormFieldContainer>
-            <CommonLabel>
+        <div className='form-field-container'>
+            <label className='label'>
                 {label}
-                {pathName !== '/login' ? <span style={{ color: errColor }}>*</span> : null}
-            </CommonLabel>
-            <FormFieldInput 
+                {pathName !== '/login' ? <span style={{ color: "#FF4040" }}>*</span> : null}
+            </label>
+            <input 
+                className='form-field-input'
                 type={type}
                 placeholder={placeholder}
                 onChange={onChange}
                 onBlur={onBlur}
                 value={value}
             />
-            <p style={{ color: errColor, fontSize: '12px', height: '17px' }}>
+            <p style={{ color: "#FF4040", fontSize: '12px', height: '17px' }}>
                 {errMessage}
             </p>
-        </FormFieldContainer>
+        </div>
     );
 };
 

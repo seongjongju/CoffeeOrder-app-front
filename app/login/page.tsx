@@ -1,6 +1,5 @@
 'use client';
-import { Inner } from '@/shared/styled/GlobalStyled';
-import { AuthContainer, AuthTop, AuthText, AuthLinks } from '@/features/styled/authStyled';
+import '@/shared/styled/authStyle/authStyle.css';
 import React, { useState } from 'react';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
@@ -99,15 +98,15 @@ const LoginPage = () => {
     return (
         <>
             <AppBar />
-            <Inner>
-                <AuthContainer>
-                    <AuthTop>
+            <div className='inner'>
+                <div className='auth-container'>
+                    <div className='auth-top'>
                         <Image src={mascot} alt='마스코트' />
-                        <AuthText>
+                        <p className='auth-text'>
                             서비스 이용을 위해 <br />
                             로그인 해주세요!!
-                        </AuthText>
-                    </AuthTop>
+                        </p>
+                    </div>
                     <form onSubmit={loginSubmit}>
                         <FormField 
                             label='아이디'
@@ -130,14 +129,14 @@ const LoginPage = () => {
                         <Button 
                             buttonText='로그인'
                         />
-                        <AuthLinks>
+                        <div className='auth-links'>
                             <Link href={'/userFind/idFind'} >아이디 찾기</Link>
                             <Link href={'/userFind/passwordFind'} >비밀번호 찾기</Link>
                             <Link href={'/policy'} >회원가입</Link>
-                        </AuthLinks>
+                        </div>
                     </form>
-                </AuthContainer>
-            </Inner> 
+                </div>
+            </div> 
 
             {
                 modalShow && 

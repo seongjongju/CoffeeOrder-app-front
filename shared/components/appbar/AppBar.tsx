@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
-import {AppBarContainer, BackButton, AppBarTitle} from '../../styled/GlobalStyled';
+import '@/shared/styled/appBar/appBar.css';
 import BackIco from '@/public/icons/back_ico.png';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import useAppBarTitles from './hook/useAppBarTitles';
 
 const AppBar = () => {
@@ -11,14 +11,15 @@ const AppBar = () => {
     const router = useRouter();
 
     return (
-        <AppBarContainer>
-            <BackButton
+        <div className='app-bar-container'>
+            <button 
+                className='back-button'
                 onClick={() => router.back()}
             >
                 <Image src={BackIco} alt='뒤로가기' />
-            </BackButton>
-            <AppBarTitle>{appBarTitles()}</AppBarTitle>
-        </AppBarContainer>
+            </button>
+            <h2 className='app-bar-title'>{appBarTitles()}</h2>
+        </div>
     );
 };
 

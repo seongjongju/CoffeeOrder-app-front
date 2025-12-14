@@ -1,6 +1,5 @@
 'use client';
-import { AuthContainer, AuthText, AuthTop } from '@/features/styled/authStyled';
-import { Inner } from '@/shared/styled/GlobalStyled';
+import '@/shared/styled/authStyle/authStyle.css';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import Button from '@/shared/components/button/Button';
@@ -59,15 +58,15 @@ const IdFindPage = () => {
     return (
         <>
             <AppBar />
-            <Inner>
-                <AuthContainer>
-                    <AuthTop>
+            <div className='inner'>
+                <div className='auth-container'>
+                    <div className='auth-top'>
                         <Image src={mascot} alt='마스코트' />
-                        <AuthText>
+                        <p className='auth-text'>
                             아이디 찾기를 위해 <br />
                             이메일을 입력해 주세요!!
-                        </AuthText>
-                    </AuthTop>
+                        </p>
+                    </div>
                     <form onSubmit={findIdSubmit}>
                         <FindInput
                             placeholder='이메일을 입력해주세요.'
@@ -80,7 +79,7 @@ const IdFindPage = () => {
                             buttonText='아이디 찾기'
                         />
                     </form>
-                </AuthContainer>
+                </div>
 
                 {
                     modalShow && 
@@ -91,7 +90,7 @@ const IdFindPage = () => {
                         setModalText={setModalText}
                     />
                 }
-            </Inner> 
+            </div> 
         </>
     );
 };

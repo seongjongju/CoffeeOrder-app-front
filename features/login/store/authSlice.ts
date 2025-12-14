@@ -12,11 +12,13 @@ interface User {
 interface AuthState {
     user: User | null;
     isLoggedIn: boolean;
+    isLoggedChecked: boolean;
 };
 
 const initialState: AuthState = {
     user: null,
     isLoggedIn: false,
+    isLoggedChecked: false,
 };
 
 const authSlice = createSlice({
@@ -26,10 +28,12 @@ const authSlice = createSlice({
         loginSuccess: (state, action: PayloadAction<User>) => {
             state.user = action.payload;
             state.isLoggedIn = true;
+            state.isLoggedChecked = true;
         },
         logout:(state) => {
             state.user = null;
-            state.isLoggedIn = false
+            state.isLoggedIn = false;
+            state.isLoggedChecked = true;
         },
     },
 });

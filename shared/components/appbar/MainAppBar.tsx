@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { AppBarTitle, BackButton, HeaderNav, HeaderUtil, SideGnbDim } from '@/shared/styled/GlobalStyled';
 import logo from '@/public/images/logo.svg';
 import cart from '@/public/images/cart.svg';
 import alert from '@/public/images/alert.svg';
@@ -10,6 +9,7 @@ import menu from '@/public/images/menu.svg';
 import CategorySideGnb from '../sideGnb/CategorySideGnb';
 import BackIco from '@/public/icons/back_ico.png';
 import { usePathname, useRouter } from 'next/navigation';
+import '@/shared/styled/appBar/appBar.css';
 import useAppBarTitles from './hook/useAppBarTitles';
 
 const MainAppBar = () => {
@@ -26,14 +26,15 @@ const MainAppBar = () => {
             zIndex: 99,
             backgroundColor: '#fff',
         }}>
-            <HeaderNav>
+            <nav className='header-nav'>
                 {
                     pathName !== '/main' ? 
-                    <BackButton
+                    <button
+                        className='back-button'
                         onClick={() => router.back()}
                     >
                         <Image src={BackIco} alt='뒤로가기' />
-                    </BackButton> : 
+                    </button> : 
                     <Link href={'/main'} >
                         <Image  src={logo} alt='로고' />
                     </Link>
@@ -41,11 +42,11 @@ const MainAppBar = () => {
 
                 {
                     pathName !== '/main' ? 
-                    <AppBarTitle>{appBarTitles()}</AppBarTitle> : 
+                    <h2 className='app-bar-title'>{appBarTitles()}</h2> : 
                     null
                 }
 
-                <HeaderUtil>
+                <div className='header-util'>
                     <Link href={''}>
                         <Image src={cart} alt='장바구니' />
                     </Link>
@@ -60,11 +61,11 @@ const MainAppBar = () => {
                     >
                         <Image src={menu} alt='메뉴'/>
                     </button>
-                </HeaderUtil>
-            </HeaderNav>
+                </div>
+            </nav>
                         
             {
-                categorySideOn ? <SideGnbDim /> : null
+                categorySideOn ? <div className='dim'></div> : null
             }
             <CategorySideGnb 
                 categorySideOn={categorySideOn}
