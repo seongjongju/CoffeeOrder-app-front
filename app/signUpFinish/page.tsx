@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import React from 'react';
-import '@/shared/styled/authStyle/.authStyle.css';
+import '@/shared/styled/authStyle/authStyle.css';
 import circleCheck from '@/public/icons/circle_check.svg';
 import Button from '@/shared/components/button/Button';
 import { useRouter } from 'next/navigation';
