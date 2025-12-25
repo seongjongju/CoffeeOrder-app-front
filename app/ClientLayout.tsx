@@ -8,6 +8,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import AuthProvider from './globalProvider/AuthProvider';
 import MainAppBar from '@/shared/components/appbar/MainAppBar';
+import AppBar from '@/shared/components/appbar/AppBar';
 
 const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     const pathName = usePathname();
@@ -21,15 +22,20 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
             });
         }
     }, []);
-
+    
     return (
         <>
             <Provider store={store}>
                 <AuthProvider />
-                {
-                    pathName === '/main' || 
-                    pathName === '/mypage' 
-                    ? <MainAppBar /> : null
+                { 
+                    pathName === '/login' ||
+                    pathName === '/policy' ||
+                    pathName === '/signUp' ||
+                    pathName === '/userFind/idFind' ||
+                    pathName === '/userFind/idFindResult'
+                    ? <AppBar /> 
+                    : pathName === '/signUpFinish' || pathName === '/' 
+                    ? null : <MainAppBar />  
                 }
                 {children}
             </Provider>

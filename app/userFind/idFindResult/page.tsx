@@ -9,7 +9,6 @@ import AppBar from '@/shared/components/appbar/AppBar';
 const IdFindResultPage = () => {
     return (
         <>
-            <AppBar />
             <div className='inner'>
                 <div>
                     <div className='auth-top'>

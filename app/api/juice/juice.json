@@ -1,6 +1,6 @@
 [
     {
-        "id": 1,
+        "id": 0,
         "type": "juice",
         "img": "/images/tomato_juice.png",
         "menuname": "토마토주스",
@@ -20,7 +20,7 @@
         "origin": "토마토 (국내산)"
     },
     {
-        "id": 2,
+        "id": 1,
         "type": "juice",
         "img": "/images/orenge_juice.png",
         "menuname": "오렌지주스",
@@ -40,7 +40,7 @@
         "origin": "오렌지 (미국/칠레)"
     },
     {
-        "id": 3,
+        "id": 2,
         "type": "juice",
         "img": "/images/apple_juice.png",
         "menuname": "사과주스",

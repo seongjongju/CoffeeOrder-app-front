@@ -17,6 +17,8 @@ const MainPage = () => {
         dessert: false
     });
 
+    console.log(iceCoffeeState)
+
     return (
         <main className='main'>
             <div className='inner'>
@@ -41,31 +43,31 @@ const MainPage = () => {
                 }}
             >
                 <SwiperSlide>
-                    <Link className='menu-swiper-link' href={''}>
+                    <Link className='menu-swiper-link' href={`/view/${iceCoffeeState[0]?.type}/${iceCoffeeState[0]?.id}`}>
                         <img src={iceCoffeeState[0]?.img} alt={iceCoffeeState[0]?.menuname} />
                         <p>{iceCoffeeState[0]?.menuname}</p>
                     </Link>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <Link className='menu-swiper-link' href={''}>
+                    <Link className='menu-swiper-link' href={`/view/${hotCoffeeState[1]?.type}/${hotCoffeeState[1]?.id}`}>
                         <img src={hotCoffeeState[1]?.img} alt={hotCoffeeState[1]?.menuname} />
                         <p>{hotCoffeeState[1]?.menuname}</p>
                     </Link>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <Link className='menu-swiper-link' href={''}>
+                    <Link className='menu-swiper-link' href={`/view/${juiceState[0]?.type}/${juiceState[0]?.id}`}>
                         <img src={juiceState[0]?.img} alt={juiceState[0]?.menuname} />
                         <p>{juiceState[0]?.menuname}</p>
                     </Link>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <Link className='menu-swiper-link' href={''}>
+                    <Link className='menu-swiper-link' href={`/view/${dessertState[0]?.type}/${dessertState[0]?.id}`}>
                         <img src={dessertState[0]?.img} alt={dessertState[0]?.menuname} />
                         <p>{dessertState[0]?.menuname}</p>
                     </Link>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <Link className='menu-swiper-link' href={''}>
+                    <Link className='menu-swiper-link' href={`/view/${iceCoffeeState[1]?.type}/${iceCoffeeState[1]?.id}`}>
                         <img src={iceCoffeeState[1]?.img} alt={iceCoffeeState[1]?.menuname} />
                         <p>{iceCoffeeState[1]?.menuname}</p>
                     </Link>

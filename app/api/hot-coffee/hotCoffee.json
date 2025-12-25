@@ -1,7 +1,7 @@
 [
     {
-        "id": 1,
-        "type": "coffee",
+        "id": 0,
+        "type": "hotCoffee",
         "img": "/images/americano_hot.png",
         "menuname": "아메리카노(HOT)",
         "price": 3000,
@@ -21,8 +21,8 @@
         "origin": "커피원두 (에티오피아 등 중남미 혼합)"
     },
     {
-        "id": 2,
-        "type": "coffee",
+        "id": 1,
+        "type": "hotCoffee",
         "img": "/images/cafelatte_hot.png",
         "menuname": "카페라떼(HOT)",
         "price": 4500,

@@ -26,7 +26,6 @@ const PolicyPage = () => {
 
     return (
         <>
-            <AppBar />
             <div className='inner'>
                 <h2 className='title'>약관에 동의해주세요.</h2>
                 <form>

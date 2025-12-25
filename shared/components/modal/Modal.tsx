@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import '@/shared/styled/Modal/Modal.css';
+import '@/shared/styled/modal/modal.css';
 import Button from '../button/Button';
 import { usePathname, useRouter } from 'next/navigation';
 

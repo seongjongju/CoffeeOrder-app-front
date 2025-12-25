@@ -1,7 +1,7 @@
 [
     {
-        "id": 1,
-        "type": "coffee",
+        "id": 0,
+        "type": "iceCoffee",
         "img": "/images/americano_ice.png",
         "menuname": "아메리카노(ICE)",
         "price": 3000,
@@ -21,8 +21,8 @@
         "origin": "커피원두 (에티오피아 등 중남미 혼합)"
     },
     {
-        "id": 2,
-        "type": "coffee",
+        "id": 1,
+        "type": "iceCoffee",
         "img": "/images/coldbrew.png",
         "menuname": "콜드브루",
         "price": 3500,
@@ -42,8 +42,8 @@
         "origin": "커피원두 (에티오피아/콜롬비아 혼합)"
     },
     {
-        "id": 3,
-        "type": "coffee",
+        "id": 2,
+        "type": "iceCoffee",
         "img": "/images/cafelatte_ice.png",
         "menuname": "카페라떼(ICE)",
         "price": 4500,

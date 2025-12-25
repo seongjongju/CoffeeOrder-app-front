@@ -3,6 +3,7 @@ import Link from 'next/link';
 import '@/shared/styled/main/main.css';
 import React, { useEffect, useState } from 'react';
 import useMenu from '@/app/api/hook/useMenu';
+import { useRouter } from 'next/navigation';
 interface tabStateType {
     coffee: boolean;
     juice: boolean;
@@ -13,45 +14,54 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
     const {iceCoffeeState, hotCoffeeState, juiceState, dessertState} = useMenu();
     const [menuSearch, setMenuSearch] = useState<string>(""); //메뉴 검색
     const [debounceSearch, setDebounceSearch] = useState(""); //디바운스
+    const router = useRouter();
 
     //아이스 커피
-    const filterdIceCoffee = iceCoffeeState
+    const filteredIceCoffee = iceCoffeeState
     .filter((menu) => menu.menuname.toLowerCase().includes(debounceSearch.toLowerCase()))
     .map((iceCoffee) => (
-        <div className='menu-item' key={iceCoffee?.id} >
-            <img src={iceCoffee?.img} alt={iceCoffee?.menuname} />
-            <p>{iceCoffee?.menuname}</p>
+        <div className='menu-item' key={iceCoffee?.id} 
+            onClick={() => {router.push(`/view/${iceCoffee.type}/${iceCoffee.id}`)}}
+        >
+            <img src={iceCoffee.img} alt={iceCoffee.menuname} />
+            <p>{iceCoffee.menuname}</p>
         </div>
     ));
 
     //뜨거운 커피
-    const filterdHotCoffee = hotCoffeeState
+    const filteredHotCoffee = hotCoffeeState
     .filter((menu) => menu.menuname.toLowerCase().includes(debounceSearch.toLowerCase()))
     .map((hotCoffee) => (
-        <div className='menu-item' key={hotCoffee?.id} >
-            <img src={hotCoffee?.img} alt={hotCoffee?.menuname} />
-            <p>{hotCoffee?.menuname}</p>
+        <div className='menu-item' key={hotCoffee?.id} 
+            onClick={() => {router.push(`/view/${hotCoffee.type}/${hotCoffee.id}`)}}
+        >
+            <img src={hotCoffee.img} alt={hotCoffee.menuname} />
+            <p>{hotCoffee.menuname}</p>
         </div>
     ));
 
 
     //주스 필터
-    const filterdJuice = juiceState
+    const filteredJuice = juiceState
     .filter((menu) => menu.menuname.toLowerCase().includes(debounceSearch.toLowerCase()))
     .map((juice) => (
-        <div className='menu-item' key={juice?.id} >
-            <img src={juice?.img} alt={juice?.menuname} />
-            <p>{juice?.menuname}</p>
+        <div className='menu-item' key={juice?.id} 
+            onClick={() => {router.push(`/view/${juice.type}/${juice.id}`)}}
+        >
+            <img src={juice.img} alt={juice.menuname} />
+            <p>{juice.menuname}</p>
         </div>
     ));
 
     //디저트 필터
-    const filterdDessert = dessertState
+    const filteredDessert = dessertState
     .filter((menu) => menu.menuname.toLowerCase().includes(debounceSearch.toLowerCase()))
     .map((dessert) => (
-        <div className='menu-item' key={dessert?.id} >
-            <img src={dessert?.img} alt={dessert?.menuname} />
-            <p>{dessert?.menuname}</p>
+        <div className='menu-item' key={dessert?.id} 
+            onClick={() => {router.push(`/view/${dessert.type}/${dessert.id}`)}}
+        >
+            <img src={dessert.img} alt={dessert.menuname} />
+            <p>{dessert.menuname}</p>
         </div>
     ));
 
@@ -76,7 +86,7 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
             
             {
                 coffee &&
-                filterdIceCoffee.length !== 0 || filterdHotCoffee.length !== 0 ?
+                filteredIceCoffee.length !== 0 || filteredHotCoffee.length !== 0 ?
                 (
                     <div
                         className='menu-wrap'
@@ -84,8 +94,8 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
                             {display: coffee ? "grid" : "none"}
                         }
                     >   
-                        {filterdIceCoffee}
-                        {filterdHotCoffee}
+                        {filteredIceCoffee}
+                        {filteredHotCoffee}
                     </div>
                 ) : (
                     <div
@@ -101,7 +111,7 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
                 
             {
                 juice && 
-                filterdJuice.length !== 0 ?
+                filteredJuice.length !== 0 ?
                 (
                     <div
                         className='menu-wrap'
@@ -109,7 +119,7 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
                             {display: juice ? "grid" : "none"}
                         }
                     >
-                        {filterdJuice}
+                        {filteredJuice}
                     </div>
                 ) : (
                     <div
@@ -125,7 +135,7 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
 
             {
                 dessert && 
-                filterdDessert.length !== 0 ? 
+                filteredDessert.length !== 0 ? 
                 (
                     <div
                         className='menu-wrap'
@@ -133,7 +143,7 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
                             {display: dessert ? "grid" : "none" }
                         }
                     >
-                        {filterdDessert}
+                        {filteredDessert}
                     </div>
                 ) : (
                     <div

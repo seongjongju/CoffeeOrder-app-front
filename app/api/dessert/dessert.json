@@ -1,6 +1,6 @@
 [
     {
-        "id": 1,
+        "id": 0,
         "type": "dessert",
         "img": "/images/cheesecake.png",
         "menuname": "치즈케이크",
@@ -19,7 +19,7 @@
         ]
     },
     {
-        "id": 2,
+        "id": 1,
         "type": "dessert",
         "img": "/images/chocolate_brownie.png",
         "menuname": "초코 브라우니",
@@ -38,7 +38,7 @@
         ]
     },
     {
-        "id": 3,
+        "id": 2,
         "type": "dessert",
         "img": "/images/croissant.png",
         "menuname": "크루아상",

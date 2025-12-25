@@ -97,7 +97,6 @@ const LoginPage = () => {
 
     return (
         <>
-            <AppBar />
             <div className='inner'>
                 <div className='auth-container'>
                     <div className='auth-top'>

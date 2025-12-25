@@ -10,8 +10,11 @@ const useAppBarTitles = () => {
         if(pathName === '/signUp') return '회원가입';
         if(pathName === '/login') return '로그인';
         if(pathName === '/userFind/idFind' || pathName === '/userFind/idFindResult') return '아이디 찾기';
-        if(pathName === '/userFind/passwordFind') return '비밀번호 찾기/변경';
+        if(pathName === '/userFind/passwordFind') return '비밀번호 변경';
         if(pathName === '/mypage') return '마이페이지';
+        if(pathName.includes("view/iceCoffee") || pathName.includes("view/hotCoffee")) return '커피';
+        if(pathName.includes("view/juice")) return '주스';
+        if(pathName.includes("view/dessert")) return '디저트';
         return '';
     };
 

@@ -175,7 +175,6 @@ const SignUpPage = () => {
 
     return (
         <>
-            <AppBar />
             <section className='section'>
                 <div className='inner'>
                     <form onSubmit={signUpSubmit}>
