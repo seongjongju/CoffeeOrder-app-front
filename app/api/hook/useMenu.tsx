@@ -18,7 +18,7 @@ type menuType = {
         sodium: number;
         sugar: number;
         saturatedfat: number;
-    }[];
+    };
     origin: string;
 };
 

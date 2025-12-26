@@ -13,7 +13,7 @@ const SignUpFinishPage = () => {
     };
 
     return (
-        <>
+        <main className='main'>
             <div
                 style={{ 
                     position: 'absolute',
@@ -45,7 +45,7 @@ const SignUpFinishPage = () => {
                     onClick={moveLoginPage}
                 />
             </div>
-        </>
+        </main>
     );
 };
 

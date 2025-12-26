@@ -174,7 +174,7 @@ const SignUpPage = () => {
     };
 
     return (
-        <>
+        <main className='main'>
             <section className='section'>
                 <div className='inner'>
                     <form onSubmit={signUpSubmit}>
@@ -268,7 +268,7 @@ const SignUpPage = () => {
                     />
                 }
             </section>
-        </>
+        </main>
     );
 };
 

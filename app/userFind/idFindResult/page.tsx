@@ -4,11 +4,10 @@ import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import { Suspense } from 'react';
 import FindIdResult from '@/features/userFind/components/FindIdResult';
-import AppBar from '@/shared/components/appbar/AppBar';
 
 const IdFindResultPage = () => {
     return (
-        <>
+        <main className='main'>
             <div className='inner'>
                 <div>
                     <div className='auth-top'>
@@ -23,7 +22,7 @@ const IdFindResultPage = () => {
                     </Suspense>
                 </div>
             </div> 
-        </>
+        </main>
     );
 };
 

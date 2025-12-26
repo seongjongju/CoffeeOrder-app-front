@@ -10,7 +10,6 @@ import useModalShow from '@/shared/components/modal/hook/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import AppBar from '@/shared/components/appbar/AppBar';
 
 const IdFindPage = () => {
     const [findIdInput, setFindIdInput] = useState('');
@@ -56,7 +55,7 @@ const IdFindPage = () => {
     };
 
     return (
-        <>
+        <main className='main'>
             <div className='inner'>
                 <div className='auth-container'>
                     <div className='auth-top'>
@@ -90,7 +89,7 @@ const IdFindPage = () => {
                     />
                 }
             </div> 
-        </>
+        </main>
     );
 };
 

@@ -17,8 +17,6 @@ const MainPage = () => {
         dessert: false
     });
 
-    console.log(iceCoffeeState)
-
     return (
         <main className='main'>
             <div className='inner'>

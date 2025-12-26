@@ -3,9 +3,11 @@ import useMenu from '@/app/api/hook/useMenu';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import '@/shared/styled/view/view.css';
+import '@/shared/styled/policyStyle/policyStyle.css';
 import plusIco from '@/public/icons/view_plus.svg';
 import minusIco from '@/public/icons/view_minus.svg';
 import React from 'react';
+import OrderBar from '@/features/view/component/OrderBar';
 
 const ViewPage = () => {
     const params = useParams();
@@ -21,7 +23,7 @@ const ViewPage = () => {
     const menuIdFind = menuTypeFiltered.find(menu => menu.id === Number(params.id));
 
     return (
-        <main className='main'>
+        <main className='main' style={{ paddingBottom: "0" }}>
             <div className='inner'>
                 <div className='view-thum'>
                     <img src={menuIdFind?.img} alt={menuIdFind?.menuname} className='view-thum_-image' />
@@ -29,6 +31,25 @@ const ViewPage = () => {
                 </div> {/* view-thum */}
 
                 <p className='view-title'>옵션</p>
+                {
+                    menuIdFind?.type === "iceCoffee" || menuIdFind?.type === "hotCoffee" ? 
+                    (
+                        <div className='view-option__density'>
+                            <p className='text-body'>
+                                연하게
+                            </p>   
+                            <label className='label'>
+                                <div className='all-checked-custom'>
+                                    <input
+                                        className='checked-input' 
+                                        type='checkbox'
+                                    />
+                                    <span className='checked-show-hide'></span>
+                                </div>
+                            </label>
+                        </div> 
+                    ) : null
+                }
                 <div className='view-option'>
                     <p className='text-body'>
                         샷추가 <span>+500</span>
@@ -71,7 +92,7 @@ const ViewPage = () => {
 
                 <div className='view-option'>
                     <p className='text-body'>
-                        휘핑크림 추가 <span>+1000</span>
+                        휘핑크림 추가 <span>+500</span>
                     </p>
                     <div className='view-option__quantity-wrap'>
                         <button className='view-option__button'>
@@ -88,7 +109,43 @@ const ViewPage = () => {
                         </button>
                     </div> {/* view-option__quantity-wrap */}
                 </div> {/* view-option */}
+
+                <div className='view-detail'>
+                    <p className='view-title'>상세정보</p>
+                    <p className='view-detail__heading'>영양 - 1회 제공량 기준</p>
+                    <table className='view-detail__table'>
+                        <tbody>
+                            <tr>
+                                <th>용량 (ml)</th>
+                                <td>{menuIdFind?.info.volume}</td>
+                                <th>카페인 (mg)</th>
+                                <td>{menuIdFind?.info.caffeine}</td>
+                            </tr>
+                            <tr>
+                                <th>칼로리</th>
+                                <td>{menuIdFind?.info.calorie}</td>
+                                <th>나트륨 (mg)</th>
+                                <td>{menuIdFind?.info.sodium}</td>
+                            </tr>
+                            <tr>
+                                <th>탄수화물 (g)</th>
+                                <td>{menuIdFind?.info.carbohydrate}</td>
+                                <th>당류 (g)</th>
+                                <td>{menuIdFind?.info.sugar}</td>
+                            </tr>
+                            <tr>
+                                <th>단백질 (g)</th>
+                                <td>{menuIdFind?.info.protein}</td>
+                                <th>포화지방 (g)</th>
+                                <td>{menuIdFind?.info.saturatedfat}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p className='view-detail__heading'>원산지</p>
+                    <p className='view-detail__text'>{menuIdFind?.origin}</p>
+                </div> {/* view-detail */}
             </div>
+            <OrderBar />
         </main>
     );
 };

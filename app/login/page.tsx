@@ -96,7 +96,7 @@ const LoginPage = () => {
     };
 
     return (
-        <>
+        <main className='main'>
             <div className='inner'>
                 <div className='auth-container'>
                     <div className='auth-top'>
@@ -146,7 +146,7 @@ const LoginPage = () => {
                     setModalText={setModalText}
                 />
             }  
-        </>
+        </main>
     );
 };
 

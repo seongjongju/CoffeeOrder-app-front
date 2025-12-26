@@ -25,7 +25,7 @@ const PolicyPage = () => {
     };
 
     return (
-        <>
+        <main className='main'>
             <div className='inner'>
                 <h2 className='title'>약관에 동의해주세요.</h2>
                 <form>
@@ -104,7 +104,7 @@ const PolicyPage = () => {
                     setModalText={setModalText}
                 />
             }
-        </>
+        </main>
     );
 };
 
