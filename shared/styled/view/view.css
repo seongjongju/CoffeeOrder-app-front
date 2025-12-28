@@ -146,6 +146,7 @@
     display: flex; 
     flex-wrap: wrap;
     gap: 6px;
+    margin-bottom: 10px;
 }
 
 .order-bar__option {
@@ -169,4 +170,40 @@
 
 .order-bar__option:first-child::before {
     display: none;
+}
+
+.order-bar__form .view-option {
+    margin: 0 0 15px;
+}
+
+.order-bar__price {
+    font-size: 16px;
+    color: #2B1B16;
+    font-weight: 600;
+}
+
+.order-bar__btns {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.order-bar__btns button {
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.order-bar__button--cart {
+    background: #ddd;
+    color: #222;
+    width: 80px;
+}
+
+.order-bar__button--order {
+    background: #2B1B16;
+    color: #fff;
+    width: calc(100% - 87px);
 }

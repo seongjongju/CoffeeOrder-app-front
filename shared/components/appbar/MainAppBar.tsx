@@ -47,7 +47,7 @@ const MainAppBar = () => {
                 }
 
                 <div className='header-util'>
-                    <Link href={''}>
+                    <Link href={'/cart'}>
                         <Image src={cart} alt='장바구니' />
                     </Link>
                     <button>
