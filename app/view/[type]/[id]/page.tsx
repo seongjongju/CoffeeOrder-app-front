@@ -6,12 +6,17 @@ import '@/shared/styled/view/view.css';
 import '@/shared/styled/policyStyle/policyStyle.css';
 import plusIco from '@/public/icons/view_plus.svg';
 import minusIco from '@/public/icons/view_minus.svg';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import OrderBar from '@/features/view/component/OrderBar';
 
 const ViewPage = () => {
     const params = useParams();
     const {iceCoffeeState, hotCoffeeState, juiceState, dessertState} = useMenu();
+    const [lightly, setLightly] = useState<boolean>(false); //연하게 옵션
+    const [shot, setShot] = useState<number>(0); // 샷추가
+    const [syrup, setSyrup] = useState<number>(0); // 시럽 추가
+    const [whipping, setWhipping] = useState<number>(0); // 휘핑크림 추가
+    const [price, setPrice] = useState<number>(0) // 가격
 
     //전체메뉴
     const menus = [...iceCoffeeState, ...hotCoffeeState, ...juiceState, ...dessertState];
@@ -21,6 +26,12 @@ const ViewPage = () => {
 
     //타입이 일치하면 고유 아이디 찾기
     const menuIdFind = menuTypeFiltered.find(menu => menu.id === Number(params.id));
+
+    //가격 렌더링
+    useEffect(() => {
+        if (!menuIdFind) return;
+        setPrice(menuIdFind.price);
+    }, [menuIdFind])
 
     return (
         <main className='main' style={{ paddingBottom: "0" }}>
@@ -43,6 +54,8 @@ const ViewPage = () => {
                                     <input
                                         className='checked-input' 
                                         type='checkbox'
+                                        checked={lightly}
+                                        onChange={() => setLightly(prev => !prev)}
                                     />
                                     <span className='checked-show-hide'></span>
                                 </div>
@@ -55,16 +68,28 @@ const ViewPage = () => {
                         샷추가 <span>+500</span>
                     </p>
                     <div className='view-option__quantity-wrap'>
-                        <button className='view-option__button'>
+                        <button 
+                            className='view-option__button'
+                            onClick={() => {
+                                if(shot < 10) setShot(prev => prev + 1);
+                                else return;
+                            }}
+                        >
                             <Image src={plusIco} alt='플러스버튼' />
                         </button>
                         <input 
                             className='view-option__input'
                             type="number" 
-                            min="0"
-                            max="100"
+                            value={shot}
+                            readOnly
                         />
-                        <button className='view-option__button'>
+                        <button 
+                            className='view-option__button'
+                            onClick={() => {
+                                if(shot > 0) setShot(prev => prev - 1);
+                                else return;
+                            }}
+                        >
                             <Image src={minusIco} alt='마이너스버튼' />
                         </button>
                     </div> {/* view-option__quantity-wrap */}
@@ -75,16 +100,28 @@ const ViewPage = () => {
                         시럽 추가 <span>+500</span>
                     </p>
                     <div className='view-option__quantity-wrap'>
-                        <button className='view-option__button'>
+                        <button 
+                            className='view-option__button'
+                            onClick={() => {
+                                if(syrup < 10) setSyrup(prev => prev + 1);
+                                else return;
+                            }}
+                        >
                             <Image src={plusIco} alt='플러스버튼' />
                         </button>
                         <input 
                             className='view-option__input'
                             type="number" 
-                            min="0"
-                            max="100"
+                            value={syrup}
+                            readOnly
                         />
-                        <button className='view-option__button'>
+                        <button 
+                            className='view-option__button'
+                            onClick={() => {
+                                if(syrup > 0) setSyrup(prev => prev - 1);
+                                else return;
+                            }}
+                        >
                             <Image src={minusIco} alt='마이너스버튼' />
                         </button>
                     </div> {/* view-option__quantity-wrap */}
@@ -95,16 +132,28 @@ const ViewPage = () => {
                         휘핑크림 추가 <span>+500</span>
                     </p>
                     <div className='view-option__quantity-wrap'>
-                        <button className='view-option__button'>
+                        <button 
+                            className='view-option__button'
+                            onClick={() => {
+                                if(whipping < 10) setWhipping(prev => prev + 1);
+                                else return;
+                            }}
+                        >
                             <Image src={plusIco} alt='플러스버튼' />
                         </button>
                         <input 
                             className='view-option__input'
                             type="number" 
-                            min="0"
-                            max="100"
+                            value={whipping}
+                            readOnly
                         />
-                        <button className='view-option__button'>
+                        <button 
+                            className='view-option__button'
+                            onClick={() => {
+                                if(whipping > 0) setWhipping(prev => prev - 1);
+                                else return;
+                            }}
+                        >
                             <Image src={minusIco} alt='마이너스버튼' />
                         </button>
                     </div> {/* view-option__quantity-wrap */}
@@ -145,7 +194,13 @@ const ViewPage = () => {
                     <p className='view-detail__text'>{menuIdFind?.origin}</p>
                 </div> {/* view-detail */}
             </div>
-            <OrderBar />
+            <OrderBar 
+                price={price}
+                shot={shot}
+                syrup={syrup}
+                whipping={whipping}
+                lightly={lightly}
+            />
         </main>
     );
 };
