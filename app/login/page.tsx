@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { validations } from '@/shared/vaildation/Validation';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/features/login/store/hooks';
+import { useAppDispatch } from '../store/hook';
 import { loginSuccess } from '@/features/login/store/authSlice';
 import useModalShow from '@/shared/components/modal/hook/useModalShow';
 import Modal from '@/shared/components/modal/Modal';

@@ -4,20 +4,32 @@ import Image from 'next/image';
 import plusIco from '@/public/icons/view_plus.svg';
 import minusIco from '@/public/icons/view_minus.svg';
 import React, { useState } from 'react';
+import useOptions from '../hook/useOptions';
+import { useAppDispatch, useAppSelector } from '@/app/store/hook';
 
 interface optionType {
-    shot: number;
-    syrup: number;
-    whipping: number;
-    lightly: boolean;
-    price: number;
-};
+    menuName?: string;
+    img?: string;
+}
 
-const OrderBar = ({ shot, syrup, whipping, lightly, price }: optionType) => {
-    const [count, setCount] = useState<number>(1); // 갯수
+const OrderBar = ({ menuName, img }: optionType) => {
+    const { lightly, shot, syrup, whipping, price, count } = useAppSelector(state => state.option);
 
-    //갯수 * 가격 + 옵션들
+    //옵션 선택 커스텀 훅
+    const {
+        countIncrement,
+        countDecrement,
+    } = useOptions();
+    const dispatch = useAppDispatch();
+
+    //가격
     const totalPrice = (price * count) + (shot * 500) + (syrup * 500) + (whipping * 500);
+
+    //장바구니로 이동
+    const handleClickCartMoving = (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+    };
 
     return (
         <div className='order-bar'>
@@ -68,11 +80,7 @@ const OrderBar = ({ shot, syrup, whipping, lightly, price }: optionType) => {
                     <div className='view-option__quantity-wrap'>
                         <button 
                             className='view-option__button'
-                            onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
-                                e.preventDefault();
-                                if(count < 10) setCount(prev => prev + 1);
-                                else return;
-                            }}
+                            onClick={countIncrement}
                         >
                             <Image src={plusIco} alt='플러스버튼' />
                         </button>
@@ -84,18 +92,19 @@ const OrderBar = ({ shot, syrup, whipping, lightly, price }: optionType) => {
                         />
                         <button 
                             className='view-option__button'
-                            onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
-                                e.preventDefault();
-                                if(count > 1) setCount(prev => prev - 1);
-                                else return;
-                            }}
+                            onClick={countDecrement}
                         >
                             <Image src={minusIco} alt='마이너스버튼' />
                         </button>
                     </div> {/* view-option__quantity-wrap */}
                 </div> {/* view-option */}
                 <div className='order-bar__btns'>
-                    <button className='order-bar__button--cart'>장바구니</button>
+                    <button 
+                        className='order-bar__button--cart'
+                        onClick={handleClickCartMoving}
+                    >
+                        장바구니
+                    </button>
                     <button className='order-bar__button--order'>주문하기</button>
                 </div> {/* order-bar__btns */}
             </form> {/* order-bar__form */}

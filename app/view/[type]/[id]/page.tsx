@@ -8,18 +8,23 @@ import plusIco from '@/public/icons/view_plus.svg';
 import minusIco from '@/public/icons/view_minus.svg';
 import React, { useEffect, useState } from 'react';
 import OrderBar from '@/features/view/component/OrderBar';
+import useOptions from '@/features/view/hook/useOptions';
+import { useAppSelector } from '@/app/store/hook';
 
 const ViewPage = () => {
     const params = useParams();
-    const {iceCoffeeState, hotCoffeeState, juiceState, dessertState} = useMenu();
-    const [lightly, setLightly] = useState<boolean>(false); //연하게 옵션
-    const [shot, setShot] = useState<number>(0); // 샷추가
-    const [syrup, setSyrup] = useState<number>(0); // 시럽 추가
-    const [whipping, setWhipping] = useState<number>(0); // 휘핑크림 추가
-    const [price, setPrice] = useState<number>(0) // 가격
-
-    //전체메뉴
-    const menus = [...iceCoffeeState, ...hotCoffeeState, ...juiceState, ...dessertState];
+    const {menus} = useMenu();
+    const { lightly, shot, syrup, whipping } = useAppSelector(state => state.option);
+    //옵션 선택 커스텀 훅
+    const {
+        handleChangelightly,
+        shotIncrement,
+        shotDecrement,
+        syrupIncrement,
+        syrupDecrement,
+        whippingIncrement,
+        whippingDecrement,
+    } = useOptions();
 
     //타입 필터
     const menuTypeFiltered = menus.filter(menu => menu.type === params.type)
@@ -27,23 +32,18 @@ const ViewPage = () => {
     //타입이 일치하면 고유 아이디 찾기
     const menuIdFind = menuTypeFiltered.find(menu => menu.id === Number(params.id));
 
-    //가격 렌더링
-    useEffect(() => {
-        if (!menuIdFind) return;
-        setPrice(menuIdFind.price);
-    }, [menuIdFind])
-
     return (
         <main className='main' style={{ paddingBottom: "0" }}>
             <div className='inner'>
                 <div className='view-thum'>
-                    <img src={menuIdFind?.img} alt={menuIdFind?.menuname} className='view-thum_-image' />
+                    <img src={menuIdFind?.img} alt={menuIdFind?.menuname} className='view-thum__image' />
                     <p className='view-thum__title'>{menuIdFind?.menuname}</p>
                 </div> {/* view-thum */}
 
                 <p className='view-title'>옵션</p>
+                {/* 커피 일 때만 연하게 옵션 노출 */}
                 {
-                    menuIdFind?.type === "iceCoffee" || menuIdFind?.type === "hotCoffee" ? 
+                    menuIdFind?.type === "iceCoffee" || menuIdFind?.type === "hotCoffee" ?
                     (
                         <div className='view-option__density'>
                             <p className='text-body'>
@@ -55,7 +55,7 @@ const ViewPage = () => {
                                         className='checked-input' 
                                         type='checkbox'
                                         checked={lightly}
-                                        onChange={() => setLightly(prev => !prev)}
+                                        onChange={handleChangelightly}
                                     />
                                     <span className='checked-show-hide'></span>
                                 </div>
@@ -63,37 +63,38 @@ const ViewPage = () => {
                         </div> 
                     ) : null
                 }
-                <div className='view-option'>
-                    <p className='text-body'>
-                        샷추가 <span>+500</span>
-                    </p>
-                    <div className='view-option__quantity-wrap'>
-                        <button 
-                            className='view-option__button'
-                            onClick={() => {
-                                if(shot < 10) setShot(prev => prev + 1);
-                                else return;
-                            }}
-                        >
-                            <Image src={plusIco} alt='플러스버튼' />
-                        </button>
-                        <input 
-                            className='view-option__input'
-                            type="number" 
-                            value={shot}
-                            readOnly
-                        />
-                        <button 
-                            className='view-option__button'
-                            onClick={() => {
-                                if(shot > 0) setShot(prev => prev - 1);
-                                else return;
-                            }}
-                        >
-                            <Image src={minusIco} alt='마이너스버튼' />
-                        </button>
-                    </div> {/* view-option__quantity-wrap */}
-                </div> {/* view-option */}
+
+                {/* 디저트류 일 경우 샷추가 옵션 노출 X */}
+                {
+                    menuIdFind?.type !== "dessert" &&
+                    (
+                        <div className='view-option'>
+                            <p className='text-body'>
+                                샷추가 <span>+500</span>
+                            </p>
+                            <div className='view-option__quantity-wrap'>
+                                <button 
+                                    className='view-option__button'
+                                    onClick={shotIncrement}
+                                >
+                                    <Image src={plusIco} alt='플러스버튼' />
+                                </button>
+                                <input 
+                                    className='view-option__input'
+                                    type="number" 
+                                    value={shot}
+                                    readOnly
+                                />
+                                <button 
+                                    className='view-option__button'
+                                    onClick={shotDecrement}
+                                >
+                                    <Image src={minusIco} alt='마이너스버튼' />
+                                </button>
+                            </div> {/* view-option__quantity-wrap */}
+                        </div> 
+                    )
+                }
 
                 <div className='view-option'>
                     <p className='text-body'>
@@ -102,10 +103,7 @@ const ViewPage = () => {
                     <div className='view-option__quantity-wrap'>
                         <button 
                             className='view-option__button'
-                            onClick={() => {
-                                if(syrup < 10) setSyrup(prev => prev + 1);
-                                else return;
-                            }}
+                            onClick={syrupIncrement}
                         >
                             <Image src={plusIco} alt='플러스버튼' />
                         </button>
@@ -117,10 +115,7 @@ const ViewPage = () => {
                         />
                         <button 
                             className='view-option__button'
-                            onClick={() => {
-                                if(syrup > 0) setSyrup(prev => prev - 1);
-                                else return;
-                            }}
+                            onClick={syrupDecrement}
                         >
                             <Image src={minusIco} alt='마이너스버튼' />
                         </button>
@@ -134,10 +129,7 @@ const ViewPage = () => {
                     <div className='view-option__quantity-wrap'>
                         <button 
                             className='view-option__button'
-                            onClick={() => {
-                                if(whipping < 10) setWhipping(prev => prev + 1);
-                                else return;
-                            }}
+                            onClick={whippingIncrement}
                         >
                             <Image src={plusIco} alt='플러스버튼' />
                         </button>
@@ -149,10 +141,7 @@ const ViewPage = () => {
                         />
                         <button 
                             className='view-option__button'
-                            onClick={() => {
-                                if(whipping > 0) setWhipping(prev => prev - 1);
-                                else return;
-                            }}
+                            onClick={whippingDecrement}
                         >
                             <Image src={minusIco} alt='마이너스버튼' />
                         </button>
@@ -168,7 +157,12 @@ const ViewPage = () => {
                                 <th>용량 (ml)</th>
                                 <td>{menuIdFind?.info.volume}</td>
                                 <th>카페인 (mg)</th>
-                                <td>{menuIdFind?.info.caffeine}</td>
+                                <td>
+                                    {
+                                        menuIdFind?.info.caffeine ? menuIdFind?.info.caffeine
+                                        : "-"
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <th>칼로리</th>
@@ -190,16 +184,22 @@ const ViewPage = () => {
                             </tr>
                         </tbody>
                     </table>
-                    <p className='view-detail__heading'>원산지</p>
-                    <p className='view-detail__text'>{menuIdFind?.origin}</p>
+                                    
+                    {/* 원산지 표기가 있을 경우에만 노출 */}
+                    {
+                        menuIdFind?.origin &&  
+                        (
+                            <div className='origin'>
+                                <p className='view-detail__heading'>원산지</p>
+                                <p className='view-detail__text'>{menuIdFind?.origin}</p>
+                            </div>
+                        )
+                    }
                 </div> {/* view-detail */}
             </div>
             <OrderBar 
-                price={price}
-                shot={shot}
-                syrup={syrup}
-                whipping={whipping}
-                lightly={lightly}
+                menuName={menuIdFind?.menuname}
+                img={menuIdFind?.img}
             />
         </main>
     );
