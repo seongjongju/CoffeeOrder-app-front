@@ -32,6 +32,11 @@ const ViewPage = () => {
     //타입이 일치하면 고유 아이디 찾기
     const menuIdFind = menuTypeFiltered.find(menu => menu.id === Number(params.id));
 
+    {
+        if(menuIdFind === undefined) 
+        return (<p>...로딩 중</p>)
+    }
+
     return (
         <main className='main' style={{ paddingBottom: "0" }}>
             <div className='inner'>
@@ -198,8 +203,8 @@ const ViewPage = () => {
                 </div> {/* view-detail */}
             </div>
             <OrderBar 
-                menuName={menuIdFind?.menuname}
-                img={menuIdFind?.img}
+                menuName={menuIdFind.menuname}
+                img={menuIdFind.img}
             />
         </main>
     );

@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { resetOption, setOption } from '@/features/view/store/optionSlice';
 import useMenu from '../api/hook/useMenu';
 import { useParams } from 'next/navigation';

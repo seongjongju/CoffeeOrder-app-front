@@ -6,10 +6,11 @@ import minusIco from '@/public/icons/view_minus.svg';
 import React, { useState } from 'react';
 import useOptions from '../hook/useOptions';
 import { useAppDispatch, useAppSelector } from '@/app/store/hook';
+import { addToCart } from '@/features/cart/store/cartSlice';
 
 interface optionType {
-    menuName?: string;
-    img?: string;
+    menuName: string;
+    img: string;
 }
 
 const OrderBar = ({ menuName, img }: optionType) => {
@@ -29,6 +30,16 @@ const OrderBar = ({ menuName, img }: optionType) => {
     const handleClickCartMoving = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
+        dispatch(addToCart({
+            lightly: lightly,
+            shot: shot,
+            syrup: syrup,
+            whipping: whipping,
+            price: price,
+            count: count,
+            img: img,
+            menuName: menuName
+        }));
     };
 
     return (

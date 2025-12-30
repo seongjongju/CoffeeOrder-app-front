@@ -38,6 +38,10 @@ button {
     cursor: pointer;
 }
 
+li {
+    list-style-type: none;
+}
+
 /************************** common */
 .text-body {
     font-size: 14px;

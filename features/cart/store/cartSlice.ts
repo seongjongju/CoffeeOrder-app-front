@@ -9,14 +9,13 @@ interface CartItem {
     whipping: number; 
     price: number;
     count: number;
-    img?: string;
-    menuName?: string;
+    img: string;
+    menuName: string;
 };
 
 interface CartState {
     items: CartItem[]
 };
-
 
 const initialState: CartState = {
     items: []

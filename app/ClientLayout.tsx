@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { Provider } from "react-redux";
-import { store } from "./store/store";
+import { persistor, store } from "./store/store";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -10,6 +10,7 @@ import AuthProvider from './globalProvider/AuthProvider';
 import MainAppBar from '@/shared/components/appbar/MainAppBar';
 import AppBar from '@/shared/components/appbar/AppBar';
 import OptionProvider from './globalProvider/OptionProvider';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     const pathName = usePathname();
@@ -27,8 +28,9 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     return (
         <>
             <Provider store={store}>
-                <AuthProvider />
+                {/* <AuthProvider /> */}
                 <OptionProvider />
+                <PersistGate persistor={persistor} />
                 { 
                     pathName === '/login' ||
                     pathName === '/policy' ||
