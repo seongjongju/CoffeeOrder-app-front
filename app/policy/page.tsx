@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import Button from '@/shared/components/button/Button';
 import Modal from '@/shared/components/modal/Modal';
 import useModalShow from '@/shared/components/modal/hook/useModalShow';
-import AppBar from '@/shared/components/appbar/AppBar';
 
 const PolicyPage = () => {
     const {checkedState, checkedFunction} = usePolicyChecked();
@@ -25,7 +24,7 @@ const PolicyPage = () => {
     };
 
     return (
-        <main className='main'>
+        <main className='main auth-main'>
             <div className='inner'>
                 <h2 className='title'>약관에 동의해주세요.</h2>
                 <form>

@@ -98,13 +98,17 @@ const useMenu = () => {
         };
 
         dessert();
-    }, [])
+    }, []);
+
+    //전체메뉴
+    const menus = [...iceCoffeeState, ...hotCoffeeState, ...juiceState, ...dessertState];
 
     return {
         iceCoffeeState,
         hotCoffeeState,
         juiceState,
-        dessertState
+        dessertState,
+        menus
     }
 };
 

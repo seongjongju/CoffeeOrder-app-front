@@ -10,11 +10,14 @@ import CategorySideGnb from '../sideGnb/CategorySideGnb';
 import BackIco from '@/public/icons/back_ico.png';
 import { usePathname, useRouter } from 'next/navigation';
 import '@/shared/styled/appBar/appBar.css';
+import '@/shared/styled/cart/cart.css';
 import useAppBarTitles from './hook/useAppBarTitles';
+import useCartQuantity from '@/features/cart/hook/useCartQuantity';
 
 const MainAppBar = () => {
     const [categorySideOn, setCategorySideOn] = useState<boolean>(false);
     const {appBarTitles} = useAppBarTitles();
+    const {cartItemQuantity} = useCartQuantity(); // 전체 count, 수량 커스텀 훅
     const pathName = usePathname();
     const router = useRouter();
 
@@ -47,7 +50,8 @@ const MainAppBar = () => {
                 }
 
                 <div className='header-util'>
-                    <Link href={'/cart'}>
+                    <Link href={'/cart'} style={{ position: "relative" }}>
+                        <span className='quantity'>{cartItemQuantity}</span>
                         <Image src={cart} alt='장바구니' />
                     </Link>
                     <button>
