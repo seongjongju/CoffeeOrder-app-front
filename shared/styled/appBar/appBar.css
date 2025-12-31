@@ -42,3 +42,21 @@
     gap: 5px;
 }
 
+/* 아이콘에 갯수 표시 */
+.quantity {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #2B1B16;
+    color: #fff;
+    font-size: 10px;
+    line-height: 0.8px;
+}
+
+

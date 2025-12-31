@@ -6,14 +6,16 @@ import '@/shared/styled/view/view.css';
 import '@/shared/styled/policyStyle/policyStyle.css';
 import plusIco from '@/public/icons/view_plus.svg';
 import minusIco from '@/public/icons/view_minus.svg';
-import React, { useEffect, useState } from 'react';
 import OrderBar from '@/features/view/component/OrderBar';
 import useOptions from '@/features/view/hook/useOptions';
 import { useAppSelector } from '@/app/store/hook';
+import LoadingUi from '@/shared/components/loading/LoadingUi';
+import useLoading from '@/shared/components/loading/hook/useLoading';
 
 const ViewPage = () => {
+    const {isLoading} = useLoading();
     const params = useParams();
-    const {menus} = useMenu();
+    const {menus} = useMenu(); // 메뉴 커스텀 훅
     const { lightly, shot, syrup, whipping } = useAppSelector(state => state.option);
     //옵션 선택 커스텀 훅
     const {
@@ -33,8 +35,8 @@ const ViewPage = () => {
     const menuIdFind = menuTypeFiltered.find(menu => menu.id === Number(params.id));
 
     {
-        if(menuIdFind === undefined) 
-        return (<p>...로딩 중</p>)
+        if(menuIdFind === undefined || isLoading) 
+        return (<LoadingUi />)
     }
 
     return (

@@ -7,7 +7,7 @@ import FindIdResult from '@/features/userFind/components/FindIdResult';
 
 const IdFindResultPage = () => {
     return (
-        <main className='main'>
+        <main className='main auth-main'>
             <div className='inner'>
                 <div>
                     <div className='auth-top'>

@@ -36,7 +36,8 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
                     pathName === '/policy' ||
                     pathName === '/signUp' ||
                     pathName === '/userFind/idFind' ||
-                    pathName === '/userFind/idFindResult'
+                    pathName === '/userFind/idFindResult' ||
+                    pathName === '/userFind/passwordFind'
                     ? <AppBar /> 
                     : pathName === '/signUpFinish' || pathName === '/' 
                     ? null : <MainAppBar />  

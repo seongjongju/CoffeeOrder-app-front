@@ -117,7 +117,7 @@ const PasswordFindPage = () => {
     };
 
     return (
-        <main className='main'>
+        <main className='main auth-main'>
             <div className='inner'>
                 <div className='auth-container'>
                     <div className='auth-top'>

@@ -7,6 +7,9 @@ import React, { useState } from 'react';
 import useOptions from '../hook/useOptions';
 import { useAppDispatch, useAppSelector } from '@/app/store/hook';
 import { addToCart } from '@/features/cart/store/cartSlice';
+import useModalShow from '@/shared/components/modal/hook/useModalShow';
+import Modal from '@/shared/components/modal/Modal';
+import useCartQuantity from '@/features/cart/hook/useCartQuantity';
 
 interface optionType {
     menuName: string;
@@ -15,13 +18,16 @@ interface optionType {
 
 const OrderBar = ({ menuName, img }: optionType) => {
     const { lightly, shot, syrup, whipping, price, count } = useAppSelector(state => state.option);
-
+    const {cartItemQuantity} = useCartQuantity(); // 전체 count, 수량 커스텀 훅
     //옵션 선택 커스텀 훅
     const {
         countIncrement,
         countDecrement,
     } = useOptions();
     const dispatch = useAppDispatch();
+
+    //모달창
+    const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
 
     //가격
     const totalPrice = (price * count) + (shot * 500) + (syrup * 500) + (whipping * 500);
@@ -30,6 +36,7 @@ const OrderBar = ({ menuName, img }: optionType) => {
     const handleClickCartMoving = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
+        //장바구니에 추가
         dispatch(addToCart({
             lightly: lightly,
             shot: shot,
@@ -40,6 +47,9 @@ const OrderBar = ({ menuName, img }: optionType) => {
             img: img,
             menuName: menuName
         }));
+
+        setModalText('장바구니에 추가되었습니다.');
+        setModalShow(true);
     };
 
     return (
@@ -119,6 +129,16 @@ const OrderBar = ({ menuName, img }: optionType) => {
                     <button className='order-bar__button--order'>주문하기</button>
                 </div> {/* order-bar__btns */}
             </form> {/* order-bar__form */}
+
+            {
+                modalShow &&
+                <Modal 
+                    modalText={modalText}
+                    modalShow={modalShow}
+                    setModalText={setModalText}
+                    setModalShow={setModalShow}
+                />
+            }
         </div>
     );
 };

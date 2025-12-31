@@ -14,9 +14,9 @@ const AuthProvider = () => {
                     withCredentials: true,
                 });
                 dispatch(loginSuccess(res.data.user));
-            } catch (err) {
-                dispatch(logout());
-            }
+            } catch (err: any) {
+                if (err.response?.status === 401) dispatch(logout());
+            } 
         };
 
         authCheck();

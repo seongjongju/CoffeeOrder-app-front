@@ -8,14 +8,19 @@ import Link from 'next/link';
 import { Autoplay } from 'swiper/modules';
 import useMenu from '@/app/api/hook/useMenu';
 import MenuTabItems from '@/features/menuTab/components/MenuTabItems';
+import useLoading from '@/shared/components/loading/hook/useLoading';
+import LoadingUi from '@/shared/components/loading/LoadingUi';
 
 const MainPage = () => {
+    const {isLoading} = useLoading();
     const {iceCoffeeState, hotCoffeeState, juiceState, dessertState} = useMenu();
     const [tabState, setTabState] = useState<{coffee: boolean, juice: boolean, dessert: boolean}>({
         coffee: true,
         juice: false,
         dessert: false
     });
+
+    if(isLoading) return <LoadingUi />
 
     return (
         <main className='main'>
@@ -119,30 +124,6 @@ const MainPage = () => {
                     dessert={tabState.dessert}
                 />
             </div>
-
-            <div className='inner'>
-                {/* EVENT */}
-                <h2 className='main-title'>EVENT!!</h2>
-            </div>
-            {/* EventSwiper */}
-            <Swiper
-                spaceBetween={12}
-                slidesPerView={1.3}
-                modules={[Autoplay]}
-                autoplay={{delay: 1500}}
-                speed={1200}
-            >
-                <SwiperSlide>
-                    <Link className='event-swiper-link' href={''}>
-                        <img src={iceCoffeeState[0]?.img} alt={iceCoffeeState[0]?.menuname} />
-                    </Link>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <Link className='event-swiper-link' href={''}>
-                        <img src={iceCoffeeState[0]?.img} alt={iceCoffeeState[0]?.menuname} />
-                    </Link>
-                </SwiperSlide>
-            </Swiper>
         </main>
     );
 };
