@@ -80,7 +80,7 @@ const PasswordFindPage = () => {
 
         //유저 인증정보를 서버로 전송
         try {
-            const res = await axios.post('http://localhost:4000/api/users/findPasswordCertification',
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/findPasswordCertification`,
                 {
                     userId: userId,
                     phoneNumber: userPhoneNumber
@@ -91,7 +91,7 @@ const PasswordFindPage = () => {
             //인증 정보가 일치하면 새 비밀번호로 변경한다.
             if(res.status === 200) {
                 try{
-                    const res2 = await axios.post('http://localhost:4000/api/users/changePassword',
+                    const res2 = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/changePassword`,
                         {
                             userId: userId,
                             newPassword: newPwd

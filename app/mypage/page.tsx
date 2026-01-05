@@ -16,7 +16,7 @@ const Mypage = () => {
     const handleClickLogout = async (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         try{
-            const res =  await axios.post('http://localhost:4000/api/users/logout',
+            const res =  await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/logout`,
                 {},
                 {withCredentials: true}
             );
