@@ -39,7 +39,9 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
                     pathName === '/userFind/idFindResult' ||
                     pathName === '/userFind/passwordFind'
                     ? <AppBar /> 
-                    : pathName === '/signUpFinish' || pathName === '/' 
+                    : pathName === '/signUpFinish' || 
+                      pathName === '/' ||
+                      pathName === '/orderFinish'
                     ? null : <MainAppBar />  
                 }
                 {children}

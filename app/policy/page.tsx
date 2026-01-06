@@ -19,7 +19,7 @@ const PolicyPage = () => {
             setModalText('약관에 동의해주세요.')
             setModalShow(true);
         } else {
-            return router.push('/signUp');
+            return router.push('/signUp/signUpForm');
         }
     };
 

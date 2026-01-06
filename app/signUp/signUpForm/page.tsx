@@ -94,7 +94,7 @@ const SignUpPage = () => {
             const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/mail`, 
                 {email: signUpState.email}
             );
-            console.log(res.data);
+
             return;
         }catch(err: any) {
             console.error('인증번호 발송 서버 오류', err);
@@ -124,7 +124,6 @@ const SignUpPage = () => {
             setModalText(res.data.message);
             setModalShow(true);
 
-            console.log(res.data);
             if(res.status === 200) {
                 setIsCertificationChecked(true);
             }
@@ -166,15 +165,14 @@ const SignUpPage = () => {
                 }
             );
 
-            console.log(res.data);
-            router.push('/signUpFinish?name');
+            router.push('/signUp/signUpFinish');
         } catch(err: any) {
             console.error('회원가입 서버오류', err);
         };
     };
 
     return (
-        <main className='main auth-main'>
+        <main className='main'>
             <section className='section'>
                 <div className='inner'>
                     <form onSubmit={signUpSubmit}>
