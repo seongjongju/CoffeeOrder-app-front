@@ -30,7 +30,11 @@ const OrderBar = ({ menuName, img }: optionType) => {
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
 
     //가격
-    const totalPrice = (price * count) + (shot * 500) + (syrup * 500) + (whipping * 500);
+    const OPTION_PRICE = 500;
+
+    const optionPrice = (shot + syrup + whipping) * OPTION_PRICE;
+
+    const totalPrice = (price + optionPrice) * count;
 
     //장바구니로 이동
     const handleClickCartMoving = (e:React.MouseEvent<HTMLButtonElement>) => {

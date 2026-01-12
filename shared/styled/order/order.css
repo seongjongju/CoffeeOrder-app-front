@@ -1,0 +1,8 @@
+.order-finish {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    padding-bottom: 44px;
+}

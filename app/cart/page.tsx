@@ -25,7 +25,11 @@ const CartPage = () => {
 
     //가격
     const totalPrice = ({price, shot, syrup, whipping, count}:TotalPriceType) => {
-        return (price * count) + (shot * 500) + (syrup * 500) + (whipping * 500);
+        const OPTION_PRICE = 500;
+
+        const optionPrice = (shot + syrup + whipping) * OPTION_PRICE;
+
+        return (price + optionPrice) * count;
     }; 
 
     if(isLoading) return <LoadingUi />

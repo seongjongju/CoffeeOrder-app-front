@@ -41,7 +41,7 @@ const SignUpPage = () => {
         }
 
         try {
-            const res = await axios.get('http://localhost:4000/api/users/check-id',{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/check-id`,{
                 params: {id: signUpState.id}
             });
             if(res.data.isTaken) setModalText('이미 사용중인 아이디입니다.');
@@ -58,7 +58,7 @@ const SignUpPage = () => {
     //이메일 중복검사
     const emailDuplicationCheck = async () => {
         try {
-            const res = await axios.get('http://localhost:4000/api/users/check-email',{
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/check-email`,{
                 params: {email: signUpState.email}
             });
             if(res.data.isTaken) {
@@ -91,10 +91,10 @@ const SignUpPage = () => {
             setModalText('인증번호 발송 중… 소요시간 최대 1분');
             setModalShow(true);
 
-            const res = await axios.post('http://localhost:4000/api/users/mail', 
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/mail`, 
                 {email: signUpState.email}
             );
-            console.log(res.data);
+
             return;
         }catch(err: any) {
             console.error('인증번호 발송 서버 오류', err);
@@ -115,7 +115,7 @@ const SignUpPage = () => {
         }
 
         try{
-            const res = await axios.post('http://localhost:4000/api/users/certification-check',
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/certification-check`,
                 {   email: signUpState.email,
                     certificationNumber: signUpState.certificationNumber
                 }
@@ -124,7 +124,6 @@ const SignUpPage = () => {
             setModalText(res.data.message);
             setModalShow(true);
 
-            console.log(res.data);
             if(res.status === 200) {
                 setIsCertificationChecked(true);
             }
@@ -154,7 +153,7 @@ const SignUpPage = () => {
         }
 
         try {
-            const res = await axios.post('http://localhost:4000/api/users/register', 
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/register`, 
                 {
                     id: signUpState.id,
                     password: signUpState.password,
@@ -166,15 +165,14 @@ const SignUpPage = () => {
                 }
             );
 
-            console.log(res.data);
-            router.push('/signUpFinish?name');
+            router.push('/signUp/signUpFinish');
         } catch(err: any) {
             console.error('회원가입 서버오류', err);
         };
     };
 
     return (
-        <main className='main auth-main'>
+        <main className='main'>
             <section className='section'>
                 <div className='inner'>
                     <form onSubmit={signUpSubmit}>
