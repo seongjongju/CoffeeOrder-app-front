@@ -38,7 +38,7 @@ const ViewPage = () => {
         if(menuIdFind === undefined || isLoading) 
         return (<LoadingUi />)
     }
-
+    
     return (
         <main className='main' style={{ paddingBottom: "0" }}>
             <div className='inner'>
@@ -207,6 +207,7 @@ const ViewPage = () => {
             <OrderBar 
                 menuName={menuIdFind.menuname}
                 img={menuIdFind.img}
+                menuId={menuIdFind.id}
             />
         </main>
     );

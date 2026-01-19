@@ -37,7 +37,7 @@ const CategorySideGnb = ({categorySideOn, setCategorySideOn}:CategorySideGnbOnPr
                     MY PAGE
                 </Link>
                 <Link 
-                    className='side-gnb-link' href={'/'}
+                    className='side-gnb-link' href={'/order/orderHistory'}
                     onClick={() => {setCategorySideOn(false);}}
                 >
                     ORDER HISTORY

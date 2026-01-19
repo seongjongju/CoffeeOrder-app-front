@@ -15,9 +15,9 @@ import optionReducer from '@/features/view/store/optionSlice';
 import cartReducer from '@/features/cart/store/cartSlice';
 
 const persistConfig = {
-    key: 'root', // 저장될 키
-    storage, // 사용할 스토리지
-    whitelist: ['auth', 'cart'], // 유지할 리듀서 목록
+    key: 'root', 
+    storage, 
+    whitelist: ['auth', 'cart'],
 };
 
 const rootReducer = combineReducers({

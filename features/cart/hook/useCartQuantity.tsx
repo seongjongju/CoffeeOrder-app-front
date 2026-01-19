@@ -8,8 +8,6 @@ const useCartQuantity = () => {
     const [cartTotalCount, setCartTotalCount] = useState<number | null>(0)
     const cartItems = useAppSelector((state: RootState) => state.cart); //장바구니 메뉴 배열
 
-    console.log(cartItemQuantity)
-
     //전체 메뉴의 갯수
     const cartItemLength = cartItems.items.length;
 

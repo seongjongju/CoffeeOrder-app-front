@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@portone/browser-sdk": "^0.1.2",
     "@reduxjs/toolkit": "^2.9.0",
     "@types/redux-persist": "^4.0.0",
     "axios": "^1.11.0",
