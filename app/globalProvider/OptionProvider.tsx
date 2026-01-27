@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import { resetOption, setOption } from '@/features/view/store/optionSlice';
-import useMenu from '../api/hook/useMenu';
+import useMenu from '../../features/menu/hook/useMenu';
 import { useParams } from 'next/navigation';
 import { useAppDispatch } from '../store/hook';
 

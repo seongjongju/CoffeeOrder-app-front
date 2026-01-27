@@ -5,7 +5,7 @@ import mascot from '@/public/images/mascot.png';
 import React, { useState } from 'react';
 import FindInput from '@/features/userFind/components/FindInput';
 import Button from '@/shared/components/button/Button';
-import useModalShow from '@/shared/components/modal/hook/useModalShow';
+import useModalShow from '@/features/modal/hook/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import { validations } from '@/shared/vaildation/Validation';
 import axios from 'axios';

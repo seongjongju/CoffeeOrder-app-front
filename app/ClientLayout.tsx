@@ -27,6 +27,12 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
             });
         }
     }, []);
+
+    const isIntroPage = pathName === '/';
+
+    if (isIntroPage) {
+        return <>{children}</>;
+    }
     
     return (
         <QueryClientProvider client={queryClient}>

@@ -4,7 +4,7 @@ import '@/shared/styled/appBar/appBar.css';
 import BackIco from '@/public/icons/back_ico.png';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import useAppBarTitles from './hook/useAppBarTitles';
+import useAppBarTitles from '../../../features/appBar/hook/useAppBarTitles';
 
 const AppBar = () => {
     const {appBarTitles} = useAppBarTitles();

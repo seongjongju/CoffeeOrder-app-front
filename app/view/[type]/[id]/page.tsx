@@ -1,5 +1,5 @@
 'use client';
-import useMenu from '@/app/api/hook/useMenu';
+import useMenu from '@/features/menu/hook/useMenu';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import '@/shared/styled/view/view.css';

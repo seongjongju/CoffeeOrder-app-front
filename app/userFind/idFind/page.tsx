@@ -6,7 +6,7 @@ import Button from '@/shared/components/button/Button';
 import FindInput from '@/features/userFind/components/FindInput';
 import { useState } from 'react';
 import { validations } from '@/shared/vaildation/Validation';
-import useModalShow from '@/shared/components/modal/hook/useModalShow';
+import useModalShow from '@/features/modal/hook/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';

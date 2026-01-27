@@ -1,7 +1,6 @@
 import '@/shared/styled/main/main.css';
 import MenuTabItems from '@/features/menuTab/components/MenuTabItems';
 import Suggestion from './_components/Suggestion';
-import LoadingUi from '@/shared/components/loading/LoadingUi';
 import MainVisual from './_components/MainVisual';
 
 const MainPage = () => {

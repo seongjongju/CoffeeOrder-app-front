@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import useOptions from '../hook/useOptions';
 import { useAppDispatch, useAppSelector } from '@/app/store/hook';
 import { addToCart } from '@/features/cart/store/cartSlice';
-import useModalShow from '@/shared/components/modal/hook/useModalShow';
+import useModalShow from '@/features/modal/hook/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import useCartQuantity from '@/features/cart/hook/useCartQuantity';
 import axios from 'axios';
