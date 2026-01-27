@@ -1,6 +1,6 @@
 'use client';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useSuspenseQueries} from '@tanstack/react-query';
 
 type menuType = {
     id: number;
@@ -23,13 +23,23 @@ type menuType = {
 };
 
 const useMenu = () => {
-    const [iceCoffeeState, setIceCoffeeState] = useState<menuType[]>([]); 
+    /* const [iceCoffeeState, setIceCoffeeState] = useState<menuType[]>([]); 
     const [hotCoffeeState, setHotCoffeeState] = useState<menuType[]>([]); 
     const [juiceState, setJuiceState] = useState<menuType[]>([]); 
-    const [dessertState, setDessertState] = useState<menuType[]>([]); 
+    const [dessertState, setDessertState] = useState<menuType[]>([]);  */
+
+    const results = useSuspenseQueries({
+        queries: [
+            { queryKey: ['iceCoffee'], queryFn: () => axios.get('/api/ice-coffee').then(res => res.data) },
+            { queryKey: ['hotCoffee'], queryFn: () => axios.get('/api/hot-coffee').then(res => res.data) },
+            { queryKey: ['juice'], queryFn: () => axios.get('/api/juice').then(res => res.data) },
+            { queryKey: ['dessert'], queryFn: () => axios.get('/api/dessert').then(res => res.data) },
+        ],
+    });
+
 
     //아이스 커피
-    useEffect(() => {
+    /* useEffect(() => {
         const iceCoffee = async () => {
             try{
                 const res = await axios.get('/api/ice-coffee');
@@ -44,10 +54,10 @@ const useMenu = () => {
         };
 
         iceCoffee();
-    }, []);
+    }, []); */
 
     //hot 커피
-    useEffect(() => {
+   /*  useEffect(() => {
         const hotCoffee = async () => {
             try{
                 const res = await axios.get('/api/hot-coffee');
@@ -62,10 +72,10 @@ const useMenu = () => {
         };
 
         hotCoffee();
-    }, []);
+    }, []); */
 
     //주스
-    useEffect(() => {
+    /* useEffect(() => {
         const juice = async () => {
             try{
                 const res = await axios.get('/api/juice');
@@ -80,10 +90,10 @@ const useMenu = () => {
         };
 
         juice();
-    }, [])
+    }, []) */
 
     //디저트
-    useEffect(() => {
+    /* useEffect(() => {
         const dessert = async () => {
             try{
                 const res = await axios.get('/api/dessert');
@@ -98,7 +108,12 @@ const useMenu = () => {
         };
 
         dessert();
-    }, []);
+    }, []); */
+
+    const iceCoffeeState = results[0].data as menuType[];
+    const hotCoffeeState = results[1].data as menuType[];
+    const juiceState = results[2].data as menuType[];
+    const dessertState = results[3].data as menuType[];
 
     //전체메뉴
     const menus = [...iceCoffeeState, ...hotCoffeeState, ...juiceState, ...dessertState];

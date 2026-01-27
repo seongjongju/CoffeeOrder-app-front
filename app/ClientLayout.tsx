@@ -1,16 +1,19 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { Provider } from "react-redux";
 import { persistor, store } from "./store/store";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import AuthProvider from './globalProvider/AuthProvider';
 import MainAppBar from '@/shared/components/appbar/MainAppBar';
 import AppBar from '@/shared/components/appbar/AppBar';
 import OptionProvider from './globalProvider/OptionProvider';
+import LoadingUi from '@/shared/components/loading/LoadingUi'; 
 import { PersistGate } from 'redux-persist/integration/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     const pathName = usePathname();
@@ -26,27 +29,28 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     }, []);
     
     return (
-        <>
+        <QueryClientProvider client={queryClient}>
             <Provider store={store}>
-                {/* <AuthProvider /> */}
-                <OptionProvider />
-                <PersistGate persistor={persistor} />
-                { 
-                    pathName === '/login' ||
-                    pathName === '/policy' ||
-                    pathName === '/signUp' ||
-                    pathName === '/userFind/idFind' ||
-                    pathName === '/userFind/idFindResult' ||
-                    pathName === '/userFind/passwordFind'
-                    ? <AppBar /> 
-                    : pathName === '/signUpFinish' || 
-                      pathName === '/' ||
-                      pathName === '/orderFinish'
-                    ? null : <MainAppBar />  
-                }
-                {children}
+                <Suspense fallback={<LoadingUi />}>
+                    <OptionProvider />
+                    <PersistGate persistor={persistor} />
+                    { 
+                        pathName === '/login' ||
+                        pathName === '/policy' ||
+                        pathName === '/signUp' ||
+                        pathName === '/userFind/idFind' ||
+                        pathName === '/userFind/idFindResult' ||
+                        pathName === '/userFind/passwordFind'
+                        ? <AppBar /> 
+                        : pathName === '/signUpFinish' || 
+                        pathName === '/' ||
+                        pathName === '/orderFinish'
+                        ? null : <MainAppBar />  
+                    }
+                    {children}
+                </Suspense>
             </Provider>
-        </>
+        </QueryClientProvider>
     );
 };
 

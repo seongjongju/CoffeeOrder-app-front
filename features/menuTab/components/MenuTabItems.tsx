@@ -4,14 +4,14 @@ import '@/shared/styled/main/main.css';
 import React, { useEffect, useState } from 'react';
 import useMenu from '@/app/api/hook/useMenu';
 import { useRouter } from 'next/navigation';
-interface tabStateType {
-    coffee: boolean;
-    juice: boolean;
-    dessert: boolean;
-};
 
-const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
+const MenuTabItems = () => {
     const {iceCoffeeState, hotCoffeeState, juiceState, dessertState} = useMenu();
+    const [tabState, setTabState] = useState<{coffee: boolean, juice: boolean, dessert: boolean}>({
+        coffee: true,
+        juice: false,
+        dessert: false
+    });
     const [menuSearch, setMenuSearch] = useState<string>(""); //메뉴 검색
     const [debounceSearch, setDebounceSearch] = useState(""); //디바운스
     const router = useRouter();
@@ -77,21 +77,58 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
 
     return (
         <div style={{ marginBottom: "20px" }}>
+            <div className='tab-btns'>
+                <button 
+                    className='tab-btn' 
+                    style={
+                        {backgroundColor: (tabState.coffee && "#2B1B16") || undefined, color: (tabState.coffee && "#fff") || undefined,} 
+                    }
+                    onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                        e.preventDefault();
+                        setTabState(prev => ({ ...prev, coffee: true, juice: false, dessert: false }))
+                    }}>
+                    커피
+                </button>
+                <button
+                    className='tab-btn'
+                    style={
+                        {backgroundColor: (tabState.juice && "#2B1B16") || undefined, color: (tabState.juice && "#fff") || undefined,}
+                    }
+                    onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                        e.preventDefault();
+                        setTabState(prev => ({ ...prev, coffee: false, juice: true, dessert: false }))
+                    }}
+                >
+                    주스
+                </button>
+                <button
+                    className='tab-btn' 
+                    style={
+                        {backgroundColor: (tabState.dessert && "#2B1B16") || undefined, color: (tabState.dessert && "#fff") || undefined,} 
+                    }
+                    onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                        e.preventDefault();
+                        setTabState(prev => ({ ...prev, coffee: false, juice: false, dessert: true }))
+                    }}>
+                    디저트
+                </button>
+            </div>
+
             <input
                 className='menu-tab-input' 
                 type="text" 
-                placeholder={coffee ? "커피 검색" : juice ? "주스 검색" : dessert ? "디저트 검색" : ""}
+                placeholder={tabState.coffee ? "커피 검색" : tabState.juice ? "주스 검색" : tabState.dessert ? "디저트 검색" : ""}
                 onChange={(e:React.ChangeEvent<HTMLInputElement>) => {setMenuSearch(e.target.value);}}
             />
             
             {
-                coffee &&
+                tabState.coffee &&
                 filteredIceCoffee.length !== 0 || filteredHotCoffee.length !== 0 ?
                 (
                     <div
                         className='menu-wrap'
                         style={
-                            {display: coffee ? "grid" : "none"}
+                            {display: tabState.coffee ? "grid" : "none"}
                         }
                     >   
                         {filteredIceCoffee}
@@ -101,7 +138,7 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
                     <div
                         className='fail-text-wrap'
                         style={
-                            {display: coffee ? "flex" : "none"}
+                            {display: tabState.coffee ? "flex" : "none"}
                         }
                     >
                         <p>검색 결과가 없습니다.</p>
@@ -110,13 +147,13 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
             }
                 
             {
-                juice && 
+                tabState.juice && 
                 filteredJuice.length !== 0 ?
                 (
                     <div
                         className='menu-wrap'
                         style={
-                            {display: juice ? "grid" : "none"}
+                            {display: tabState.juice ? "grid" : "none"}
                         }
                     >
                         {filteredJuice}
@@ -125,7 +162,7 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
                     <div
                         className='fail-text-wrap'
                         style={
-                            {display: juice ? "flex" : "none"}
+                            {display: tabState.juice ? "flex" : "none"}
                         }
                     >
                         <p>검색 결과가 없습니다.</p>
@@ -134,13 +171,13 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
             }
 
             {
-                dessert && 
+                tabState.dessert && 
                 filteredDessert.length !== 0 ? 
                 (
                     <div
                         className='menu-wrap'
                         style={
-                            {display: dessert ? "grid" : "none" }
+                            {display: tabState.dessert ? "grid" : "none" }
                         }
                     >
                         {filteredDessert}
@@ -149,7 +186,7 @@ const MenuTabItems = ({ coffee, juice, dessert }:tabStateType) => {
                     <div
                         className='fail-text-wrap'
                         style={
-                            {display: dessert ? "flex" : "none"}
+                            {display: tabState.dessert ? "flex" : "none"}
                         }
                     >
                         <p>검색 결과가 없습니다.</p>

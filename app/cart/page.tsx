@@ -147,7 +147,8 @@ const CartPage = () => {
                                         dispatch(delateToCart(item.cartId))
                                     }}
                                 >
-                                    <span></span><span></span>
+                                    <span></span>
+                                    <span></span>
                                 </button>
                             </div>
                             <div className='cart-item'>
