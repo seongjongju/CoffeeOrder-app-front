@@ -22,13 +22,15 @@ type menuType = {
     origin: string;
 };
 
+const BASE_URL = process.env.NEXT_PUBLIC_FRONT_API_URL || 'http://localhost:3000';
+
 const useMenu = () => {
     const results = useSuspenseQueries({
         queries: [
-            { queryKey: ['iceCoffee'], queryFn: () => axios.get(`${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/ice-coffee`).then(res => res.data) },
-            { queryKey: ['hotCoffee'], queryFn: () => axios.get(`${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/hot-coffee`).then(res => res.data) },
-            { queryKey: ['juice'], queryFn: () => axios.get(`${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/juice`).then(res => res.data) },
-            { queryKey: ['dessert'], queryFn: () => axios.get(`${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/dessert`).then(res => res.data) },
+            { queryKey: ['iceCoffee'], queryFn: () => axios.get(`${BASE_URL}/api/ice-coffee`).then(res => res.data) },
+            { queryKey: ['hotCoffee'], queryFn: () => axios.get(`${BASE_URL}/api/hot-coffee`).then(res => res.data) },
+            { queryKey: ['juice'], queryFn: () => axios.get(`${BASE_URL}/api/juice`).then(res => res.data) },
+            { queryKey: ['dessert'], queryFn: () => axios.get(`${BASE_URL}/api/dessert`).then(res => res.data) },
         ],
     });
 
