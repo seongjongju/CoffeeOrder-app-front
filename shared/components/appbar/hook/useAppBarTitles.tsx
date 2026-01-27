@@ -13,6 +13,7 @@ const useAppBarTitles = () => {
         if(pathName === '/userFind/passwordFind') return '비밀번호 변경';
         if(pathName === '/mypage') return '마이페이지';
         if(pathName === '/cart') return '장바구니';
+        if(pathName === '/order/orderHistory') return '주문내역';
         if(pathName.includes("view/iceCoffee") || pathName.includes("view/hotCoffee")) return '커피';
         if(pathName.includes("view/juice")) return '주스';
         if(pathName.includes("view/dessert")) return '디저트';

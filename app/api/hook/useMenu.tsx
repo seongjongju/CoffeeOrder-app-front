@@ -1,6 +1,6 @@
 'use client';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useSuspenseQueries} from '@tanstack/react-query';
 
 type menuType = {
     id: number;
@@ -23,82 +23,42 @@ type menuType = {
 };
 
 const useMenu = () => {
-    const [iceCoffeeState, setIceCoffeeState] = useState<menuType[]>([]); 
-    const [hotCoffeeState, setHotCoffeeState] = useState<menuType[]>([]); 
-    const [juiceState, setJuiceState] = useState<menuType[]>([]); 
-    const [dessertState, setDessertState] = useState<menuType[]>([]); 
+    const isClient = typeof window !== 'undefined';
+    const BASE_URL = process.env.NEXT_PUBLIC_FRONT_API_URL || 'http://localhost:3000';
+    
+    const results = useSuspenseQueries({
+        queries: [
+            { 
+                queryKey: ['iceCoffee'], 
+                queryFn: () => isClient 
+                    ? axios.get(`${BASE_URL}/api/ice-coffee`).then(res => res.data) 
+                    : Promise.resolve([]) 
+            },
+            { 
+                queryKey: ['hotCoffee'], 
+                queryFn: () => isClient 
+                    ? axios.get(`${BASE_URL}/api/hot-coffee`).then(res => res.data) 
+                    : Promise.resolve([]) 
+            },
+            { 
+                queryKey: ['juice'], 
+                queryFn: () => isClient 
+                    ? axios.get(`${BASE_URL}/api/juice`).then(res => res.data) 
+                    : Promise.resolve([]) 
+            },
+            { 
+                queryKey: ['dessert'], 
+                queryFn: () => isClient 
+                    ? axios.get(`${BASE_URL}/api/dessert`).then(res => res.data) 
+                    : Promise.resolve([]) 
+            },
+        ],
+    });
 
-    //아이스 커피
-    useEffect(() => {
-        const iceCoffee = async () => {
-            try{
-                const res = await axios.get('/api/ice-coffee');
-                
-                if(!res || !res.data) return;
-
-                setIceCoffeeState(res.data);
-
-            }catch(err) {
-                console.error("아이스 커피 호출 실패" , err);
-            };
-        };
-
-        iceCoffee();
-    }, []);
-
-    //hot 커피
-    useEffect(() => {
-        const hotCoffee = async () => {
-            try{
-                const res = await axios.get('/api/hot-coffee');
-                
-                if(!res || !res.data) return;
-
-                setHotCoffeeState(res.data);
-
-            }catch(err) {
-                console.error("뜨거운 커피 호출 실패" , err);
-            };
-        };
-
-        hotCoffee();
-    }, []);
-
-    //주스
-    useEffect(() => {
-        const juice = async () => {
-            try{
-                const res = await axios.get('/api/juice');
-                
-                if(!res || !res.data) return;
-
-                setJuiceState(res.data);
-
-            }catch(err) {
-                console.error("주스 호출 실패" , err);
-            };
-        };
-
-        juice();
-    }, [])
-
-    //디저트
-    useEffect(() => {
-        const dessert = async () => {
-            try{
-                const res = await axios.get('/api/dessert');
-                
-                if(!res || !res.data) return;
-
-                setDessertState(res.data);
-
-            }catch(err) {
-                console.error("디저트 호출 실패" , err);
-            };
-        };
-
-        dessert();
-    }, []);
+    const iceCoffeeState = results[0].data as menuType[];
+    const hotCoffeeState = results[1].data as menuType[];
+    const juiceState = results[2].data as menuType[];
+    const dessertState = results[3].data as menuType[];
 
     //전체메뉴
     const menus = [...iceCoffeeState, ...hotCoffeeState, ...juiceState, ...dessertState];

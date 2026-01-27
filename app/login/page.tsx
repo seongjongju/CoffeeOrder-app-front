@@ -86,12 +86,16 @@ const LoginPage = () => {
 
             return;
         } catch(err: any) {
-            if(err.response?.status === 400) {
-                setModalText('아이디 또는 비밀번호가 일치하지 않습니다.');
-                setModalShow(true);
-                return;
+            if (err.response && err.response.data) {
+                setModalText(err.response.data.message); 
             } 
-            console.error('로그인 서버 오류', err);
+            else {
+                setModalText('서버와 통신 중 오류가 발생했습니다.');
+                console.error('로그인 서버 오류', err);
+            }
+
+            setModalShow(true);
+            return;
         };
     };
 
