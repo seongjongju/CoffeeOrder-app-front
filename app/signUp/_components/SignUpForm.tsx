@@ -7,9 +7,10 @@ import FormField from '@/shared/components/formField/FormField';
 import useModalShow from '@/features/modal/hook/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import { validations } from '@/shared/vaildation/Validation';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { signUpApi } from '@/features/services/signUp.services';
+import { signUpActionApi } from '@/features/actions/signUp.action';
 
 const SignUpForm = () => {
     const {signUpState, signUpInputChange, signUpInputReset} = useSignUpInputState();
@@ -39,16 +40,17 @@ const SignUpForm = () => {
         }
 
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/check-id`,{
-                params: {id: signUpState.id}
-            });
-            if(res.data.isTaken) setModalText('이미 사용중인 아이디입니다.');
+            const data = await signUpApi.checkingId(signUpState.id);
+            
+            if(data.isTaken) setModalText('이미 사용중인 아이디입니다.');
             else setModalText('사용 가능한 아이디입니다.');
             setModalShow(true);
             setIsIdChecked(true);
             return;
         }catch(err: any) {
             console.error('아이디 중복확인 서버 오류', err);
+            setModalText('아이디 중복확인 서버 오류');
+            setModalShow(true);
             return;
         }
     };
@@ -56,10 +58,9 @@ const SignUpForm = () => {
     //이메일 중복검사
     const emailDuplicationCheck = async () => {
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/check-email`,{
-                params: {email: signUpState.email}
-            });
-            if(res.data.isTaken) {
+            const data = await signUpApi.checkingEmail(signUpState.email);
+
+            if(data.isTaken) {
                 setModalText('이미 가입된 이메일입니다.');
                 setModalShow(true);
                 return false;
@@ -68,7 +69,9 @@ const SignUpForm = () => {
             return true;
         } catch(err) {
             console.error('이메일 중복확인 서버 오류', err);
-            return false;
+            setModalText('이메일 중복확인 서버 오류');
+            setModalShow(true);
+            return;
         };
     };
 
@@ -89,9 +92,7 @@ const SignUpForm = () => {
             setModalText('인증번호 발송 중… 소요시간 최대 1분');
             setModalShow(true);
 
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/mail`, 
-                {email: signUpState.email}
-            );
+            await signUpApi.certificationEmail(signUpState.email);
 
             return;
         }catch(err: any) {
@@ -113,21 +114,21 @@ const SignUpForm = () => {
         }
 
         try{
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/certification-check`,
-                {   email: signUpState.email,
-                    certificationNumber: signUpState.certificationNumber
-                }
+            const data = await signUpApi.checkingCertificationNumber(
+                signUpState.email, 
+                signUpState.certificationNumber
             );
 
-            setModalText(res.data.message);
+            setModalText(data.message);
             setModalShow(true);
 
-            if(res.status === 200) {
-                setIsCertificationChecked(true);
-            }
+            setIsCertificationChecked(true);
+
             return;
         } catch(err:any) {
-            console.log('인증번호 확인 서버 오류', err);
+            console.error('인증번호 확인 서버 오류', err);
+            setModalText('인증번호 확인 서버 오류');
+            setModalShow(true);
             return;
         }
     };
@@ -151,21 +152,22 @@ const SignUpForm = () => {
         }
 
         try {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/register`, 
-                {
-                    id: signUpState.id,
-                    password: signUpState.password,
-                    name: signUpState.name,
-                    phoneNumber: signUpState.phoneNumber,
-                    email: signUpState.email,
-                    certificationNumber: signUpState.certificationNumber,
-                    birth: signUpState.birth
-                }
+            await signUpActionApi.submitSignUp(
+                signUpState.id,
+                signUpState.password,
+                signUpState.name,
+                signUpState.phoneNumber,
+                signUpState.email,
+                signUpState.certificationNumber,
+                signUpState.birth
             );
 
             router.push('/signUpFinish');
         } catch(err: any) {
             console.error('회원가입 서버오류', err);
+            setModalText('회원가입 서버오류');
+            setModalShow(true);
+            return;
         };
     };
 
