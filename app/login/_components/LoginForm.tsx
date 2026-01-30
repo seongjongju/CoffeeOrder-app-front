@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
@@ -98,7 +99,7 @@ const LoginForm = () => {
 
     return (
         <>
-           <div className='auth-container'>
+            <div className='auth-container'>
                 <div className='auth-top'>
                     <Image src={mascot} alt='마스코트' />
                     <p className='auth-text'>
@@ -130,7 +131,7 @@ const LoginForm = () => {
                     />
                     <div className='auth-links'>
                         <Link href={'/userFind/idFind'} >아이디 찾기</Link>
-                        <Link href={'/userFind/passwordFind'} >비밀번호 찾기</Link>
+                        <Link href={'/userFind/passwordFind'} >비밀번호 변경</Link>
                         <Link href={'/policy'} >회원가입</Link>
                     </div>
                 </form> 

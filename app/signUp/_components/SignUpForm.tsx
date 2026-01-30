@@ -9,8 +9,8 @@ import Modal from '@/shared/components/modal/Modal';
 import { validations } from '@/shared/vaildation/Validation';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { signUpApi } from '@/features/services/signUp.services';
-import { signUpActionApi } from '@/features/actions/signUp.action';
+import { signUpApi } from '@/features/services/signUp/signUp.services';
+import { signUpActionApi } from '@/features/actions/signUp/signUp.action';
 
 const SignUpForm = () => {
     const {signUpState, signUpInputChange, signUpInputReset} = useSignUpInputState();

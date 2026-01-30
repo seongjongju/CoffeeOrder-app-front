@@ -3,7 +3,7 @@ import '@/shared/styled/authStyle/authStyle.css';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import { Suspense } from 'react';
-import FindIdResult from '@/features/userFind/components/FindIdResult';
+import FindIdResult from '@/app/userFind/idFindResult/_components/FindIdResult';
 
 const IdFindResultPage = () => {
     return (
