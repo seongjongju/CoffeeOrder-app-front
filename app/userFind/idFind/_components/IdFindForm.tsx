@@ -6,7 +6,7 @@ import Button from '@/shared/components/button/Button';
 import FindInput from '@/app/userFind/_components/FindInput';
 import { useState } from 'react';
 import { validations } from '@/shared/vaildation/Validation';
-import useModalShow from '@/features/modal/hook/useModalShow';
+import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import { useRouter } from 'next/navigation';
 import { userFindActionApi } from '@/features/actions/userFind/userFind.action';
@@ -38,9 +38,9 @@ const IdFindForm = () => {
         try {
             const data = await userFindActionApi.submitFindId(findIdInput);
             router.push(`/userFind/idFindResult?userId=${data.userId}`);
-        } catch(err) {
+        } catch(err: any) {
             console.error(err);
-            setModalText('가입되지 않은 이메일입니다.');
+            setModalText(err.response?.data?.message);
             setModalShow(true);
             return;
         } 

@@ -1,5 +1,5 @@
 import '@/shared/styled/main/main.css';
-import MenuTabItems from '@/features/menuTab/components/MenuTabItems';
+import MenuTabItems from '@/app/main/_components/MenuTabItems';
 import Suggestion from './_components/Suggestion';
 import MainVisual from './_components/MainVisual';
 

@@ -1,5 +1,5 @@
 'use client';
-import useMenu from '@/features/menu/hook/useMenu';
+import useMenu from '@/features/hooks/menu/useMenu';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import React from 'react';

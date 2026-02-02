@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import '@/shared/styled/main/main.css';
 import React, { useEffect, useState } from 'react';
-import useMenu from '@/features/menu/hook/useMenu';
+import useMenu from '@/features/hooks/menu/useMenu';
 import { useRouter } from 'next/navigation';
 
 const MenuTabItems = () => {

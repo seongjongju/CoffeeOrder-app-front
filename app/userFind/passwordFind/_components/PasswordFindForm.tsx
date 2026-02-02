@@ -4,7 +4,7 @@ import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import FindInput from '@/app/userFind/_components/FindInput';
 import Button from '@/shared/components/button/Button';
-import useModalShow from '@/features/modal/hook/useModalShow';
+import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import { validations } from '@/shared/vaildation/Validation';
 import { useRouter } from 'next/navigation';
@@ -82,29 +82,23 @@ const PasswordFindForm = () => {
         try {
             const data = await userFindApi.certificationUser(userId, userPhoneNumber);
 
-            if(data.status === "fail") {
-                setModalText('아이디 또는 휴대폰 번호가 일치하는 정보가 없습니다.');
-                setModalShow(true);
-                return;
-            }
-
             //유저정보가 일치하면 비밀번호 변경
             if(data.status === "success") {
                 try{
                     await userFindActionApi.changedPassword(userId, newPwd);
 
-                    setModalText('비밀번호가 변경되었습니다.');
+                    setModalText(data.message);
                     setModalShow(true);
-                } catch(err) {
+                } catch(err: any) {
                     console.error(err);
-                    setModalText('비밀번호 변경 서버 오류');
+                    setModalText(err.response?.data?.message);
                     setModalShow(true);
                     return;
                 }
             }
-        } catch(err) {
+        } catch(err: any) {
             console.error(err);
-            setModalText('유저 인증 서버 오류');
+            setModalText(err.response?.data?.message);
             setModalShow(true);
             return;
         }

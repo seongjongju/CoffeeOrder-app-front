@@ -1,6 +1,6 @@
 'use client';
-import { useAppSelector } from '@/app/store/hook';
-import { RootState } from '@/app/store/store';
+import { useAppSelector } from '@/store/hook';
+import { RootState } from '@/store/store';
 import React, { useEffect, useState } from 'react';
 
 const useCartQuantity = () => {

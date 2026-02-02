@@ -1,9 +1,9 @@
 'use client';
 import React, { useEffect } from 'react';
-import { resetOption, setOption } from '@/features/view/store/optionSlice';
-import useMenu from '../../features/menu/hook/useMenu';
+import { resetOption, setOption } from '@/store/view/optionSlice';
+import useMenu from '../../features/hooks/menu/useMenu';
 import { useParams } from 'next/navigation';
-import { useAppDispatch } from '../store/hook';
+import { useAppDispatch } from '../../store/hook';
 
 const OptionProvider = () => {
     const {menus} = useMenu();

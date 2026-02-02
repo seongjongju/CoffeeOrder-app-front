@@ -6,12 +6,12 @@ import FormField from '@/shared/components/formField/FormField';
 import Button from '@/shared/components/button/Button';
 import Link from 'next/link';
 import { validations } from '@/shared/vaildation/Validation';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/app/store/hook';
-import { loginSuccess } from '@/features/login/store/authSlice';
-import useModalShow from '@/features/modal/hook/useModalShow';
+import { useAppDispatch } from '@/store/hook';
+import { loginSuccess } from '@/store/login/authSlice';
+import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
+import { loginActionApi } from '@/features/actions/login/login.action';
 
 const LoginForm = () => {
     const [userId, setUserId] = useState('');
@@ -62,36 +62,21 @@ const LoginForm = () => {
         }
 
         try{
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/login`, 
-                {
-                    id: userId,
-                    password: userPwd
-                },
-                {withCredentials: true}
-            );
-
-            if(res.status === 200) {
+            const data = await loginActionApi.submitLogin(userId, userPwd);
+            if(data.status === "success") {
                 dispatch(loginSuccess({
-                    _id: res.data.user._id,
-                    id: res.data.user.id,
-                    name: res.data.user.name,
-                    phoneNumber: res.data.user.phoneNumber,
-                    email: res.data.user.email,
-                    birth: res.data.user.birth
+                    _id: data.user._id,
+                    id: data.user.id,
+                    name: data.user.name,
+                    phoneNumber: data.user.phoneNumber,
+                    email: data.user.email,
+                    birth: data.user.birth
                 }));
                 router.push('/main');
-            };
-
-            return;
+            }; 
         } catch(err: any) {
-            if (err.response && err.response.data) {
-                setModalText(err.response.data.message); 
-            } 
-            else {
-                setModalText('서버와 통신 중 오류가 발생했습니다.');
-                console.error('로그인 서버 오류', err);
-            }
-
+            console.error(err);
+            setModalText(err.response?.data?.message);
             setModalShow(true);
             return;
         };
@@ -131,7 +116,7 @@ const LoginForm = () => {
                     />
                     <div className='auth-links'>
                         <Link href={'/userFind/idFind'} >아이디 찾기</Link>
-                        <Link href={'/userFind/passwordFind'} >비밀번호 변경</Link>
+                        <Link href={'/userFind/passwordFind'} >비밀번호 찾기/변경</Link>
                         <Link href={'/policy'} >회원가입</Link>
                     </div>
                 </form> 

@@ -1,16 +1,16 @@
 'use client';
-import useMenu from '@/features/menu/hook/useMenu';
+import useMenu from '@/features/hooks/menu/useMenu';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import '@/shared/styled/view/view.css';
 import '@/shared/styled/policyStyle/policyStyle.css';
 import plusIco from '@/public/icons/view_plus.svg';
 import minusIco from '@/public/icons/view_minus.svg';
-import OrderBar from '@/features/view/component/OrderBar';
-import useOptions from '@/features/view/hook/useOptions';
-import { useAppSelector } from '@/app/store/hook';
+import OrderBar from '../../_components/OrderBar';
+import useOptions from '@/features/hooks/view/useOptions';
+import { useAppSelector } from '@/store/hook';
 import LoadingUi from '@/shared/components/loading/LoadingUi';
-import useLoading from '@/shared/components/loading/hook/useLoading';
+import useLoading from '@/features/hooks/loading/useLoading';
 
 const ViewPage = () => {
     const {isLoading} = useLoading();

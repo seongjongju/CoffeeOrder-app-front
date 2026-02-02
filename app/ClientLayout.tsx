@@ -2,12 +2,12 @@
 import { usePathname } from 'next/navigation';
 import React, { useEffect, Suspense } from 'react';
 import { Provider } from "react-redux";
-import { persistor, store } from "./store/store";
+import { persistor, store } from "../store/store";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import MainAppBar from '@/shared/components/appbar/MainAppBar';
-import AppBar from '@/shared/components/appbar/AppBar';
+import MainAppBar from '@/shared/components/appBar/MainAppBar';
+import AppBar from '@/shared/components/appBar/AppBar';
 import OptionProvider from './globalProvider/OptionProvider';
 import LoadingUi from '@/shared/components/loading/LoadingUi'; 
 import { PersistGate } from 'redux-persist/integration/react';

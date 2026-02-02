@@ -1,6 +1,6 @@
 'use client';
-import { useAppSelector, useAppDispatch } from '@/app/store/hook';
-import { setOption } from '@/features/view/store/optionSlice';
+import { useAppSelector, useAppDispatch } from '@/store/hook';
+import { setOption } from '@/store/view/optionSlice';
 import { useState } from 'react';
 
 const useOptions = () => {

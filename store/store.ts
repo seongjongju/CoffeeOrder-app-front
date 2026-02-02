@@ -10,9 +10,9 @@ import {
     PURGE,
     REGISTER,
 } from 'redux-persist';
-import authReducer from '@/features/login/store/authSlice';
-import optionReducer from '@/features/view/store/optionSlice';
-import cartReducer from '@/features/cart/store/cartSlice';
+import authReducer from '@/store/login/authSlice';
+import optionReducer from '@/store/view/optionSlice';
+import cartReducer from '@/store/cart/cartSlice';
 
 const persistConfig = {
     key: 'root', 

@@ -1,10 +1,10 @@
 'use client';
-import useSignUpInputState from '@/features/signUp/hook/useSignUpInputState';
-import useSignUpValidation from '@/features/signUp/hook/useSignUpValidation';
+import useSignUpInputState from '@/features/hooks/signUp/useSignUpInputState';
+import useSignUpValidation from '@/features/hooks/signUp/useSignUpValidation';
 import Button from '@/shared/components/button/Button';
 import CertificationFormField from '@/shared/components/formField/CertificationFormField';
 import FormField from '@/shared/components/formField/FormField';
-import useModalShow from '@/features/modal/hook/useModalShow';
+import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import { validations } from '@/shared/vaildation/Validation';
 import { useRouter } from 'next/navigation';
@@ -42,16 +42,19 @@ const SignUpForm = () => {
         try {
             const data = await signUpApi.checkingId(signUpState.id);
             
-            if(data.isTaken) setModalText('이미 사용중인 아이디입니다.');
-            else setModalText('사용 가능한 아이디입니다.');
+            if(data.isTaken) {
+                setModalText(data.message);
+                setModalShow(true);
+                return;
+            } 
+
+            setModalText(data.message);
             setModalShow(true);
             setIsIdChecked(true);
-            return;
         }catch(err: any) {
-            console.error('아이디 중복확인 서버 오류', err);
-            setModalText('아이디 중복확인 서버 오류');
+            console.error(err.message);
+            setModalText("아이디 중복 검사 서버 오류");
             setModalShow(true);
-            return;
         }
     };
 
@@ -61,17 +64,16 @@ const SignUpForm = () => {
             const data = await signUpApi.checkingEmail(signUpState.email);
 
             if(data.isTaken) {
-                setModalText('이미 가입된 이메일입니다.');
+                setModalText(data.message);
                 setModalShow(true);
-                return false;
+                return;
             } 
 
             return true;
-        } catch(err) {
-            console.error('이메일 중복확인 서버 오류', err);
-            setModalText('이메일 중복확인 서버 오류');
+        } catch(err: any) {
+            console.error("이메일 중복 검사 서버 오류");
+            setModalText("이메일 중복 검사 서버 오류");
             setModalShow(true);
-            return;
         };
     };
 
@@ -81,24 +83,22 @@ const SignUpForm = () => {
         if(!validations.emailRegex.test(signUpState.email.trim())) {
             setModalText('이메일을 확인해 주세요.');
             setModalShow(true);
-            return false;
+            return;
         };     
 
         try {
             const isAvailable = await emailDuplicationCheck();
-            if(!isAvailable) return false;
+            if(!isAvailable) return;
 
             setIsLoading(true);
-            setModalText('인증번호 발송 중… 소요시간 최대 1분');
+
+            const data = await signUpApi.certificationEmail(signUpState.email);
+            setModalText(data.message);
             setModalShow(true);
-
-            await signUpApi.certificationEmail(signUpState.email);
-
-            return;
         }catch(err: any) {
-            console.error('인증번호 발송 서버 오류', err);
-            setModalText('서버 오류로 인증번호 전송 실패');
-            return false;
+            console.error(err);
+            setModalText(err.response?.data?.message);
+            setModalShow(true);
         } finally {
             setIsLoading(false);
         }
@@ -119,15 +119,25 @@ const SignUpForm = () => {
                 signUpState.certificationNumber
             );
 
+            if(data.status === "expired") {
+                setModalText(data.message);
+                setModalShow(true);
+                return;
+            }
+
+            if(data.status === "fail") {
+                setModalText(data.message);
+                setModalShow(true);
+                return;
+            }
+
             setModalText(data.message);
             setModalShow(true);
 
             setIsCertificationChecked(true);
-
-            return;
         } catch(err:any) {
-            console.error('인증번호 확인 서버 오류', err);
-            setModalText('인증번호 확인 서버 오류');
+            console.error(err);
+            setModalText(err.response?.data?.message);
             setModalShow(true);
             return;
         }
@@ -164,8 +174,8 @@ const SignUpForm = () => {
 
             router.push('/signUpFinish');
         } catch(err: any) {
-            console.error('회원가입 서버오류', err);
-            setModalText('회원가입 서버오류');
+            console.error(err);
+            setModalText(err.response?.data?.message);
             setModalShow(true);
             return;
         };

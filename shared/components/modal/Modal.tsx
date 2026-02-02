@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import '@/shared/styled/modal/modal.css';
-import Button from '../button/Button';
+import Button from '../../components/button/Button';
 import { usePathname, useRouter } from 'next/navigation';
 
 interface ModalProps {

@@ -6,14 +6,14 @@ import logo from '@/public/images/logo.svg';
 import cart from '@/public/images/cart.svg';
 import alert from '@/public/images/alert.svg';
 import menu from '@/public/images/menu.svg';
-import CategorySideGnb from '../sideGnb/CategorySideGnb';
+import CategorySideGnb from '../side/CategorySideGnb';
 import BackIco from '@/public/icons/back_ico.png';
 import { usePathname, useRouter } from 'next/navigation';
 import '@/shared/styled/appBar/appBar.css';
 import '@/shared/styled/cart/cart.css';
-import useAppBarTitles from '../../../features/appBar/hook/useAppBarTitles';
-import useCartQuantity from '@/features/cart/hook/useCartQuantity';
-import SideAlert from '../sideAlert/SideAlert';
+import useAppBarTitles from '../../../features/hooks/appBar/useAppBarTitles';
+import useCartQuantity from '@/features/hooks/cart/useCartQuantity';
+import SideAlert from '../side/SideAlert';
 
 const MainAppBar = () => {
     const [categorySideOn, setCategorySideOn] = useState<boolean>(false);

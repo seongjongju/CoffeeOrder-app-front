@@ -4,7 +4,7 @@ import '@/shared/styled/mypage/mypage.css';
 import logo from '@/public/images/logo.svg';
 import linkArrow from '@/public/icons/mypage_link_arrow.png';
 import Image from 'next/image';
-import { useAppSelector } from '../store/hook';
+import { useAppSelector } from '../../store/hook';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';

@@ -1,14 +1,14 @@
 'use client';
 import '@/shared/styled/cart/cart.css';
-import { useAppDispatch, useAppSelector } from '../store/hook';
+import { useAppDispatch, useAppSelector } from '../../store/hook';
 import plusIco from '@/public/icons/view_plus.svg';
 import minusIco from '@/public/icons/view_minus.svg';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
-import { allDeleteCart, decrementToCart, delateToCart, incrementToCart } from '@/features/cart/store/cartSlice';
-import useLoading from '@/shared/components/loading/hook/useLoading';
+import { allDeleteCart, decrementToCart, delateToCart, incrementToCart } from '@/store/cart/cartSlice';
+import useLoading from '@/features/hooks/loading/useLoading';
 import LoadingUi from '@/shared/components/loading/LoadingUi';
-import useCartQuantity from '@/features/cart/hook/useCartQuantity';
+import useCartQuantity from '@/features/hooks/cart/useCartQuantity';
 import React from 'react';
 // 결제 관련 임포트 추가
 import * as PortOne from "@portone/browser-sdk/v2";

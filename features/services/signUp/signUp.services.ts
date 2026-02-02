@@ -24,6 +24,7 @@ export const signUpApi = {
         return data;
     },
 
+    //이메일 인증번호 발송
     certificationEmail: async (email: string) => {
         const {data} = await api.post('/api/users/mail', 
             {email}
@@ -32,7 +33,7 @@ export const signUpApi = {
         return data;
     },
 
-    //인증번호
+    //인증번호 검사
     checkingCertificationNumber: async (email: string, certificationNumber: string) => {
         const {data} = await api.post('/api/users/certification-check',
             {
