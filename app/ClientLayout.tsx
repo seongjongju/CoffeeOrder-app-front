@@ -6,12 +6,12 @@ import { persistor, store } from "../store/store";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import MainAppBar from '@/shared/components/appBar/MainAppBar';
-import AppBar from '@/shared/components/appBar/AppBar';
 import OptionProvider from './globalProvider/OptionProvider';
 import LoadingUi from '@/shared/components/loading/LoadingUi'; 
 import { PersistGate } from 'redux-persist/integration/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AppBar from '@/shared/components/appBar/AppBar';
+import MainAppBar from '@/shared/components/appBar/MainAppBar';
 
 const queryClient = new QueryClient();
 
