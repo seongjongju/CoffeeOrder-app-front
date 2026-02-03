@@ -10,7 +10,7 @@ import {
     PURGE,
     REGISTER,
 } from 'redux-persist';
-import authReducer from '@/store/login/authSlice';
+import authReducer from '@/store/auth/authSlice';
 import optionReducer from '@/store/view/optionSlice';
 import cartReducer from '@/store/cart/cartSlice';
 

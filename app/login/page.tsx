@@ -5,7 +5,7 @@ import { validations } from '@/shared/vaildation/Validation';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '../../store/hook';
-import { loginSuccess } from '@/store/login/authSlice';
+import { loginSuccess } from '@/store/auth/authSlice';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import LoginForm from './_components/LoginForm';
 

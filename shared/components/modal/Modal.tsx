@@ -24,6 +24,8 @@ const Modal = ({ modalShow, setModalShow, modalText, setModalText } : ModalProps
                 return;
             } else if (modalText === '비밀번호가 변경되었습니다.') {
                 router.push('/login');
+            } else if(modalText === '로그아웃이 완료되었습니다.') {
+                router.push('/');
             }
         };
     }; 

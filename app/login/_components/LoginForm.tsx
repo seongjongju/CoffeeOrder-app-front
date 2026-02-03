@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { validations } from '@/shared/vaildation/Validation';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/store/hook';
-import { loginSuccess } from '@/store/login/authSlice';
+import { loginSuccess } from '@/store/auth/authSlice';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import { loginActionApi } from '@/features/actions/login/login.action';

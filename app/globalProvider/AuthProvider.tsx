@@ -1,5 +1,5 @@
 'use client';
-import { loginSuccess, logout } from "@/store/login/authSlice";
+import { loginSuccess, logout } from "@/store/auth/authSlice";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
