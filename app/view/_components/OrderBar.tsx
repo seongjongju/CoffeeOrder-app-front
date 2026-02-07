@@ -107,7 +107,7 @@ const OrderBar = ({ menuName, img, menuId }: optionType) => {
                     isCart: false,
                     items: [
                         {
-                            productId: menuId, // 상위에서 product 정보를 받아와서 넣어주세요
+                            productId: menuId,
                             name: menuName,
                             quantity: count, // 선택한 수량 반영
                             price: price + optionPrice, // 옵션이 포함된 개당 단가
