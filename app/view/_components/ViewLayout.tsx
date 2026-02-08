@@ -32,8 +32,6 @@ const ViewLayout = () => {
     //타입이 일치하면 고유 아이디 찾기
     const menuIdFind = menuTypeFiltered.find(menu => menu.id === Number(params.id));
 
-    console.log(menuIdFind?.info)
-
     {
         if(menuIdFind === undefined || isLoading) 
         return (<LoadingUi />)

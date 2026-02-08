@@ -78,3 +78,69 @@
     background: #ddd;
     color: #222;
 }
+
+.order-view {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    margin-bottom: 15px;
+}
+
+.order-view:last-child {
+    margin-bottom: 0;
+}
+
+.order-view__heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.order-view__intro .history__date {
+    margin-bottom: 0;
+}
+
+.order-view__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 8px;
+}
+
+.order-view__item--total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.order-view__list {
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+    margin-bottom: 8px;
+}
+
+.order-view__li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.order-view__li:last-child {
+    margin-bottom: 0;
+}
+
+.order-view__total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.order-view__total-price {
+    font-weight: 600;
+    color: #4A87E3;
+}

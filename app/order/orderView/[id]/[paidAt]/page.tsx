@@ -1,15 +1,16 @@
+import React from 'react';
 import '@/shared/styled/order/order.css';
+import OrderViewLayout from '../../_components/OrderViewLayout';
 import { cookies } from 'next/headers';
-import OrderHisyoryList from './_components/OrderHisyoryList';
 import { orderApi } from '@/features/services/order/order.services';
 
-const OrderHistoryPage = async () => {
+const OrderViewPage = async () => {
     const cookieStore = await cookies();
     const orderHistory = await orderApi.getOrderHistory(cookieStore);
 
     return (
-        <OrderHisyoryList orderHistory={orderHistory} />
+        <OrderViewLayout orderHistory={orderHistory} />
     );
 };
 
-export default OrderHistoryPage
+export default OrderViewPage;

@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
+import { useRouter } from 'next/navigation';
 
 interface OrderItem {
     id: string; 
@@ -12,6 +13,7 @@ interface HistorysType {
     totalPrice: number;
     items: OrderItem[];
     paidAt: string;
+    _id: string;
 }
 
 interface OrderHistoryListProps {
@@ -19,6 +21,7 @@ interface OrderHistoryListProps {
 }
 
 const OrderHisyoryList = ({ orderHistory }:OrderHistoryListProps) => {
+    const route = useRouter();
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -66,7 +69,14 @@ const OrderHisyoryList = ({ orderHistory }:OrderHistoryListProps) => {
                                     )
                                 }
                                 <div className='history__btns'>
-                                    <button className='history__button view'>주문상세</button>
+                                    <button 
+                                        className='history__button view'
+                                        onClick={() => {
+                                            route.push(`/order/orderView/${his._id}/${formatDate(his.paidAt)}`);
+                                        }}
+                                    >
+                                        주문상세
+                                    </button>
                                 </div>
                             </div>
                         ))
