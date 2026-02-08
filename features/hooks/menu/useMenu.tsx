@@ -24,7 +24,7 @@ type menuType = {
 
 const useMenu = () => {
     const isClient = typeof window !== 'undefined';
-    const BASE_URL = process.env.NEXT_PUBLIC_FRONT_API_URL || 'http://localhost:3000';
+    const BASE_URL = process.env.NEXT_PUBLIC_FRONT_API_URL;
     
     const results = useSuspenseQueries({
         queries: [
