@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import LoadingUi from '@/shared/components/loading/LoadingUi';
+import Image from 'next/image';
+import mascot from '@/public/images/mascot.png';
 
 interface OrderItem {
     id: string; 
@@ -93,7 +95,10 @@ const OrderHistoryList = () => {
         <main className={orderHistory.length !== 0 ? 'main order-main' : 'main cart-null'}>
             <div className='inner'>
                 {orderHistory.length === 0 ? (
-                    <p>주문 내역이 없습니다.</p>
+                    <div className='cart-null__ui'>
+                        <Image src={mascot} alt='마스코트' />
+                        <p className='cart-null__text'>주문내역이 없습니다!!</p>
+                    </div>
                 ) : (
                     <div className='history'>
                         {orderHistory.map((his) => (
