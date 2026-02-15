@@ -83,6 +83,7 @@ const OrderBar = ({ menuName, img, menuId }: optionType) => {
             orderName: count > 1 ? `${menuName} ${count}개` : menuName,
             totalAmount: totalPrice, // 옵션과 수량이 포함된 최종가
             currency: "CURRENCY_KRW",
+            redirectUrl: `${window.location.origin}/order/orderFinish`,
             payMethod: "EASY_PAY",
             customer: {
                 customerId: users.user?.id,

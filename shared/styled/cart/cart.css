@@ -5,8 +5,7 @@
 }
 
 .cart-inner {
-    height: calc(100vh - 78px - 60px);
-    padding-bottom: 30px;
+    height: calc(100vh - 122px - 60px);
 }
 
 .cart-reset {

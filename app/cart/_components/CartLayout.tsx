@@ -81,6 +81,7 @@ const CartLayout = () => {
                 : cartItems.items[0].menuName,
             totalAmount: totalCartAmount,
             currency: "CURRENCY_KRW",
+            redirectUrl: `${window.location.origin}/order/orderFinish`,
             payMethod: "EASY_PAY",
             customer: {
                 customerId: users.user?.id,
