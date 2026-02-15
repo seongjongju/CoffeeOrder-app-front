@@ -14,7 +14,7 @@ export const orderApi = {
             headers.Cookie = cookieStore.toString();
         }
 
-        const { data } = await api.get('/api/myOrder/myOrder', {
+        const { data } = await api.get('/api/myOrder', {
             headers,
             withCredentials: !cookieStore,
         });
