@@ -66,7 +66,9 @@ const OrderBar = ({ menuName, img, menuId }: optionType) => {
         e.preventDefault();
 
         const storeId = process.env.NEXT_PUBLIC_PORTONE_STORE_ID;
+        console.log("체크:", process.env.NEXT_PUBLIC_PORTONE_STORE_ID);
         const channelKey = process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
+        console.log("체크:", process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY);
 
         if (!storeId || !channelKey) {
             alert("결제 설정이 누락되었습니다.");
