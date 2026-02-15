@@ -6,6 +6,7 @@
 
 .cart-inner {
     height: calc(100vh - 78px - 60px);
+    padding-bottom: 30px;
 }
 
 .cart-reset {

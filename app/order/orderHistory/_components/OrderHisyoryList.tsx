@@ -24,7 +24,6 @@ const OrderHistoryList = () => {
     const router = useRouter();
     const [orderHistory, setOrderHistory] = useState<HistorysType[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -41,11 +40,6 @@ const OrderHistoryList = () => {
                 setOrderHistory(data);
             } catch (err: any) {
                 console.error('주문 내역 로딩 실패:', err);
-                if (err.response?.status === 401) {
-                    setError('로그인이 필요합니다.');
-                } else {
-                    setError('주문 내역을 불러올 수 없습니다.');
-                }
             } finally {
                 setIsLoading(false);
             }
@@ -65,30 +59,6 @@ const OrderHistoryList = () => {
 
     if (isLoading) {
         return <LoadingUi />;
-    }
-
-    if (error) {
-        return (
-            <main className='main cart-null'>
-                <div className='inner'>
-                    <p>{error}</p>
-                    <button 
-                        onClick={() => router.push('/login')}
-                        style={{
-                            marginTop: '20px',
-                            padding: '10px 20px',
-                            background: '#333',
-                            color: '#fff',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        로그인하러 가기
-                    </button>
-                </div>
-            </main>
-        );
     }
 
     return (
