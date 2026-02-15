@@ -12,14 +12,14 @@
     width: 100%;
     height: 100%;
     background: #2B1B16;
-    padding: 150px 30px;
+    padding: 194px 30px;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
 .side-gnb.side-alert {
-    padding: 60px 10px 0;
+    padding: 104px 10px 0;
     overflow: auto;
     display: block;
 }
@@ -34,7 +34,7 @@
 
 .side-gnb-close-btn {
     position: absolute;
-    top: 20px;
+    top: 64px;
     right: 20px;
     width: 25px;
     height: 25px;
