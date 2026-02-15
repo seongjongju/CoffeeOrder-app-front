@@ -1,6 +1,8 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import LoadingUi from '@/shared/components/loading/LoadingUi';
 
 interface OrderItem {
     id: string; 
@@ -16,12 +18,39 @@ interface HistorysType {
     _id: string;
 }
 
-interface OrderHistoryListProps {
-    orderHistory: HistorysType[];
-}
+const OrderHistoryList = () => {
+    const router = useRouter();
+    const [orderHistory, setOrderHistory] = useState<HistorysType[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
 
-const OrderHisyoryList = ({ orderHistory }:OrderHistoryListProps) => {
-    const route = useRouter();
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const { data } = await axios.get(
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/myOrder`,
+                    {
+                        headers: {
+                            'ngrok-skip-browser-warning': 'true'
+                        },
+                        withCredentials: true
+                    }
+                );
+                setOrderHistory(data);
+            } catch (err: any) {
+                console.error('주문 내역 로딩 실패:', err);
+                if (err.response?.status === 401) {
+                    setError('로그인이 필요합니다.');
+                } else {
+                    setError('주문 내역을 불러올 수 없습니다.');
+                }
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchOrders();
+    }, []);
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -32,59 +61,84 @@ const OrderHisyoryList = ({ orderHistory }:OrderHistoryListProps) => {
         return `${year}.${month}.${day}`;
     };
 
+    if (isLoading) {
+        return <LoadingUi />;
+    }
+
+    if (error) {
+        return (
+            <main className='main cart-null'>
+                <div className='inner'>
+                    <p>{error}</p>
+                    <button 
+                        onClick={() => router.push('/login')}
+                        style={{
+                            marginTop: '20px',
+                            padding: '10px 20px',
+                            background: '#333',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        로그인하러 가기
+                    </button>
+                </div>
+            </main>
+        );
+    }
+
     return (
         <main className={orderHistory.length !== 0 ? 'main order-main' : 'main cart-null'}>
             <div className='inner'>
-                <div className='history'>
-                    {
-                        orderHistory.map((his) => (
+                {orderHistory.length === 0 ? (
+                    <p>주문 내역이 없습니다.</p>
+                ) : (
+                    <div className='history'>
+                        {orderHistory.map((his) => (
                             <div key={his.paymentId} className='history__item'>
                                 <p className='history__date'>
                                     {formatDate(his.paidAt)}
                                 </p>
-                                {   
-                                    his.items &&
-                                    his.items.length > 1 ?
-                                    (
-                                        <div className='history__top'>
-                                            <div className='history__img'>
-                                                <img src={his.items[0].img} alt={his.items[0].name} className='history__image' />
-                                            </div>
-                                            <div className='history__detail'>
-                                                <p className='history__name'>{his.items[0].name} 외 {his.items.length - 1}개</p>
-                                                <p className='history__pay'>{his.totalPrice.toLocaleString()}원 결제</p>
-                                            </div>
+                                {his.items && his.items.length > 1 ? (
+                                    <div className='history__top'>
+                                        <div className='history__img'>
+                                            <img src={his.items[0].img} alt={his.items[0].name} className='history__image' />
                                         </div>
-                                    ) : 
-                                    (
-                                        <div className='history__top'>
-                                            <div className='history__img'>
-                                                <img src={his.items[0].img} alt={his.items[0].name} className='history__image' />
-                                            </div>
-                                            <div className='history__detail'>
-                                                <p className='history__name'>{his.items[0].name}</p>
-                                                <p className='history__pay'>{his.totalPrice.toLocaleString()}원 결제</p>
-                                            </div>
+                                        <div className='history__detail'>
+                                            <p className='history__name'>{his.items[0].name} 외 {his.items.length - 1}개</p>
+                                            <p className='history__pay'>{his.totalPrice.toLocaleString()}원 결제</p>
                                         </div>
-                                    )
-                                }
+                                    </div>
+                                ) : (
+                                    <div className='history__top'>
+                                        <div className='history__img'>
+                                            <img src={his.items[0].img} alt={his.items[0].name} className='history__image' />
+                                        </div>
+                                        <div className='history__detail'>
+                                            <p className='history__name'>{his.items[0].name}</p>
+                                            <p className='history__pay'>{his.totalPrice.toLocaleString()}원 결제</p>
+                                        </div>
+                                    </div>
+                                )}
                                 <div className='history__btns'>
                                     <button 
                                         className='history__button view'
                                         onClick={() => {
-                                            route.push(`/order/orderView/${his._id}/${formatDate(his.paidAt)}`);
+                                            router.push(`/order/orderView/${his._id}/${formatDate(his.paidAt)}`);
                                         }}
                                     >
                                         주문상세
                                     </button>
                                 </div>
                             </div>
-                        ))
-                    }
-                </div> {/* history */}
+                        ))}
+                    </div>
+                )}
             </div>
         </main>
     );
 };
 
-export default OrderHisyoryList;
+export default OrderHistoryList;
