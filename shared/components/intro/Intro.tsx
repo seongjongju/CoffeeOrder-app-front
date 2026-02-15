@@ -9,12 +9,12 @@ interface introProps {
 };
 
 const Intro = ({ isLoggedIn }:introProps) => {
+
     return (
         <div className='intro-container'>
             <Image className='intro-image' src={BigMascot} alt='머그컵 캐릭터' />
             {
-                isLoggedIn ? 
-                (
+                !isLoggedIn ? (
                     <div className='intro-buttons'>
                         <Link className='intro-link' href={'/policy'} >가입하기</Link>
                         <Link className='intro-link' href={'/login'} >로그인</Link>

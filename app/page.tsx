@@ -8,6 +8,8 @@ export default function Home() {
   const router = useRouter();
   const auth = useAppSelector(state => state.auth);
 
+  console.log(auth.isLoggedIn)
+
   useEffect(() => {
     if(auth.isLoggedIn) {
       setTimeout(() => {
