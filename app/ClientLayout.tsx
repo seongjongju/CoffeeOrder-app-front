@@ -31,7 +31,13 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     const isIntroPage = pathName === '/';
 
     if (isIntroPage) {
-        return <>{children}</>;
+        return (
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    {children}
+                </PersistGate>
+            </Provider>
+        );
     }
 
     return (
