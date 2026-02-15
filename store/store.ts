@@ -13,17 +13,19 @@ import {
 import authReducer from '@/store/auth/authSlice';
 import optionReducer from '@/store/view/optionSlice';
 import cartReducer from '@/store/cart/cartSlice';
+import alertReducer from '@/store/alert/alertSlice';
 
 const persistConfig = {
     key: 'root', 
     storage, 
-    whitelist: ['auth', 'cart'],
+    whitelist: ['auth', 'cart', 'alert'],
 };
 
 const rootReducer = combineReducers({
     auth: authReducer,
     option: optionReducer,
     cart: cartReducer,
+    alert: alertReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

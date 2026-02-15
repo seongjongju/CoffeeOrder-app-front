@@ -30,7 +30,8 @@
     margin-top: 15px;
 }
 
-.auth-links a {
+.auth-links a,
+.auth-links span {
     font-size: 12px;
     color: #555555;
 }

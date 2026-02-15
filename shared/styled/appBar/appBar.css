@@ -39,14 +39,14 @@
 .header-util {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
 }
 
 /* 아이콘에 갯수 표시 */
 .quantity {
     position: absolute;
-    top: -5px;
-    right: -5px;
+    top: -3px;
+    right: -3px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -42,7 +42,7 @@ const MypageUi = () => {
                     className='mypage-link'
                     href={'/userFind/passwordFind'}
                 >
-                    비밀번호 변경
+                    비밀번호 재설정
                     <Image src={linkArrow} alt="링크 이동 화살표" />
                 </Link>
                 <button

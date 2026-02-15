@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import React, { useEffect, Suspense } from 'react';
+import React, { useEffect, Suspense, useState } from 'react';
 import { Provider } from "react-redux";
 import { persistor, store } from "../store/store";
 import 'swiper/css';
@@ -33,28 +33,29 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     if (isIntroPage) {
         return <>{children}</>;
     }
-    
+
     return (
         <QueryClientProvider client={queryClient}>
             <Provider store={store}>
-                <Suspense fallback={<LoadingUi />}>
-                    <OptionProvider />
-                    <PersistGate persistor={persistor} />
-                    { 
-                        pathName === '/login' ||
-                        pathName === '/policy' ||
-                        pathName === '/signUp' ||
-                        pathName === '/userFind/idFind' ||
-                        pathName === '/userFind/idFindResult' ||
-                        pathName === '/userFind/passwordFind'
-                        ? <AppBar /> 
-                        : pathName === '/signUpFinish' || 
-                        pathName === '/' ||
-                        pathName === '/orderFinish'
-                        ? null : <MainAppBar />  
-                    }
-                    {children}
-                </Suspense>
+                <PersistGate loading={<LoadingUi />} persistor={persistor}>
+                    <Suspense fallback={<LoadingUi />}>
+                        <OptionProvider />
+                        { 
+                            pathName === '/login' ||
+                            pathName === '/policy' ||
+                            pathName === '/signUp' ||
+                            pathName === '/userFind/idFind' ||
+                            pathName === '/userFind/idFindResult' ||
+                            pathName === '/userFind/passwordFind'
+                            ? <AppBar /> 
+                            : pathName === '/signUpFinish' || 
+                            pathName === '/' ||
+                            pathName === '/orderFinish'
+                            ? null : <MainAppBar />  
+                        }
+                        {children}
+                    </Suspense>
+                </PersistGate>
             </Provider>
         </QueryClientProvider>
     );

@@ -14,12 +14,14 @@ import '@/shared/styled/cart/cart.css';
 import useAppBarTitles from '../../../features/hooks/appBar/useAppBarTitles';
 import useCartQuantity from '@/features/hooks/cart/useCartQuantity';
 import SideAlert from '../side/SideAlert';
+import useAlert from '@/features/hooks/alert/useAlert';
 
 const MainAppBar = () => {
     const [categorySideOn, setCategorySideOn] = useState<boolean>(false);
     const [sideAlertOn, setSideAlertOn] = useState<boolean>(false);
     const {appBarTitles} = useAppBarTitles();
     const {cartItemQuantity} = useCartQuantity(); // 전체 count, 수량 커스텀 훅
+    const {alertItems} = useAlert();
     const pathName = usePathname();
     const router = useRouter();
 
@@ -57,11 +59,18 @@ const MainAppBar = () => {
                         <Image src={cart} alt='장바구니' />
                     </Link>
                     <button
+                        style={{ position: "relative" }}
                         onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
                             e.preventDefault();
                             setSideAlertOn(true);
                         }}
                     >
+                        <span 
+                            style={{ background: "#ff0000" }}
+                            className='quantity'
+                        >
+                            {alertItems.length}
+                        </span>
                         <Image src={alert} alt='알림' />
                     </button>
                     <button

@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import CartList from './CartList';
 import Image from 'next/image';
+import { addToAlert } from '@/store/alert/alertSlice';
 
 export type TotalPriceType = {
     price: number,
@@ -121,8 +122,28 @@ const CartLayout = () => {
                 }
             );
 
+            const Today = new Date().toISOString();
+
+            //현재시간
+            const formatDate = (dateString: string) => {
+                const date = new Date(dateString);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hour = String(date.getHours()).padStart(2, '0');
+                const minute = String(date.getMinutes()).padStart(2, '0');
+                
+                return `${year}.${month}.${day}.${hour}.${minute}`;
+            };
+
+            dispatch(addToAlert({
+                alertId: formatDate(Today),
+                menuName: cartItems.items.length > 1 
+                ? `${cartItems.items[0].menuName} 외 ${cartItems.items.length - 1}건` 
+                : cartItems.items[0].menuName
+            }));
+
             if (verifyRes.status === 200) {
-                // 결제 성공 시 Redux 장바구니 비우기
                 dispatch(allDeleteCart());
                 router.push('/order/orderFinish');
             }

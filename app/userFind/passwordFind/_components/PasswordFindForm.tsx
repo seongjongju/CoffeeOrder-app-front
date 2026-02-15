@@ -110,7 +110,7 @@ const PasswordFindForm = () => {
                 <div className='auth-top'>
                     <Image src={mascot} alt='마스코트' />
                     <p className='auth-text'>
-                        비밀번호 변경을 위해 <br />
+                        비밀번호 재설정을 위해 <br />
                         아이디를 입력해 주세요!!
                     </p>
                 </div>

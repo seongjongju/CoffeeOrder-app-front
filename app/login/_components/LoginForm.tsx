@@ -115,8 +115,8 @@ const LoginForm = () => {
                         buttonText='로그인'
                     />
                     <div className='auth-links'>
-                        <Link href={'/userFind/idFind'} >아이디 찾기</Link>
-                        <Link href={'/userFind/passwordFind'} >비밀번호 찾기/변경</Link>
+                        <Link href={'/userFind/idFind'} >아이디 찾기 및 비밀번호 재설정</Link>
+                        <span>/</span>
                         <Link href={'/policy'} >회원가입</Link>
                     </div>
                 </form> 

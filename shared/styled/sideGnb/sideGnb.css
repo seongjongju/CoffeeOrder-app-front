@@ -18,6 +18,12 @@
     gap: 20px;
 }
 
+.side-gnb.side-alert {
+    padding: 60px 10px 0;
+    overflow: auto;
+    display: block;
+}
+
 .side-gnb-link {
     display: inline-block;
     width: fit-content;
@@ -55,4 +61,19 @@
 .side-gnb-close-btn span:last-child {
     transform: rotate(-45deg);
     bottom: 1.5px;
+}
+
+.all-delete {
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.alerts__li {
+    font-size: 12px; 
+    color: #fff;
+    border-bottom: 1px solid #fff;
+    padding: 10px;
+    word-break: keep-all;
+    line-height: 1.2;
 }

@@ -42,7 +42,7 @@ const FindIdResult = () => {
                     onClick={() => router.push('/login')}
                 />
                 <Button 
-                    buttonText='비밀번호 변경'
+                    buttonText='비밀번호 재설정'
                     onClick={() => router.push('/userFind/passwordFind')}
                 />
             </div>    
