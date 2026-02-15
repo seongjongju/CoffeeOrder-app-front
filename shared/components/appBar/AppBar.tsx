@@ -10,16 +10,25 @@ const AppBar = () => {
     const {appBarTitles} = useAppBarTitles();
     const router = useRouter();
 
-    return (
-        <div className='app-bar-container'>
-            <button 
-                className='back-button'
-                onClick={() => router.back()}
-            >
-                <Image src={BackIco} alt='뒤로가기' />
-            </button>
-            <h2 className='app-bar-title'>{appBarTitles()}</h2>
-        </div>
+    return (    
+        <header
+            style={{
+                position: "sticky",
+                top: 0,
+                left: 0,
+                width: "100%",
+            }}
+        >
+            <div className='app-bar-container'>
+                <button 
+                    className='back-button'
+                    onClick={() => router.back()}
+                >
+                    <Image src={BackIco} alt='뒤로가기' />
+                </button>
+                <h2 className='app-bar-title'>{appBarTitles()}</h2>
+            </div>
+        </header>
     );
 };
 

@@ -37,6 +37,10 @@ li {
 }
 
 /************************** common */
+header {
+    padding-top: env(safe-area-inset-top);
+}
+
 .text-body {
     font-size: 14px;
     color: #333;
