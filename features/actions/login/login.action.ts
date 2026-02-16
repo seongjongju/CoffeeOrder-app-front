@@ -11,7 +11,7 @@ export const loginActionApi = {
             {
                 id,
                 password
-            }
+            },
         )
 
         return data;
