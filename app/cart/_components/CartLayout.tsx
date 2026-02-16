@@ -1,11 +1,16 @@
 'use client';
 import React from 'react';
-import { useAppSelector } from '@/store/hook';
+import { useAppDispatch, useAppSelector } from '@/store/hook';
+import { allDeleteCart } from '@/store/cart/cartSlice';
 import useCartQuantity from '@/features/hooks/cart/useCartQuantity';
 import mascot from '@/public/images/mascot.png';
+// 결제 관련 임포트 추가
 import * as PortOne from "@portone/browser-sdk/v2";
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import CartList from './CartList';
 import Image from 'next/image';
+import { addToAlert } from '@/store/alert/alertSlice';
 
 export type TotalPriceType = {
     price: number,
@@ -33,6 +38,8 @@ export type CartItemsType = {
 
 const CartLayout = () => {
     const { cartItems, cartTotalCount } = useCartQuantity();
+    const dispatch = useAppDispatch();
+    const router = useRouter();
     const users = useAppSelector(state => state.auth);
 
     const OPTION_PRICE = 500;
@@ -54,7 +61,7 @@ const CartLayout = () => {
         });
     }, 0);
 
-    // 결제 핸들러 (수정됨)
+    // 결제 핸들러
     const handlePayment = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
@@ -65,7 +72,7 @@ const CartLayout = () => {
         const paymentId = `cart_${Date.now()}`;
 
         // 1. 포트원 결제 요청
-        await PortOne.requestPayment({
+        const response = await PortOne.requestPayment({
             storeId: storeId!,
             channelKey: channelKey!,
             paymentId: paymentId,
@@ -80,26 +87,71 @@ const CartLayout = () => {
                 customerId: users.user?.id,
                 fullName: users.user?.name,
                 email: users.user?.email
-            },
-            // [중요] 장바구니의 모든 아이템 정보를 customData에 담아 웹훅으로 보냄
-            customData: {
-                userId: users.user?.id,
-                isCart: true,
-                items: cartItems.items.map(item => ({
-                    productId: item.cartId,
-                    name: item.menuName,
-                    quantity: item.count,
-                    price: item.price + ((item.shot + item.syrup + item.whipping) * OPTION_PRICE),
-                    img: item.img,
-                    options: {
-                        lightly: item.lightly,
-                        shot: item.shot,
-                        syrup: item.syrup,
-                        whipping: item.whipping
-                    }
-                }))
             }
         });
+
+        if (!response || response.code !== undefined) {
+            if (response?.message) alert(`결제 실패: ${response.message}`);
+            return;
+        }
+
+        // 2. 백엔드 검증 및 DB 저장
+        try {
+            const verifyRes = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/payment/verify`,
+                {
+                    paymentId: response.paymentId,
+                    totalPrice: totalCartAmount,
+                    isCart: true, 
+                    items: cartItems.items.map(item => ({
+                        productId: item.cartId,
+                        name: item.menuName,
+                        quantity: item.count,
+                        // 개당 단가(기본가 + 옵션가)
+                        price: item.price + ((item.shot + item.syrup + item.whipping) * OPTION_PRICE),
+                        img: item.img,
+                        options: {
+                            lightly: item.lightly,
+                            shot: item.shot,
+                            syrup: item.syrup,
+                            whipping: item.whipping
+                        }
+                    })),
+                },
+                {
+                    withCredentials: true,
+                }
+            );
+
+            const Today = new Date().toISOString();
+
+            //현재시간
+            const formatDate = (dateString: string) => {
+                const date = new Date(dateString);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hour = String(date.getHours()).padStart(2, '0');
+                const minute = String(date.getMinutes()).padStart(2, '0');
+                
+                return `${year}.${month}.${day}.${hour}.${minute}`;
+            };
+
+            dispatch(addToAlert({
+                alertId: formatDate(Today),
+                menuName: cartItems.items.length > 1 
+                ? `${cartItems.items[0].menuName} 외 ${cartItems.items.length - 1}건` 
+                : cartItems.items[0].menuName
+            }));
+
+            if (verifyRes.status === 200) {
+                dispatch(allDeleteCart());
+                router.push('/order/orderFinish');
+            }
+        } catch (error: any) {
+            console.error("검증 실패:", error);
+            alert("결제 검증 중 오류가 발생했습니다.");
+        }
     };
 
     return (
@@ -109,8 +161,8 @@ const CartLayout = () => {
                     items={cartItems.items}
                     calculateItemPrice={calculateItemPrice}
                 />
+                {/* 주문하기 버튼에 결제 함수 연결 */}
                 <button 
-                    type="button"
                     className='common-button' 
                     style={{ marginTop: "10px" }}
                     onClick={handlePayment}

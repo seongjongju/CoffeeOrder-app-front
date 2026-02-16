@@ -3,43 +3,65 @@ import '@/shared/styled/view/view.css';
 import Image from 'next/image';
 import plusIco from '@/public/icons/view_plus.svg';
 import minusIco from '@/public/icons/view_minus.svg';
-import React from 'react';
+import React, { useState } from 'react';
 import useOptions from '@/features/hooks/view/useOptions';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import { addToCart } from '@/store/cart/cartSlice';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
+import axios from 'axios';
 import * as PortOne from "@portone/browser-sdk/v2";
+import { useRouter } from 'next/navigation';
 import { addToAlert } from '@/store/alert/alertSlice';
 
 interface optionType {
     menuName: string;
     img: string;
-    menuId: number;
+    menuId: Number;
 }
 
 const OrderBar = ({ menuName, img, menuId }: optionType) => {
     const { lightly, shot, syrup, whipping, price, count } = useAppSelector(state => state.option);
-    const { countIncrement, countDecrement } = useOptions();
+    //옵션 선택 커스텀 훅
+    const {
+        countIncrement,
+        countDecrement,
+    } = useOptions();
     const dispatch = useAppDispatch();
     const users = useAppSelector(state => state.auth);
+    const router = useRouter();
 
-    const { modalShow, setModalShow, modalText, setModalText } = useModalShow();
+    //모달창
+    const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
 
+    //가격
     const OPTION_PRICE = 500;
+
     const optionPrice = (shot + syrup + whipping) * OPTION_PRICE;
+
     const totalPrice = (price + optionPrice) * count;
 
-    const handleClickCartMoving = (e: React.MouseEvent<HTMLButtonElement>) => {
+    //장바구니로 이동
+    const handleClickCartMoving = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+
+        //장바구니에 추가
         dispatch(addToCart({
-            lightly, shot, syrup, whipping, price, count, img, menuName
+            lightly: lightly,
+            shot: shot,
+            syrup: syrup,
+            whipping: whipping,
+            price: price,
+            count: count,
+            img: img,
+            menuName: menuName
         }));
+
         setModalText('장바구니에 추가되었습니다.');
         setModalShow(true);
     };
 
-    // 결제 로직 수정됨
+    //결제
     const handleSinglePayment = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
@@ -53,13 +75,13 @@ const OrderBar = ({ menuName, img, menuId }: optionType) => {
 
         const paymentId = `order_${Date.now()}`;
 
-        // 1. 포트원 결제창 호출 (검증 로직은 웹훅이 처리하므로 호출만 하면 끝)
-        await PortOne.requestPayment({
-            storeId,
-            channelKey,
-            paymentId,
+        // 1. 포트원 결제창 호출
+        const response = await PortOne.requestPayment({
+            storeId: storeId,
+            channelKey: channelKey,
+            paymentId: paymentId,
             orderName: count > 1 ? `${menuName} ${count}개` : menuName,
-            totalAmount: totalPrice,
+            totalAmount: totalPrice, // 옵션과 수량이 포함된 최종가
             currency: "CURRENCY_KRW",
             redirectUrl: `${window.location.origin}/order/orderFinish`,
             payMethod: "EASY_PAY",
@@ -67,73 +89,165 @@ const OrderBar = ({ menuName, img, menuId }: optionType) => {
                 customerId: users.user?.id,
                 fullName: users.user?.name,
                 email: users.user?.email
-            },
-            // [중요] 백엔드 웹훅에서 사용할 수 있게 주문 정보를 실어 보냄
-            customData: {
-                userId: users.user?.id,
-                items: [
-                    {
-                        productId: menuId,
-                        name: menuName,
-                        quantity: count,
-                        price: price + optionPrice,
-                        img: img,
-                        options: { lightly, shot, syrup, whipping }
-                    }
-                ]
             }
         });
 
-        const Today = new Date().toISOString();
-        const formatDate = (dateString: string) => {
-            const date = new Date(dateString);
-            return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}.${String(date.getHours()).padStart(2, '0')}.${String(date.getMinutes()).padStart(2, '0')}`;
-        };
+        if (!response) return;
+        if (response.code !== undefined) {
+            alert(`결제 실패: ${response.message}`);
+            return;
+        }
 
-        dispatch(addToAlert({
-            alertId: formatDate(Today),
-            menuName: menuName
-        }));
+        // 2. 백엔드 검증 및 DB 저장
+        try {
+            const verifyRes = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/payment/verify`,
+                {
+                    paymentId: response.paymentId,
+                    totalPrice: totalPrice, 
+                    isCart: false,
+                    items: [
+                        {
+                            productId: menuId,
+                            name: menuName,
+                            quantity: count, // 선택한 수량 반영
+                            price: price + optionPrice, // 옵션이 포함된 개당 단가
+                            img: img,
+                            options: { // DB에 저장될 상세 옵션 정보
+                                lightly,
+                                shot,
+                                syrup,
+                                whipping
+                            }
+                        },
+                    ],
+                },
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
+
+            const Today = new Date().toISOString();
+
+            //현재시간
+            const formatDate = (dateString: string) => {
+                const date = new Date(dateString);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hour = String(date.getHours()).padStart(2, '0');
+                const minute = String(date.getMinutes()).padStart(2, '0');
+                
+                return `${year}.${month}.${day}.${hour}.${minute}`;
+            };
+
+            dispatch(addToAlert({
+                alertId: formatDate(Today),
+                menuName: menuName
+            }));
+
+            if (verifyRes.status === 200) {
+                router.push('/order/orderFinish');
+            }
+        } catch (error: any) {
+            console.error("검증 실패:", error.response?.data || error.message);
+            alert(error.response?.data?.message || "검증 오류가 발생했습니다.");
+        }
     };
 
     return (
         <div className='order-bar'>
-            {(shot !== 0 || syrup !== 0 || whipping !== 0 || lightly) && (
-                <div className='order-bar__options'>
-                    {lightly && <p className='order-bar__option'>연하게</p>}
-                    {shot !== 0 && <p className='order-bar__option'>샷 추가 X <span>{shot}</span></p>}
-                    {syrup !== 0 && <p className='order-bar__option'>시럽 추가 X <span>{syrup}</span></p>}
-                    {whipping !== 0 && <p className='order-bar__option'>휘핑크림 추가 X <span>{whipping}</span></p>}
-                </div>
-            )}
+            {
+                shot !== 0 || syrup !== 0 || whipping !== 0 || lightly ? (
+                    <div className='order-bar__options'>
+                        {
+                            lightly && 
+                            (
+                                <p className='order-bar__option'>
+                                    연하게
+                                </p>
+                            )
+                        }
+                        {
+                            shot !== 0 ? 
+                            (
+                                <p className='order-bar__option'>
+                                    샷 추가 X <span>{shot}</span>
+                                </p>
+                            ) : null
+                        }
+                        {
+                            syrup !== 0 ? 
+                            (
+                                <p className='order-bar__option'>
+                                    시럽 추가 X <span>{syrup}</span>
+                                </p>
+                            ) : null
+                        }
+                        {
+                            whipping !== 0 ? 
+                            (
+                                <p className='order-bar__option'>
+                                    휘핑크림 추가 X <span>{whipping}</span>
+                                </p>
+                            ) : null
+                        }
+                    </div>
+                ) : null
+            }
             
             <form className='order-bar__form'>
                 <div className='view-option'>
-                    <p className='order-bar__price'>Total : {totalPrice.toLocaleString()}원</p>
+                    <p className='order-bar__price'>
+                        Total : {totalPrice.toLocaleString()}원
+                    </p>
                     <div className='view-option__quantity-wrap'>
-                        <button type="button" className='view-option__button' onClick={countIncrement}>
+                        <button 
+                            className='view-option__button'
+                            onClick={countIncrement}
+                        >
                             <Image src={plusIco} alt='플러스버튼' />
                         </button>
-                        <input className='view-option__input' type="number" value={count} readOnly />
-                        <button type="button" className='view-option__button' onClick={countDecrement}>
+                        <input 
+                            className='view-option__input'
+                            type="number" 
+                            value={count}
+                            readOnly
+                        />
+                        <button 
+                            className='view-option__button'
+                            onClick={countDecrement}
+                        >
                             <Image src={minusIco} alt='마이너스버튼' />
                         </button>
-                    </div>
-                </div>
+                    </div> {/* view-option__quantity-wrap */}
+                </div> {/* view-option */}
                 <div className='order-bar__btns'>
-                    <button type="button" className='order-bar__button--cart' onClick={handleClickCartMoving}>장바구니</button>
-                    <button type="button" className='order-bar__button--order' onClick={handleSinglePayment}>주문하기</button>
-                </div>
-            </form>
+                    <button 
+                        className='order-bar__button--cart'
+                        onClick={handleClickCartMoving}
+                    >
+                        장바구니
+                    </button>
+                    <button 
+                        className='order-bar__button--order'
+                        onClick={handleSinglePayment}
+                    >
+                        주문하기
+                    </button>
+                </div> {/* order-bar__btns */}
+            </form> {/* order-bar__form */}
 
-            {modalShow && (
+            {
+                modalShow &&
                 <Modal 
-                    modalText={modalText} 
-                    modalShow={modalShow} 
-                    setModalText={setModalText} 
-                    setModalShow={setModalShow} 
+                    modalText={modalText}
+                    modalShow={modalShow}
+                    setModalText={setModalText}
+                    setModalShow={setModalShow}
                 />
-            )}
+            }
         </div>
     );
 };
