@@ -56,7 +56,7 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
                             ? <AppBar /> 
                             : pathName === '/signUpFinish' || 
                             pathName === '/' ||
-                            pathName === '/orderFinish'
+                            pathName === '/order/orderFinish'
                             ? null : <MainAppBar />  
                         }
                         {children}
