@@ -89,6 +89,19 @@ const OrderBar = ({ menuName, img, menuId }: optionType) => {
                 customerId: users.user?.id,
                 fullName: users.user?.name,
                 email: users.user?.email
+            },
+            customData: {
+                userId: users.user?.id,
+                items: [
+                    {
+                        productId: menuId,
+                        name: menuName,
+                        quantity: count,
+                        price: price + optionPrice,
+                        img: img,
+                        options: { lightly, shot, syrup, whipping }
+                    }
+                ]
             }
         });
 
