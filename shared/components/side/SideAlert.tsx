@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import '@/shared/styled/sideGnb/sideGnb.css';
 import useAlert from '@/features/hooks/alert/useAlert';
+import { useAppDispatch } from '@/store/hook';
+import { allDeleteAlert } from '@/store/alert/alertSlice';
 
 interface CategorySideGnbOnProps {
     sideAlertOn: boolean;
@@ -9,6 +11,7 @@ interface CategorySideGnbOnProps {
 }
 
 const SideAlert = ({sideAlertOn, setSideAlertOn}:CategorySideGnbOnProps) => {
+    const dispatch = useAppDispatch();
     const {alertItems} = useAlert();
 
     return (
@@ -27,7 +30,13 @@ const SideAlert = ({sideAlertOn, setSideAlertOn}:CategorySideGnbOnProps) => {
                     <span></span>
                 </button>
                 
-                <button className='all-delete'>알림창 비우기</button>
+                <button className='all-delete'
+                    onClick={() => {
+                        dispatch(allDeleteAlert());
+                    }}
+                >
+                    알림창 비우기
+                </button>
                 {   
                     alertItems.map((item) => (
                         <ul key={item.alertId} className='alerts'>
