@@ -10,12 +10,12 @@
 - State Management : ReduxToolkit  
 - Styling : CSS
 - Deployment : Vercel
-- Payment : PortOne SDK_V2 (카카오페이)
+- Payment : NICE PAY
 
 ## 🌟 Key Features
 - Progressive Web App Design : PC와 모바일 환경에 최적화된 UI 제공.
 - Global State Management : 유저 인증 상태, 장바구니, 주문내역을 효율적으로 관리.
-- Payment Integration : 포트원 API를 통한 실시간 간편 결제(카카오페이) 연동.
+- Payment Integration : NICE PAY API를 통한 실시간 간편 결제 연동.
 - Order Tracking : 주문 내역을 실시간 확인.
 - BEM (Block Element Modifier) : 유지보수와 가독성을 위해 BEM 설계 방식을 도입하여 클래스 구조를 체계화했습니다.
 
@@ -31,8 +31,8 @@ NEXT_PUBLIC_API_URL=백엔드 주소
 NEXT_PUBLIC_FRONT_API_URL=프론트엔드 주소
 
 # 결제
-NEXT_PUBLIC_PORTONE_STORE_ID=포트원 STORE KEY 값
-NEXT_PUBLIC_PORTONE_CHANNEL_KEY=포트원 CHANNEL KEY 값
+NEXT_PUBLIC_NICEPAY_CLIENT_ID=NICE PAY 클라이언트 KEY 값
+NEXT_PUBLIC_NICEPAY_SECRET_KEY=NICE PAY 시크릿 KEY 값
 
 ### 3. 실행
 - npm run dev

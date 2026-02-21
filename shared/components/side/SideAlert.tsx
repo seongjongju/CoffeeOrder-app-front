@@ -38,13 +38,17 @@ const SideAlert = ({sideAlertOn, setSideAlertOn}:CategorySideGnbOnProps) => {
                     알림창 비우기
                 </button>
                 {   
-                    alertItems.map((item) => (
+                    alertItems.map((item) => (    
                         <ul key={item.alertId} className='alerts'>
                             <li className='alerts__li'>
-                                {item.menuName} 주문 완료!!
+                                {
+                                    item.menuName.length > 1 ? `${item.menuName[0]} 외 ${item.menuName.length - 1}건` : item.menuName[0]
+                                } 주문 완료!!
                             </li>
                             <li className='alerts__li'>
-                                주문하신 {item.menuName} 준비되었습니다!!
+                                주문하신 {
+                                    item.menuName.length > 1 ? `${item.menuName[0]} 외 ${item.menuName.length - 1}건` : item.menuName[0]
+                                } 준비되었습니다!!
                             </li>
                         </ul>
                     ))

@@ -4,9 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hook';
 import { allDeleteCart } from '@/store/cart/cartSlice';
 import useCartQuantity from '@/features/hooks/cart/useCartQuantity';
 import mascot from '@/public/images/mascot.png';
-import * as PortOne from "@portone/browser-sdk/v2";
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import CartList from './CartList';
 import Image from 'next/image';
 import { addToAlert } from '@/store/alert/alertSlice';
@@ -33,8 +31,6 @@ export type CartItemType = {
 
 const CartLayout = () => {
     const { cartItems, cartTotalCount } = useCartQuantity();
-    const dispatch = useAppDispatch();
-    const router = useRouter();
     const users = useAppSelector(state => state.auth);
 
     const OPTION_PRICE = 500;
@@ -60,100 +56,40 @@ const CartLayout = () => {
     const handlePayment = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if (cartItems.items.length === 0) return;
-
-        const storeId = process.env.NEXT_PUBLIC_PORTONE_STORE_ID;
-        const channelKey = process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
-        
-        if (!storeId || !channelKey) {
-            alert("결제 설정(Store ID / Channel Key)이 누락되었습니다.");
-            return;
-        }
-
-        const paymentId = `cart_${Date.now()}`;
-
-        // 1. 데이터 가공 (웹훅/검증 공통 데이터)
-        const formattedItems = cartItems.items.map(item => ({
-            productId: item.cartId, 
-            name: item.menuName,
-            quantity: item.count,
-            price: item.price + ((item.shot + item.syrup + item.whipping) * OPTION_PRICE), // 단가
-            img: item.img,
-            options: {
-                lightly: item.lightly,
-                shot: item.shot,
-                syrup: item.syrup,
-                whipping: item.whipping
-            }
-        }));
-
-        // 2. 포트원 결제창 호출
-        const response = await PortOne.requestPayment({
-            storeId: storeId,
-            channelKey: channelKey,
-            paymentId: paymentId,
-            orderName: cartItems.items.length > 1 
-                ? `${cartItems.items[0].menuName} 외 ${cartItems.items.length - 1}건` 
-                : cartItems.items[0].menuName,
-            totalAmount: totalCartAmount,
-            currency: "CURRENCY_KRW",
-            redirectUrl: `${window.location.origin}/order/orderFinish`,
-            payMethod: "EASY_PAY",
-            customer: {
-                customerId: users.user?.id,
-                fullName: users.user?.name,
-                email: users.user?.email
-            },
-            // 중요: 이 데이터가 있어야 백엔드 웹훅이 모바일에서도 DB를 저장함
-            customData: {
-                userId: users.user?.id,
-                items: formattedItems
-            }
-        });
-
-        // 결제 실패 처리
-        if (!response || response.code !== undefined) {
-            if (response?.message) alert(`결제 실패: ${response.message}`);
-            return;
-        }
-
-        // 3. 백엔드 결제 검증 및 DB 저장
         try {
-            const verifyRes = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/payment/verify`,
-                {
-                    paymentId: response.paymentId,
-                    totalPrice: totalCartAmount,
-                    isCart: true, 
-                    items: formattedItems, 
-                },
-                {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true,
-                }
-            );
+            const createRes = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/create`, {
+                userId: users.user?.id,
+                items: cartItems.items.map(item => ({
+                    menuId: item.cartId,
+                    menuName: item.menuName,
+                    img: item.img,
+                    price: item.price,
+                    count: item.count,
+                    options: { lightly: item.lightly, shot: item.shot, syrup: item.syrup, whipping: item.whipping }
+                }))
+            });
 
-            // 성공 시 알림 및 페이지 이동
-            const Today = new Date().toISOString();
-            const formatDate = (dateString: string) => {
-                const date = new Date(dateString);
-                return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}.${String(date.getHours()).padStart(2, '0')}.${String(date.getMinutes()).padStart(2, '0')}`;
-            };
+            const { orderId, amount } = createRes.data;
 
-            dispatch(addToAlert({
-                alertId: formatDate(Today),
-                menuName: cartItems.items.length > 1 
-                    ? `${cartItems.items[0].menuName} 외 ${cartItems.items.length - 1}건` 
-                    : cartItems.items[0].menuName
-            }));
-
-            if (verifyRes.status === 200) {
-                dispatch(allDeleteCart());
-                router.push('/order/orderFinish');
+            if (typeof window !== "undefined") {
+                const pay_obj: any = window;
+                const { AUTHNICE } = pay_obj;
+                AUTHNICE.requestPay({
+                    clientId: process.env.NEXT_PUBLIC_NICEPAY_CLIENT_ID,
+                    method: 'card',
+                    orderId,
+                    amount,
+                    goodsName: cartItems.items.map(item => item.menuName),
+                    returnUrl: `${process.env.NEXT_PUBLIC_API_URL}/api/payment/nice-approve`,
+                    fnError: (result: any) => {
+                        alert('고객용메시지 : ' + result.errorMsg + '\n개발자확인용 : ' + result.msg);
+                    }
+                });
             }
+
+            localStorage.setItem('isFromCart', 'true');
         } catch (error: any) {
-            console.error("검증 실패:", error.response?.data || error.message);
-            alert("결제 검증 중 오류가 발생했습니다.");
+            console.error(error.response?.data?.message);
         }
     };
 

@@ -10,7 +10,6 @@ import { addToCart } from '@/store/cart/cartSlice';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import axios from 'axios';
-import * as PortOne from "@portone/browser-sdk/v2";
 import { useRouter } from 'next/navigation';
 import { addToAlert } from '@/store/alert/alertSlice';
 
@@ -29,7 +28,6 @@ const OrderBar = ({ menuName, img, menuId }: optionType) => {
     } = useOptions();
     const dispatch = useAppDispatch();
     const users = useAppSelector(state => state.auth);
-    const router = useRouter();
 
     //모달창
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
@@ -65,107 +63,32 @@ const OrderBar = ({ menuName, img, menuId }: optionType) => {
     const handleSinglePayment = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        const storeId = process.env.NEXT_PUBLIC_PORTONE_STORE_ID;
-        const channelKey = process.env.NEXT_PUBLIC_PORTONE_CHANNEL_KEY;
-
-        if (!storeId || !channelKey) {
-            alert("결제 설정이 누락되었습니다.");
-            return;
-        }
-
-        const paymentId = `order_${Date.now()}`;
-
-        // 1. 포트원 결제창 호출
-        const response = await PortOne.requestPayment({
-            storeId: storeId,
-            channelKey: channelKey,
-            paymentId: paymentId,
-            orderName: count > 1 ? `${menuName} ${count}개` : menuName,
-            totalAmount: totalPrice, // 옵션과 수량이 포함된 최종가
-            currency: "CURRENCY_KRW",
-            redirectUrl: `${window.location.origin}/order/orderFinish`,
-            payMethod: "EASY_PAY",
-            customer: {
-                customerId: users.user?.id,
-                fullName: users.user?.name,
-                email: users.user?.email
-            },
-            customData: {
-                userId: users.user?.id,
-                items: [
-                    {
-                        productId: menuId,
-                        name: menuName,
-                        quantity: count,
-                        price: price + optionPrice,
-                        img: img,
-                        options: { lightly, shot, syrup, whipping }
-                    }
-                ]
-            }
-        });
-
-        if (!response) return;
-        if (response.code !== undefined) {
-            alert(`결제 실패: ${response.message}`);
-            return;
-        }
-
-        // 2. 백엔드 검증 및 DB 저장
         try {
-            const verifyRes = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/payment/verify`,
-                {
-                    paymentId: response.paymentId,
-                    totalPrice: totalPrice, 
-                    isCart: false,
-                    items: [
-                        {
-                            productId: menuId,
-                            name: menuName,
-                            quantity: count, // 선택한 수량 반영
-                            price: price + optionPrice, // 옵션이 포함된 개당 단가
-                            img: img,
-                            options: { // DB에 저장될 상세 옵션 정보
-                                lightly,
-                                shot,
-                                syrup,
-                                whipping
-                            }
-                        },
-                    ],
-                },
-                {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true,
-                }
-            );
+            const createResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/create`, {
+                userId: users.user?.id, 
+                items: [{ menuId, menuName, img, price, count, options: { lightly, shot, syrup, whipping } }]
+            });
 
-            const Today = new Date().toISOString();
+            const { orderId, amount } = createResponse.data;
 
-            //현재시간
-            const formatDate = (dateString: string) => {
-                const date = new Date(dateString);
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                const hour = String(date.getHours()).padStart(2, '0');
-                const minute = String(date.getMinutes()).padStart(2, '0');
-                
-                return `${year}.${month}.${day}.${hour}.${minute}`;
-            };
-
-            dispatch(addToAlert({
-                alertId: formatDate(Today),
-                menuName: menuName
-            }));
-
-            if (verifyRes.status === 200) {
-                router.push('/order/orderFinish');
+            if (typeof window !== "undefined") {
+                const pay_obj: any = window;
+                const { AUTHNICE } = pay_obj;
+                console.log("AUTHNICE", AUTHNICE);
+                AUTHNICE.requestPay({
+                    clientId: process.env.NEXT_PUBLIC_NICEPAY_CLIENT_ID,
+                    method: 'card',
+                    orderId,
+                    amount,
+                    goodsName: menuName,
+                    returnUrl: `${process.env.NEXT_PUBLIC_API_URL}/api/payment/nice-approve`,
+                    fnError: (result: any) => {
+                        alert('고객용메시지 : ' + result.errorMsg + '\n개발자확인용 : ' + result.msg);
+                    }
+                });
             }
         } catch (error: any) {
-            console.error("검증 실패:", error.response?.data || error.message);
-            alert(error.response?.data?.message || "검증 오류가 발생했습니다.");
+            console.error(error.response?.data?.message);
         }
     };
 

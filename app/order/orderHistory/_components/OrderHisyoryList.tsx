@@ -1,61 +1,21 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import LoadingUi from '@/shared/components/loading/LoadingUi';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
-
-interface OrderItem {
-    id: string; 
-    name: string;
-    img: string;
-}
-
-interface HistorysType {
-    paymentId: string;
-    totalPrice: number;
-    items: OrderItem[];
-    createdAt: string; // 💡 paidAt -> createdAt 으로 변경 (백엔드 필드명 일치)
-    _id: string;
-}
+import { useAppSelector } from '@/store/hook';
+import useHistory from '@/features/hooks/order/useHistory';
 
 const OrderHistoryList = () => {
     const router = useRouter();
-    const [orderHistory, setOrderHistory] = useState<HistorysType[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const users = useAppSelector(state => state.auth);
+    const {isLoading, formatDate, orderHistory, fetchOrders} = useHistory();
 
     useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const { data } = await axios.get(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/myOrder`,
-                    {
-                        headers: { 'ngrok-skip-browser-warning': 'true' },
-                        withCredentials: true
-                    }
-                );
-                console.log("받아온 데이터:", data); // 💡 데이터 확인용
-                setOrderHistory(data);
-            } catch (err: any) {
-                console.error('주문 내역 로딩 실패:', err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        if(!users.user?.id) return;
         fetchOrders();
-    }, []);
-
-    const formatDate = (dateString: string) => {
-        if (!dateString) return "날짜 없음";
-        const date = new Date(dateString);
-        if (isNaN(date.getTime())) return "날짜 오류";
-        
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}.${month}.${day}`;
-    };
+    }, [])
 
     if (isLoading) return <LoadingUi />;
 
@@ -80,7 +40,7 @@ const OrderHistoryList = () => {
                                     <div className='history__top'>
                                         <div className='history__img'>
                                             {firstItem ? (
-                                                <img src={firstItem.img} alt={firstItem.name} className='history__image' />
+                                                <img src={firstItem.img} alt={firstItem.menuName} className='history__image' />
                                             ) : (
                                                 <div className="no-img">이미지 없음</div>
                                             )}
@@ -88,7 +48,7 @@ const OrderHistoryList = () => {
                                         <div className='history__detail'>
                                             <p className='history__name'>
                                                 {firstItem ? (
-                                                    his.items.length > 1 ? `${firstItem.name} 외 ${his.items.length - 1}개` : firstItem.name
+                                                    his.items.length > 1 ? `${firstItem.menuName} 외 ${his.items.length - 1}개` : firstItem.menuName
                                                 ) : "주문 상품 정보 없음"}
                                             </p>
                                             <p className='history__pay'>{his.totalPrice?.toLocaleString() || 0}원 결제</p>
@@ -98,7 +58,7 @@ const OrderHistoryList = () => {
                                     <div className='history__btns'>
                                         <button 
                                             className='history__button view'
-                                            onClick={() => router.push(`/order/orderView/${his._id}/${displayDate}`)}
+                                            onClick={() => router.push(`/order/orderView/${his._id}`)}
                                         >
                                             주문상세
                                         </button>
