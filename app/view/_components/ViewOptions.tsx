@@ -60,9 +60,9 @@ const ViewOptions = ({ type }:viewOptionsType) => {
                         <div className='view-option__quantity-wrap'>
                             <button 
                                 className='view-option__button'
-                                onClick={shotIncrement}
+                                onClick={shotDecrement}
                             >
-                                <Image src={plusIco} alt='플러스버튼' />
+                                <Image src={minusIco} alt='마이너스버튼' />
                             </button>
                             <input 
                                 className='view-option__input'
@@ -72,9 +72,9 @@ const ViewOptions = ({ type }:viewOptionsType) => {
                             />
                             <button 
                                 className='view-option__button'
-                                onClick={shotDecrement}
+                                onClick={shotIncrement}
                             >
-                                <Image src={minusIco} alt='마이너스버튼' />
+                                <Image src={plusIco} alt='플러스버튼' />
                             </button>
                         </div> {/* view-option__quantity-wrap */}
                     </div> 
@@ -88,9 +88,9 @@ const ViewOptions = ({ type }:viewOptionsType) => {
                 <div className='view-option__quantity-wrap'>
                     <button 
                         className='view-option__button'
-                        onClick={syrupIncrement}
+                        onClick={syrupDecrement}
                     >
-                        <Image src={plusIco} alt='플러스버튼' />
+                        <Image src={minusIco} alt='마이너스버튼' />
                     </button>
                     <input 
                         className='view-option__input'
@@ -100,9 +100,9 @@ const ViewOptions = ({ type }:viewOptionsType) => {
                     />
                     <button 
                         className='view-option__button'
-                        onClick={syrupDecrement}
+                        onClick={syrupIncrement}
                     >
-                        <Image src={minusIco} alt='마이너스버튼' />
+                        <Image src={plusIco} alt='플러스버튼' />
                     </button>
                 </div> {/* view-option__quantity-wrap */}
             </div> {/* view-option */}
@@ -114,9 +114,9 @@ const ViewOptions = ({ type }:viewOptionsType) => {
                 <div className='view-option__quantity-wrap'>
                     <button 
                         className='view-option__button'
-                        onClick={whippingIncrement}
+                        onClick={whippingDecrement}
                     >
-                        <Image src={plusIco} alt='플러스버튼' />
+                        <Image src={minusIco} alt='마이너스버튼' />
                     </button>
                     <input 
                         className='view-option__input'
@@ -126,9 +126,9 @@ const ViewOptions = ({ type }:viewOptionsType) => {
                     />
                     <button 
                         className='view-option__button'
-                        onClick={whippingDecrement}
+                        onClick={whippingIncrement}
                     >
-                        <Image src={minusIco} alt='마이너스버튼' />
+                        <Image src={plusIco} alt='플러스버튼' />
                     </button>
                 </div> {/* view-option__quantity-wrap */}
             </div> {/* view-option */}

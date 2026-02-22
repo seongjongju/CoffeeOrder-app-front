@@ -141,9 +141,9 @@ const OrderBar = ({ menuName, img, menuId }: optionType) => {
                     <div className='view-option__quantity-wrap'>
                         <button 
                             className='view-option__button'
-                            onClick={countIncrement}
+                            onClick={countDecrement}
                         >
-                            <Image src={plusIco} alt='플러스버튼' />
+                            <Image src={minusIco} alt='마이너스버튼' />
                         </button>
                         <input 
                             className='view-option__input'
@@ -153,9 +153,9 @@ const OrderBar = ({ menuName, img, menuId }: optionType) => {
                         />
                         <button 
                             className='view-option__button'
-                            onClick={countDecrement}
+                            onClick={countIncrement}
                         >
-                            <Image src={minusIco} alt='마이너스버튼' />
+                            <Image src={plusIco} alt='플러스버튼' />
                         </button>
                     </div> {/* view-option__quantity-wrap */}
                 </div> {/* view-option */}

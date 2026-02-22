@@ -1,6 +1,6 @@
 {
-    "name": "CoffeeOrderApp",
-    "short_name": "MyApp",
+    "name": "CoffeeOrder",
+    "short_name": "CoffeeOrder",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",

@@ -4,11 +4,11 @@ import React, { useEffect } from 'react';
 import LoadingUi from '@/shared/components/loading/LoadingUi';
 import { useAppSelector } from '@/store/hook';
 import useHistory from '@/features/hooks/order/useHistory';
+import OrderErrorUi from '../../_components/OrderErrorUi';
 
 
 const OrderViewLayout = () => {
     const params = useParams();
-    const router = useRouter();
     const users = useAppSelector(state => state.auth);
     const {isLoading, error, formatDate, orderDetail, fetchOrderDetail} = useHistory();
 
@@ -21,26 +21,12 @@ const OrderViewLayout = () => {
 
     if (error) {
         return (
-            <main className='main cart-null'>
-                <div className='inner'>
-                    <p>{error}</p>
-                    <button 
-                        onClick={() => router.push('/order/orderHistory')}
-                        style={{
-                            marginTop: '20px',
-                            padding: '10px 20px',
-                            background: '#333',
-                            color: '#fff',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        주문 내역으로 돌아가기
-                    </button>
-                </div>
-            </main>
-        );
+            <OrderErrorUi 
+                errorExplanation='주문내역 오류'
+                errorText='주문 내역으로 돌아가기'
+                routerPage='/order/orderHistory'
+            />
+        )
     }
 
     if (!orderDetail) return;

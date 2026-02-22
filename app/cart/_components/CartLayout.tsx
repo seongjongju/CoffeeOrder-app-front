@@ -1,13 +1,11 @@
 'use client';
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '@/store/hook';
-import { allDeleteCart } from '@/store/cart/cartSlice';
+import { useAppSelector } from '@/store/hook';
 import useCartQuantity from '@/features/hooks/cart/useCartQuantity';
 import mascot from '@/public/images/mascot.png';
 import axios from 'axios';
 import CartList from './CartList';
 import Image from 'next/image';
-import { addToAlert } from '@/store/alert/alertSlice';
 
 export type TotalPriceType = {
     price: number,

@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { CartItemType, TotalPriceType } from './CartLayout';
 
 type CartListProps = {
-    items: CartItemType[];  // ✅ 배열 타입
+    items: CartItemType[]; 
     calculateItemPrice: (item: TotalPriceType) => number;
 };
 
@@ -88,12 +88,12 @@ const CartList = ({ items, calculateItemPrice }:CartListProps) => {
                                 </ul>
                                 <div className='cart__count-wrap'>
                                     <div className='cart__quantity-wrap'>
-                                        <button className='cart-option__button' onClick={() => dispatch(incrementToCart(item.cartId))}>
-                                            <Image src={plusIco} alt='플러스' />
-                                        </button>
-                                        <input className='cart-option__input' type="number" value={item.count} readOnly />
                                         <button className='cart-option__button' onClick={() => dispatch(decrementToCart(item.cartId))}>
                                             <Image src={minusIco} alt='마이너스' />
+                                        </button>
+                                        <input className='cart-option__input' type="number" value={item.count} readOnly />
+                                        <button className='cart-option__button' onClick={() => dispatch(incrementToCart(item.cartId))}>
+                                            <Image src={plusIco} alt='플러스' />
                                         </button>
                                     </div>
                                     <p className='cart__total-price'>
