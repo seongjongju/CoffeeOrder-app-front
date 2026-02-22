@@ -9,6 +9,7 @@ import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import { authApi } from '@/features/services/auth/auth.services';
 import { logout } from '@/store/auth/authSlice';
+import { allDeleteCart } from '@/store/cart/cartSlice';
 
 const MypageUi = () => {
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
@@ -21,6 +22,7 @@ const MypageUi = () => {
             const data = await authApi.isLogout();
 
             dispatch(logout());
+            dispatch(allDeleteCart());
 
             setModalText(data.message);
             setModalShow(true);
