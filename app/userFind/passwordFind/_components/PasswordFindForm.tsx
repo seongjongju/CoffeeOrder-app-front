@@ -85,7 +85,7 @@ const PasswordFindForm = () => {
             //유저정보가 일치하면 비밀번호 변경
             if(data.status === "success") {
                 try{
-                    await userFindActionApi.changedPassword(userId, newPwd);
+                    const data = await userFindActionApi.changedPassword(userId, newPwd);
 
                     setModalText(data.message);
                     setModalShow(true);
