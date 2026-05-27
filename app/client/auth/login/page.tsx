@@ -1,0 +1,14 @@
+import '../_styled/authStyle.css';
+import LoginForm from './_components/LoginForm';
+
+const LoginPage = () => {
+    return (
+        <main className='main'>
+            <div className='inner'>
+                <LoginForm />
+            </div> 
+        </main>
+    );
+};
+
+export default LoginPage;

@@ -3,9 +3,6 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect, Suspense, useState } from 'react';
 import { Provider } from "react-redux";
 import { persistor, store } from "../store/store";
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import OptionProvider from './globalProvider/OptionProvider';
 import LoadingUi from '@/shared/components/loading/LoadingUi'; 
 import { PersistGate } from 'redux-persist/integration/react';
@@ -45,20 +42,7 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
             <Provider store={store}>
                 <PersistGate loading={<LoadingUi />} persistor={persistor}>
                     <Suspense fallback={<LoadingUi />}>
-                        <OptionProvider />
-                        { 
-                            pathName === '/login' ||
-                            pathName === '/policy' ||
-                            pathName === '/signUp' ||
-                            pathName === '/userFind/idFind' ||
-                            pathName === '/userFind/idFindResult' ||
-                            pathName === '/userFind/passwordFind'
-                            ? <AppBar /> 
-                            : pathName === '/signUpFinish' || 
-                            pathName === '/' ||
-                            pathName === '/order/orderFinish'
-                            ? null : <MainAppBar />  
-                        }
+                        {/* <OptionProvider /> */}
                         {children}
                     </Suspense>
                 </PersistGate>

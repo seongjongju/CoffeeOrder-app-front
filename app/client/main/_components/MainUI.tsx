@@ -1,9 +1,9 @@
-import '@/shared/styled/main/main.css';
-import MenuTabItems from '@/app/client/main/_components/MenuTabItems';
-import Suggestion from '../client/main/_components/Suggestion';
-import MainVisual from '../client/main/_components/MainVisual';
+import React from 'react';
+import MainVisual from './MainVisual';
+import Suggestion from './Suggestion';
+import MenuTabItems from './MenuTabItems';
 
-const MainPage = () => {
+const MainUI = () => {
     return (
         <main className='main'>
             <MainVisual />
@@ -20,4 +20,4 @@ const MainPage = () => {
     );
 };
 
-export default MainPage;
+export default MainUI;

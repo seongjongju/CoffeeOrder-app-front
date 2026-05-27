@@ -4,6 +4,7 @@ import '@/shared/styled/common/common.css';
 import ClientLayout from "./ClientLayout";
 import viewport from "./viewport";
 import Script from "next/script";
+import AppBar from "@/shared/components/appBar/AppBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
           src="https://pay.nicepay.co.kr/v1/js/"
           strategy="beforeInteractive"
         />
+        <AppBar />
         <ClientLayout>
           {children}
         </ClientLayout>

@@ -23,23 +23,23 @@ export type infoType = {
 
 const ViewLayout = () => {
     const {isLoading} = useLoading();
-    const {menus} = useMenu(); // 메뉴 커스텀 훅
+    //const {menus} = useMenu(); // 메뉴 커스텀 훅
     const params = useParams();
 
      //타입 필터
-    const menuTypeFiltered = menus.filter(menu => menu.type === params.type)
+    //const menuTypeFiltered = menus.filter(menu => menu.type === params.type)
 
     //타입이 일치하면 고유 아이디 찾기
-    const menuIdFind = menuTypeFiltered.find(menu => menu.id === Number(params.id));
+    //const menuIdFind = menuTypeFiltered.find(menu => menu.id === Number(params.id));
 
-    {
-        if(menuIdFind === undefined || isLoading) 
-        return (<LoadingUi />)
-    }
+    // {
+    //     if(menuIdFind === undefined || isLoading) 
+    //     return (<LoadingUi />)
+    // }
 
     return (
         <>
-            <div className='inner'>
+            {/* <div className='inner'>
                 <ViewThum 
                     thum={menuIdFind.img}
                     menuName={menuIdFind.menuname}
@@ -59,7 +59,7 @@ const ViewLayout = () => {
                 menuName={menuIdFind.menuname}
                 img={menuIdFind.img}
                 menuId={menuIdFind.id}
-            />
+            /> */}
         </>
     );
 };
