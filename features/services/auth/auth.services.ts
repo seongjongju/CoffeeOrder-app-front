@@ -1,16 +1,29 @@
 import axios from "axios";
 
-const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
-    withCredentials: true,
+export const api = axios.create({
+    baseURL: '/api/auth',
+    withCredentials: true
 });
 
-export const authApi = {
-    isLogout: async () => {
-        const { data } = await api.post('/api/users/logout',
-            {},
-        );
+//*************************회원가입
+//아이디 중복확인
+export const idReduplicationApi = async (id: string) => {
+    const res = await api.post('/id_reduplication',
+        { id }
+    );
 
-        return data;
-    },
+    const data = await res.data;
+
+    console.log(res)
+    return data;;
 };
+
+// export const authApi = {
+//     isLogout: async () => {
+//         const { data } = await api.post('/api/users/logout',
+//             {},
+//         );
+
+//         return data;
+//     },
+// };

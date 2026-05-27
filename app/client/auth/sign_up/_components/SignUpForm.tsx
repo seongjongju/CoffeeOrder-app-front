@@ -6,11 +6,12 @@ import CertificationFormField from '@/shared/components/formField/CertificationF
 import FormField from '@/shared/components/formField/FormField';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
-import { validations } from '@/shared/vaildation/Validation';
+import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { signUpApi } from '@/features/services/signUp/signUp.services';
 import { signUpActionApi } from '@/features/actions/signUp/signUp.action';
+import { idReduplicationApi } from '@/features/services/auth/auth.services';
 
 const SignUpForm = () => {
     const {signUpState, signUpInputChange, signUpInputReset} = useSignUpInputState();
@@ -26,6 +27,7 @@ const SignUpForm = () => {
         e.preventDefault();
 
         const id = signUpState.id.trim();
+
         if(!id) {
             setModalText('아이디를 입력해주세요.');
             setModalShow(true);
@@ -40,17 +42,16 @@ const SignUpForm = () => {
         }
 
         try {
-            const data = await signUpApi.checkingId(signUpState.id);
-            
-            if(data.isTaken) {
-                setModalText(data.message);
-                setModalShow(true);
-                return;
-            } 
+            const data = await idReduplicationApi(id);
+            setModalText(data.message);
+            setModalShow(true);
+            return;
 
+            /*
             setModalText(data.message);
             setModalShow(true);
             setIsIdChecked(true);
+            */
         }catch(err: any) {
             console.error(err.message);
             setModalText("아이디 중복 검사 서버 오류");

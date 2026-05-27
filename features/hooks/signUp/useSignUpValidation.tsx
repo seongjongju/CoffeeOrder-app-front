@@ -1,5 +1,5 @@
 'use client';
-import { validations } from '@/shared/vaildation/Validation';
+import { validations } from '@/app/util/client/Validation';
 import React, { useState } from 'react';
 
 interface SignUpStateProps {

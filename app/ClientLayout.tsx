@@ -25,7 +25,7 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
         }
     }, []);
 
-    const isIntroPage = pathName === '/';
+    const isIntroPage = pathName === '/client/intro';
 
     if (isIntroPage) {
         return (
@@ -41,10 +41,8 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
         <QueryClientProvider client={queryClient}>
             <Provider store={store}>
                 <PersistGate loading={<LoadingUi />} persistor={persistor}>
-                    <Suspense fallback={<LoadingUi />}>
-                        {/* <OptionProvider /> */}
-                        {children}
-                    </Suspense>
+                    {/* <OptionProvider /> */}
+                    {children}
                 </PersistGate>
             </Provider>
         </QueryClientProvider>

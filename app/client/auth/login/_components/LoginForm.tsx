@@ -5,7 +5,7 @@ import mascot from '@/public/images/mascot.png';
 import FormField from '@/shared/components/formField/FormField';
 import Button from '@/shared/components/button/Button';
 import Link from 'next/link';
-import { validations } from '@/shared/vaildation/Validation';
+import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/store/hook';
 import { loginSuccess } from '@/store/auth/authSlice';

@@ -6,7 +6,7 @@ import FindInput from '../../_components/FindInput';
 import Button from '@/shared/components/button/Button';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
-import { validations } from '@/shared/vaildation/Validation';
+import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
 import { userFindApi } from '@/features/services/userFind/userFind.services';
 import { userFindActionApi } from '@/features/actions/userFind/userFind.action';

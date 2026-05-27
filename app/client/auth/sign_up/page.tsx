@@ -3,7 +3,7 @@ import SignUpForm from "./_components/SignUpForm";
 
 const SignUpPage = () => {
     return (
-        <main className='main'>
+        <main className='main auth-main'>
             <section className='section'>
                 <div className='inner'>
                     <SignUpForm />

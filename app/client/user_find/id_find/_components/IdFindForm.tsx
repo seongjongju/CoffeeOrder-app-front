@@ -5,7 +5,7 @@ import mascot from '@/public/images/mascot.png';
 import Button from '@/shared/components/button/Button';
 import FindInput from '../../_components/FindInput';
 import { useState } from 'react';
-import { validations } from '@/shared/vaildation/Validation';
+import { validations } from '@/app/util/client/Validation';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import { useRouter } from 'next/navigation';

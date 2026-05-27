@@ -7,7 +7,7 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
-import { authApi } from '@/features/services/auth/auth.services';
+/* import { authApi } from '@/features/services/auth/auth.services'; */
 import { logout } from '@/store/auth/authSlice';
 import { allDeleteCart } from '@/store/cart/cartSlice';
 
@@ -17,7 +17,7 @@ const MypageUi = () => {
 
     const dispatch = useAppDispatch();
 
-    const handleClickLogout = async () => {
+    /* const handleClickLogout = async () => {
         try{
             const data = await authApi.isLogout();
 
@@ -32,7 +32,7 @@ const MypageUi = () => {
             setModalShow(true);
         }
     };
-
+ */
     return (
         <>
             <div className='mypage-user'>
@@ -49,7 +49,7 @@ const MypageUi = () => {
                 </Link>
                 <button
                     className='mypage-link'
-                    onClick={handleClickLogout}
+                    /* onClick={handleClickLogout} */
                 >
                     로그아웃
                     <Image src={linkArrow} alt="링크 이동 화살표" />

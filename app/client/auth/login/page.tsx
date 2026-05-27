@@ -3,7 +3,7 @@ import LoginForm from './_components/LoginForm';
 
 const LoginPage = () => {
     return (
-        <main className='main'>
+        <main className='main auth-main'>
             <div className='inner'>
                 <LoginForm />
             </div> 

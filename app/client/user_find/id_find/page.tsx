@@ -3,7 +3,7 @@ import IdFindForm from "./_components/IdFindForm";
 
 const IdFindPage = () => {
     return (
-        <main className='main'>
+        <main className='main auth-main'>
             <div className='inner'>
                 <IdFindForm />
             </div> 

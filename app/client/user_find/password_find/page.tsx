@@ -3,7 +3,7 @@ import PasswordFindForm from './_components/PasswordFindForm';
 
 const PasswordFindPage = () => {
     return (
-        <main className='main'>
+        <main className='main auth-main'>
             <div className='inner'>
                 <PasswordFindForm />
             </div>
