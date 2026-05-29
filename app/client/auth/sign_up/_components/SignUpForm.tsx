@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { signUpApi } from '@/features/services/signUp/signUp.services';
 import { signUpActionApi } from '@/features/actions/signUp/signUp.action';
-import { idReduplicationApi } from '@/features/services/auth/auth.services';
+import { idReduplicationApi, sendEmailApi } from '@/features/clientApi/authApi';
 
 const SignUpForm = () => {
     const {signUpState, signUpInputChange, signUpInputReset} = useSignUpInputState();
@@ -46,65 +46,29 @@ const SignUpForm = () => {
             setModalText(data.message);
             setModalShow(true);
             return;
-
-            /*
-            setModalText(data.message);
-            setModalShow(true);
-            setIsIdChecked(true);
-            */
         }catch(err: any) {
             console.error(err.message);
-            setModalText("아이디 중복 검사 서버 오류");
+            setModalText(err.response.data.message);
             setModalShow(true);
         }
     };
 
-    //이메일 중복검사
-    const emailDuplicationCheck = async () => {
+    //이메일 중복검사 및 인증번호 발송
+    const sendEmail = async () => {
         try {
-            const data = await signUpApi.checkingEmail(signUpState.email);
+            const data = await sendEmailApi(signUpState.email);
 
-            if(data.isTaken) {
-                setModalText(data.message);
-                setModalShow(true);
-                return;
-            } 
-
-            return true;
+            setModalText(data.message);
+            setModalShow(true);
+            return;
         } catch(err: any) {
-            console.error("이메일 중복 검사 서버 오류");
-            setModalText("이메일 중복 검사 서버 오류");
+            console.error(err.massage);
+            setModalText(err.response.data.message);
             setModalShow(true);
         };
     };
 
-    //이메일 인증
-    const emailCertificationForwarding = async (e:React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        if(!validations.emailRegex.test(signUpState.email.trim())) {
-            setModalText('이메일을 확인해 주세요.');
-            setModalShow(true);
-            return;
-        };     
-
-        try {
-            const isAvailable = await emailDuplicationCheck();
-            if(!isAvailable) return;
-
-            setIsLoading(true);
-
-            const data = await signUpApi.certificationEmail(signUpState.email);
-            setModalText(data.message);
-            setModalShow(true);
-        }catch(err: any) {
-            console.error(err);
-            setModalText(err.response?.data?.message);
-            setModalShow(true);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
+    //인증번호확인
     const emailCertificationNumberPost = async (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if(!validations.sixDigitRegex.test(signUpState.certificationNumber.trim())) {
@@ -237,7 +201,7 @@ const SignUpForm = () => {
                     buttonText='인증번호 발송'
                     value={signUpState.email}
                     onChange={(e) => signUpInputChange(e, 'email')}
-                    onClick={emailCertificationForwarding}
+                    onClick={sendEmail}
                 />
                 <CertificationFormField 
                     label='인증번호'

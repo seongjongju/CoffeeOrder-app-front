@@ -13,17 +13,15 @@ export const idReduplicationApi = async (id: string) => {
     );
 
     const data = await res.data;
-
-    console.log(res)
-    return data;;
+    return data;
 };
 
-// export const authApi = {
-//     isLogout: async () => {
-//         const { data } = await api.post('/api/users/logout',
-//             {},
-//         );
+//이메일 중복확인 및 인증번호 발송
+export const sendEmailApi = async (email: string) => {
+    const res = await api.post('/send_authentication', 
+        { email }
+    );
 
-//         return data;
-//     },
-// };
+    const data = await res.data;
+    return data;
+};

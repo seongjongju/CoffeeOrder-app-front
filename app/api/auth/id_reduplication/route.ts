@@ -1,7 +1,7 @@
 import { connectDB } from "@/app/lib/database";
 import { NextRequest, NextResponse } from "next/server";
 
-const dbName = process.env.USER_DB_NAME;
+const dbName = process.env.DB_NAME;
 
 export async function POST(request: NextRequest) {
     const body = await request.json();
@@ -14,8 +14,6 @@ export async function POST(request: NextRequest) {
 
         const db = (await connectDB).db(dbName);
         const findId = await db.collection('users').findOne({id});
-
-        console.log(db);
 
         if(findId) {
             return NextResponse.json({ error: "중복된 아이디", message: "이미 사용중인 아이디입니다." }, { status: 409 });

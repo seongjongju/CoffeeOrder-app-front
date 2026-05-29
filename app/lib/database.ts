@@ -16,7 +16,7 @@ if(process.env.NODE_ENV === 'development') {
 
 // DB 초기 설정
 connectDB.then(async (client) => {
-    const db = client.db(process.env.USER_DB_NAME);
+    const db = client.db(process.env.DB_NAME);
 
     await db.collection('users').createIndex(
         { id: 1 },
