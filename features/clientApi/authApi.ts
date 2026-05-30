@@ -25,3 +25,12 @@ export const sendEmailApi = async (email: string) => {
     const data = await res.data;
     return data;
 };
+
+export const authCodeReduplicationApi = async (email: string, authCode: string) => {
+    const res = await api.post('/check_authentication',
+        { email, authCode }
+    );
+
+    const data = await res.data;
+    return data;
+};

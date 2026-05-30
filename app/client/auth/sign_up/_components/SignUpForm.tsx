@@ -11,7 +11,8 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { signUpApi } from '@/features/services/signUp/signUp.services';
 import { signUpActionApi } from '@/features/actions/signUp/signUp.action';
-import { idReduplicationApi, sendEmailApi } from '@/features/clientApi/authApi';
+import { authCodeReduplicationApi, idReduplicationApi, sendEmailApi } from '@/features/clientApi/authApi';
+import { formatPhoneNumber } from '@/app/util/client/format';
 
 const SignUpForm = () => {
     const {signUpState, signUpInputChange, signUpInputReset} = useSignUpInputState();
@@ -79,29 +80,17 @@ const SignUpForm = () => {
         }
 
         try{
-            const data = await signUpApi.checkingCertificationNumber(
+            const data = await authCodeReduplicationApi(
                 signUpState.email, 
                 signUpState.certificationNumber
             );
 
-            if(data.status === "expired") {
-                setModalText(data.message);
-                setModalShow(true);
-                return;
-            }
-
-            if(data.status === "fail") {
-                setModalText(data.message);
-                setModalShow(true);
-                return;
-            }
-
             setModalText(data.message);
             setModalShow(true);
-
             setIsCertificationChecked(true);
+            return;
         } catch(err:any) {
-            console.error(err);
+            console.error(err.message);
             setModalText(err.response?.data?.message);
             setModalShow(true);
             return;
@@ -189,7 +178,7 @@ const SignUpForm = () => {
                     label='휴대폰 번호'
                     type='tel'
                     placeholder='‘-’구분없이 입력'
-                    value={signUpState.phoneNumber}
+                    value={formatPhoneNumber(signUpState.phoneNumber)}
                     onChange={(e) => signUpInputChange(e, 'phoneNumber')}
                     onBlur={(e) => onBlur('phoneNumber', e.currentTarget.value)}
                     errMessage={signUpErrorMsg.phoneNumberErrorMessage}

@@ -40,7 +40,15 @@ const useSignUpInputState = () => {
     const [signUpState, dispatch] = useReducer(reducer, initialvalue);
 
     const signUpInputChange = useCallback((e:React.ChangeEvent<HTMLInputElement>, field: keyof State) => {
-        dispatch({ type: reducerActionTypes.setField, field, payload: e.target.value });
+        let value = e.target.value;
+
+        console.log(field)
+
+        if (field === 'phoneNumber') {
+            value = value.replace(/\D/g, '').slice(0, 11); 
+        }
+
+        dispatch({ type: reducerActionTypes.setField, field, payload: value });
     }, []);
     
     const signUpInputReset = useCallback((field: keyof State, value?: string) => {

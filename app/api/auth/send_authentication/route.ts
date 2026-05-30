@@ -32,16 +32,20 @@ export async function POST(request: NextRequest) {
         const authCode = Math.floor(100000 + Math.random() * 900000).toString();
 
         //인증번호 유효 시간
-        const expiresAt = Date.now() + 5 * 60 * 1000
+        const expiresAt = Date.now() + 5 * 60 * 1000;
 
         //인증번호를 임시로 db에 저장한다.
-        await db.collection('email_verifications').insertOne({
-            email,
-            authCode,
-            expiresAt,
-            status: "pending",
-            createdAt: new Date(),
-        });
+        await db.collection('email_verifications').replaceOne(
+            { email },
+            {
+                email,
+                authCode,
+                expiresAt,
+                status: "pending",
+                createdAt: new Date(),
+            },
+            { upsert: true }
+        );
 
         //인증번호를 메일로 발송한다.
         let mailOptions = {
