@@ -9,9 +9,7 @@ import Modal from '@/shared/components/modal/Modal';
 import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { signUpApi } from '@/features/services/signUp/signUp.services';
-import { signUpActionApi } from '@/features/actions/signUp/signUp.action';
-import { authCodeReduplicationApi, idReduplicationApi, sendEmailApi } from '@/features/clientApi/authApi';
+import { authCodeReduplicationApi, idReduplicationApi, memberResisterApi, sendEmailApi } from '@/features/clientApi/authApi';
 import { formatPhoneNumber } from '@/app/util/client/format';
 
 const SignUpForm = () => {
@@ -51,11 +49,14 @@ const SignUpForm = () => {
             console.error(err.message);
             setModalText(err.response.data.message);
             setModalShow(true);
+            return;
         }
     };
 
     //이메일 중복검사 및 인증번호 발송
-    const sendEmail = async () => {
+    const sendEmail = async (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
         try {
             const data = await sendEmailApi(signUpState.email);
 
@@ -66,6 +67,7 @@ const SignUpForm = () => {
             console.error(err.massage);
             setModalText(err.response.data.message);
             setModalShow(true);
+            return;
         };
     };
 
@@ -101,32 +103,23 @@ const SignUpForm = () => {
     const signUpSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const hasError = Object.values(signUpErrorMsg).some((msg) => msg !== '');
-        const hasInput = Object.values(signUpState).some((state) => state === '');
-        if(hasError || hasInput) {
-            setModalText('필수 입력창을 확인해주세요.')
-            setModalShow(true);
-            return false;
-        };
-
-        if (!isIdChecked || !isCertificationChecked) {
-            setModalText('아이디 중복확인 및 인증번호 확인을 진행해주세요.');
-            setModalShow(true);
-            return false;
-        }
-
         try {
-            await signUpActionApi.submitSignUp(
+            const data = await memberResisterApi(
                 signUpState.id,
                 signUpState.password,
                 signUpState.name,
                 signUpState.phoneNumber,
                 signUpState.email,
-                signUpState.certificationNumber,
                 signUpState.birth
             );
 
-            router.push('/signUpFinish');
+            if(!data.success) {
+                setModalText(data.message);
+                setModalShow(true);
+            }
+
+            router.push('/client/auth/sign_up_success')
+            return;
         } catch(err: any) {
             console.error(err);
             setModalText(err.response?.data?.message);

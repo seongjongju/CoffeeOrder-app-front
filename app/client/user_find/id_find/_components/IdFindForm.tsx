@@ -9,7 +9,7 @@ import { validations } from '@/app/util/client/Validation';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/components/modal/Modal';
 import { useRouter } from 'next/navigation';
-import { userFindActionApi } from '@/features/actions/userFind/userFind.action';
+import { findIdApi } from '@/features/clientApi/authApi';
 
 const IdFindForm = () => {
     const [findIdInput, setFindIdInput] = useState('');
@@ -36,8 +36,9 @@ const IdFindForm = () => {
         };
 
         try {
-            const data = await userFindActionApi.submitFindId(findIdInput);
-            router.push(`/userFind/idFindResult?userId=${data.userId}`);
+            const data = await findIdApi(findIdInput);
+            router.push(`/client/user_find/id_find_result?userId=${data.userId}`);
+            return;
         } catch(err: any) {
             console.error(err);
             setModalText(err.response?.data?.message);
