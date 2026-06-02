@@ -1,0 +1,13 @@
+#admin-header {
+    height: 80px;
+    background: #f8ffff;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    z-index: 99;
+}
+
+.admin-header__nav {
+    max-width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+}

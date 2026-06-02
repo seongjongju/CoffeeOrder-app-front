@@ -6,7 +6,7 @@ import circleCheck from '@/public/icons/circle_check.svg';
 import Button from '@/shared/components/button/Button';
 import { useRouter } from 'next/navigation';
 
-const SignUpFinishPage = () => {
+const SignUpSuccessPage = () => {
     const router = useRouter();
     const moveLoginPage = () => {
         return router.push('/client/auth/login');
@@ -49,4 +49,4 @@ const SignUpFinishPage = () => {
     );
 };
 
-export default SignUpFinishPage;
+export default SignUpSuccessPage;

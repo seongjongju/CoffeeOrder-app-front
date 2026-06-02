@@ -9,6 +9,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AppBar from '@/shared/components/appBar/AppBar';
 import MainAppBar from '@/shared/components/appBar/MainAppBar';
+import Header from './client/inc/header/Header';
+import AdminHeader from './admin/inc/admin_header/AdminHeader';
 
 const queryClient = new QueryClient();
 
@@ -26,6 +28,8 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     }, []);
 
     const isIntroPage = pathName === '/client/intro';
+    const isAdminPage = pathName.includes("admin");
+    const isAdminLoginPage = pathName === '/admin/admin_login';
 
     if (isIntroPage) {
         return (
@@ -41,7 +45,12 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
         <QueryClientProvider client={queryClient}>
             <Provider store={store}>
                 <PersistGate loading={<LoadingUi />} persistor={persistor}>
-                    {/* <OptionProvider /> */}
+                    {
+                        isAdminLoginPage ? null 
+                        : isAdminPage ? <AdminHeader /> 
+                        : <Header />
+                    }
+                    
                     {children}
                 </PersistGate>
             </Provider>

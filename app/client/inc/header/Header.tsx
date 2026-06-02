@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import BackIco from '@/public/icons/back_ico.png';
 import React from 'react';
-import "../inc.css";
+import "../_styled/inc.css";
 import { usePathname, useRouter } from 'next/navigation';
 import { getTitle } from '@/app/util/client/get.header.title';
 

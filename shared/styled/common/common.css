@@ -7,7 +7,7 @@
 }
 
 html {
-    height: 100vh;
+    /* height: 100vh; */
     background-color: #f5f5f5;
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
@@ -15,10 +15,20 @@ html {
 
 body {
     font-family: 'Pretendard', sans-serif;
-    background: #fff;
-    max-width: 600px;
-    min-height: 100vh;
     margin: 0 auto;
+}
+
+main {
+    max-width: 600px;
+    margin: 0 auto;
+    height: 100%;
+    min-height: 100vh;
+    background: #fff;
+}
+
+/* 어드민 페이지 */
+.admin-main {
+    max-width: 100%;
 }
 
 a {
@@ -37,10 +47,6 @@ li {
 }
 
 /************************** common */
-header {
-    padding-top: env(safe-area-inset-top);
-}
-
 .text-body {
     font-size: 14px;
     color: #333;
