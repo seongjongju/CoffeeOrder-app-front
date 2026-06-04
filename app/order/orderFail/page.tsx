@@ -1,5 +1,5 @@
 import React from 'react';
-import '@/shared/styled/order/order.css';
+import '@/shared/client/styled/order/order.css';
 import OrderErrorUi from '../_components/OrderErrorUi';
 
 const OrderFailpage = () => {

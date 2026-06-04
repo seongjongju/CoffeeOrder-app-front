@@ -1,5 +1,5 @@
 import React from 'react';
-import '@/shared/styled/formField/formField.css';
+import '@/shared/client/styled/formField/formField.css';
 import { usePathname } from 'next/navigation';
 
 export interface FormFieldProps {

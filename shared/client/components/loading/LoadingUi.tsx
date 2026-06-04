@@ -1,4 +1,4 @@
-import '@/shared/styled/loading/loading.css';
+import '@/shared/client/styled/loading/loading.css';
 import Image from 'next/image';
 import BigMascot from '@/public/icons/big_mascot.png';
 import React from 'react';

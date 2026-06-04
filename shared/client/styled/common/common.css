@@ -108,39 +108,3 @@ li {
     font-size: 14px;
 }
 
-/************************************ 어드민 페이지 공통 */
-.admin-main {
-    max-width: 100%;
-    padding: 80px 20px 20px 220px;
-    background: #F8F8FA;
-}
-
-.admin-title {
-    font-size: 35px;
-    color: #2B1B16;
-    margin-bottom: 30px;
-}
-
-.dashboard {
-    padding: 15px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, .1);
-    border-radius: 15px;
-    background: #fff;
-}
-
-.admin-title-ui {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-.admin-title-ui__title {
-    font-size: 20px;
-    color: #000;
-    font-weight: 600;
-}
-
-.admin-title-ui__more {
-    font-size: 14px;
-}

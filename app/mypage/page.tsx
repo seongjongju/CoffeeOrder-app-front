@@ -1,4 +1,4 @@
-import '@/shared/styled/mypage/mypage.css';
+import '@/shared/client/styled/mypage/mypage.css';
 import MypageUi from './_components/MypageUi';
 
 const Mypage = () => {

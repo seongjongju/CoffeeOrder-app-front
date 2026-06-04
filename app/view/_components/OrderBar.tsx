@@ -8,7 +8,7 @@ import useOptions from '@/features/hooks/view/useOptions';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import { addToCart } from '@/store/cart/cartSlice';
 import useModalShow from '@/features/hooks/modal/useModalShow';
-import Modal from '@/shared/components/modal/Modal';
+import Modal from '@/shared/client/components/modal/Modal';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { addToAlert } from '@/store/alert/alertSlice';

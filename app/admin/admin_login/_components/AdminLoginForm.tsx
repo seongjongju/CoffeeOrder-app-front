@@ -1,13 +1,23 @@
 'use client';
 import { adminLoginApi } from '@/features/adminApi/adminAuthApi';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 const AdminLoginForm = () => {
     const [adminIdInput, setAdminIdInput] = useState<string>('');
     const [adminPasswordInput, setAdminPasswordInput] = useState<string>('');
-
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    //리다이렉트 처리
+    useEffect(() => {
+        const error = searchParams.get('error');
+        if(error === "login_required") {
+            alert('로그인이 필요합니다.');
+            router.replace('/admin/admin_login');
+            return;
+        }
+    }, [])
 
     const handleClickLoginSubmit = async () => {
         if(adminIdInput.trim() === "") {

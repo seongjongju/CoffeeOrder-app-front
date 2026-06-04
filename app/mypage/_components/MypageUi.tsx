@@ -6,7 +6,7 @@ import linkArrow from '@/public/icons/mypage_link_arrow.png';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import useModalShow from '@/features/hooks/modal/useModalShow';
-import Modal from '@/shared/components/modal/Modal';
+import Modal from '@/shared/client/components/modal/Modal';
 /* import { authApi } from '@/features/services/auth/auth.services'; */
 import { logout } from '@/store/auth/authSlice';
 import { allDeleteCart } from '@/store/cart/cartSlice';

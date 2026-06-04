@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import '@/shared/styled/main/main.css';
+import '@/shared/client/styled/main/main.css';
 import React, { useEffect, useState } from 'react';
 import useMenu from '@/features/hooks/menu/useMenu';
 import { useRouter } from 'next/navigation';

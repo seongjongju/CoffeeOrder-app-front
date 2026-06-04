@@ -2,12 +2,12 @@
 import React from 'react';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
-import Button from '@/shared/components/button/Button';
+import Button from '@/shared/client/components/button/Button';
 import FindInput from '../../_components/FindInput';
 import { useState } from 'react';
 import { validations } from '@/app/util/client/Validation';
 import useModalShow from '@/features/hooks/modal/useModalShow';
-import Modal from '@/shared/components/modal/Modal';
+import Modal from '@/shared/client/components/modal/Modal';
 import { useRouter } from 'next/navigation';
 import { findIdApi } from '@/features/clientApi/authApi';
 

@@ -4,21 +4,24 @@ import Link from 'next/link';
 import BigMascot from '@/public/icons/big_mascot.png';
 import "./_styled/intro.css";
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppSelector } from '@/store/hook';
 
 const IntroPage = () => {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const auth = useAppSelector(state => state.auth);
 
+    //리다이렉트 처리
     useEffect(() => {
-        if(auth.isLoggedIn) {
-            setTimeout(() => {
-                router.push('/client/');
-            }, 2000);
+        const error = searchParams.get('error');
+        if(error === 'login_required') {
+            alert('로그인이 필요합니다.');   
+            router.replace('/client/intro');
+            return;
         }
-    },[auth.isLoggedIn]);
-
+    }, []);
+    
     return (
         <div className='intro-container'>
             <Image className='intro-image' src={BigMascot} alt='머그컵 캐릭터' />

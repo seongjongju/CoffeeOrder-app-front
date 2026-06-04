@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import '@/shared/styled/order/order.css';
+import '@/shared/client/styled/order/order.css';
 import React from 'react';
 
 interface OrderErrorProps {

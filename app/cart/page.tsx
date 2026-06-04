@@ -1,5 +1,5 @@
 import React from 'react';
-import '@/shared/styled/cart/cart.css';
+import '@/shared/client/styled/cart/cart.css';
 import CartLayout from './_components/CartLayout';
 
 const CartPage = () => {

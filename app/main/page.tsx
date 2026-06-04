@@ -1,4 +1,4 @@
-import '@/shared/styled/main/main.css';
+import '@/shared/client/styled/main/main.css';
 import MenuTabItems from '@/app/client/main/_components/MenuTabItems';
 import Suggestion from '../client/main/_components/Suggestion';
 import MainVisual from '../client/main/_components/MainVisual';

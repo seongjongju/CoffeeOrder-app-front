@@ -1,4 +1,4 @@
-import '@/shared/styled/order/order.css';
+import '@/shared/client/styled/order/order.css';
 import OrderHisyoryList from './_components/OrderHisyoryList';
 
 const OrderHistoryPage = async () => {

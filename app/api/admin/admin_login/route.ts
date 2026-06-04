@@ -4,10 +4,8 @@ import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from "next/server";
 
 const dbName = process.env.DB_NAME;
-const accessTokenKey = process.env.JWT_ACCESS_SECRET;
-const refreshTokenKey = process.env.JWT_REFRESH_SECRET;
-
-console.log('admin login api hit');
+const accessTokenKey = process.env.JWT_ADMIN_ACCESS_SECRET;
+const refreshTokenKey = process.env.JWT_ADMIN_REFRESH_SECRET;
 
 export async function POST(request :NextRequest) {
     const body = await request.json();
@@ -64,7 +62,7 @@ export async function POST(request :NextRequest) {
         
         //쿠키에 엑세스 토큰을 저장한다.
         res.cookies.set(
-            "access_token",
+            "admin_access_token",
             accessToken,
             {
                 httpOnly: true,
@@ -76,7 +74,7 @@ export async function POST(request :NextRequest) {
 
         //쿠키에 리프레쉬 토큰을 저장한다.
         res.cookies.set(
-            "refresh_token",
+            "admin_refresh_token",
             refreshToken,
             {
                 httpOnly: true,

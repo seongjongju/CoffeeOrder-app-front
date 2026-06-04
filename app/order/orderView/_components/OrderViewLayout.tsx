@@ -1,7 +1,7 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
-import LoadingUi from '@/shared/components/loading/LoadingUi';
+import LoadingUi from '@/shared/client/components/loading/LoadingUi';
 import { useAppSelector } from '@/store/hook';
 import useHistory from '@/features/hooks/order/useHistory';
 import OrderErrorUi from '../../_components/OrderErrorUi';

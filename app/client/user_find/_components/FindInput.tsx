@@ -1,4 +1,4 @@
-import '@/shared/styled/formField/formField.css';
+import '@/shared/client/styled/formField/formField.css';
 import React from 'react';
 
 export interface findProps {

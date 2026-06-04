@@ -3,7 +3,7 @@ import React from 'react';
 import ViewThum from './ViewThum';
 import useMenu from '@/features/hooks/menu/useMenu';
 import { useParams } from 'next/navigation';
-import LoadingUi from '@/shared/components/loading/LoadingUi';
+import LoadingUi from '@/shared/client/components/loading/LoadingUi';
 import useLoading from '@/features/hooks/loading/useLoading';
 import ViewOptions from './ViewOptions';
 import OrderBar from './OrderBar';

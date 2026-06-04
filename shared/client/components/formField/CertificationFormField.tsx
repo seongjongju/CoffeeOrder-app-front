@@ -1,5 +1,5 @@
 import React from 'react';
-import '@/shared/styled/formField/formField.css';
+import '@/shared/client/styled/formField/formField.css';
 import { FormFieldProps } from './FormField';
 
 const CertificationFormField = ({ label, placeholder, type, buttonText, onChange, value, onClick}:FormFieldProps) => {

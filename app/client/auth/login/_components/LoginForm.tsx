@@ -2,15 +2,15 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
-import FormField from '@/shared/components/formField/FormField';
-import Button from '@/shared/components/button/Button';
+import FormField from '@/shared/client/components/formField/FormField';
+import Button from '@/shared/client/components/button/Button';
 import Link from 'next/link';
 import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/store/hook';
 import { loginSuccess } from '@/store/auth/authSlice';
 import useModalShow from '@/features/hooks/modal/useModalShow';
-import Modal from '@/shared/components/modal/Modal';
+import Modal from '@/shared/client/components/modal/Modal';
 import { loginActionApi } from '@/features/actions/login/login.action';
 
 const LoginForm = () => {

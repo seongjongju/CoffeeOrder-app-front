@@ -30,7 +30,7 @@
 
 /* 체크 ON */
 .checked-input:checked + span {
-    background-image: url('../../../public/icons/check_on.svg');
+    background-image: url('../../../../public/icons/check_on.svg');
 }
 
 /* 체크 OFF / 표시용 */
@@ -42,7 +42,7 @@
     display: block;
     width: 100%;
     height: 100%;
-    background: url('../../../public/icons/check_off.svg') no-repeat center / contain;
+    background: url('../../../../public/icons/check_off.svg') no-repeat center / contain;
 }
 
 /* 개별 체크 항목 */

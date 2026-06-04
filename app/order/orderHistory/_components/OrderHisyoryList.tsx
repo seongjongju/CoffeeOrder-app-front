@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import LoadingUi from '@/shared/components/loading/LoadingUi';
+import LoadingUi from '@/shared/client/components/loading/LoadingUi';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import { useAppSelector } from '@/store/hook';

@@ -1,6 +1,6 @@
 'use client';
-import Button from '@/shared/components/button/Button';
-import '@/shared/styled/order/order.css';
+import Button from '@/shared/client/components/button/Button';
+import '@/shared/client/styled/order/order.css';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import { useRouter } from 'next/navigation';

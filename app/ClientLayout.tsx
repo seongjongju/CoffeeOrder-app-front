@@ -3,12 +3,9 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect, Suspense, useState } from 'react';
 import { Provider } from "react-redux";
 import { persistor, store } from "../store/store";
-import OptionProvider from './globalProvider/OptionProvider';
-import LoadingUi from '@/shared/components/loading/LoadingUi'; 
+import LoadingUi from '@/shared/client/components/loading/LoadingUi'; 
 import { PersistGate } from 'redux-persist/integration/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import AppBar from '@/shared/components/appBar/AppBar';
-import MainAppBar from '@/shared/components/appBar/MainAppBar';
 import Header from './client/inc/header/Header';
 import AdminHeader from './admin/inc/admin_header/AdminHeader';
 

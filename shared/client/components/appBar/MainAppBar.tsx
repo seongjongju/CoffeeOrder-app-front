@@ -11,7 +11,7 @@ import BackIco from '@/public/icons/back_ico.png';
 import { usePathname, useRouter } from 'next/navigation';
 import '@/shared/styled/appBar/appBar.css';
 import '@/shared/styled/cart/cart.css';
-import useAppBarTitles from '../../../features/hooks/appBar/useAppBarTitles';
+import useAppBarTitles from '../../../../features/hooks/appBar/useAppBarTitles';
 import useCartQuantity from '@/features/hooks/cart/useCartQuantity';
 import SideAlert from '../side/SideAlert';
 import useAlert from '@/features/hooks/alert/useAlert';

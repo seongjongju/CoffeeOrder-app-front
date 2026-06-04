@@ -1,11 +1,11 @@
 'use client';
 import useSignUpInputState from '@/features/hooks/signUp/useSignUpInputState';
 import useSignUpValidation from '@/features/hooks/signUp/useSignUpValidation';
-import Button from '@/shared/components/button/Button';
-import CertificationFormField from '@/shared/components/formField/CertificationFormField';
-import FormField from '@/shared/components/formField/FormField';
+import Button from '@/shared/client/components/button/Button';
+import CertificationFormField from '@/shared/client/components/formField/CertificationFormField';
+import FormField from '@/shared/client/components/formField/FormField';
 import useModalShow from '@/features/hooks/modal/useModalShow';
-import Modal from '@/shared/components/modal/Modal';
+import Modal from '@/shared/client/components/modal/Modal';
 import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';

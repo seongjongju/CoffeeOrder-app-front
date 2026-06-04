@@ -1,8 +1,8 @@
 'use client';
 import usePolicyChecked from '@/features/hooks/policy/usePolicyChecked';
-import Button from '@/shared/components/button/Button';
+import Button from '@/shared/client/components/button/Button';
 import useModalShow from '@/features/hooks/modal/useModalShow';
-import Modal from '@/shared/components/modal/Modal';
+import Modal from '@/shared/client/components/modal/Modal';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 

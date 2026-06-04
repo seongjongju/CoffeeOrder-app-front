@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import '../_styled/authStyle.css';
 import circleCheck from '@/public/icons/circle_check.svg';
-import Button from '@/shared/components/button/Button';
+import Button from '@/shared/client/components/button/Button';
 import { useRouter } from 'next/navigation';
 
 const SignUpSuccessPage = () => {

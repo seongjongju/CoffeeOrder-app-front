@@ -1,5 +1,5 @@
-import '@/shared/styled/view/view.css';
-import '@/shared/styled/policyStyle/policyStyle.css';
+import '@/shared/client/styled/view/view.css';
+import '@/shared/client/styled/policyStyle/policyStyle.css';
 import ViewLayout from '../../_components/ViewLayout';
 
 const ViewPage = () => {    
