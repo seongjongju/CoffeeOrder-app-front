@@ -40,6 +40,12 @@ const SignUpForm = () => {
             return;
         }
 
+        if(id.includes("admin")) {
+            setModalText('사용 불가능한 아이디입니다.');
+            setModalShow(true);
+            return;
+        };
+
         try {
             const data = await idReduplicationApi(id);
             setModalText(data.message);

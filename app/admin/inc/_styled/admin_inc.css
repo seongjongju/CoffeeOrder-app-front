@@ -1,13 +1,113 @@
+/*************************** admin 헤더 */
 #admin-header {
-    height: 80px;
-    background: #f8ffff;
-    border-bottom: 1px solid #ddd;
+    height: 60px;
+    background: #2B1B16;
     position: fixed;
     z-index: 99;
 }
 
 .admin-header__nav {
-    max-width: 1200px;
     height: 100%;
     margin: 0 auto;
+    padding: 0 3%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.admin-header__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    color: #fff;
+}
+
+.admin-header__logo {
+    width: 30px;
+}
+
+.admin-header__logout {
+    font-size: 14px;
+    color: #fff;
+}
+
+/*************************** admin Lnb */
+#admin-lnb {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    z-index: 98;
+    width: 200px;
+    height: 100vh;
+    border-right: 1px solid #ddd;
+    padding: 15px;
+    background: #fff;
+}
+
+.admin-lnb__li {
+    margin-bottom: 20px;
+}
+
+.admin-lnb__li:last-child {
+    margin-bottom: 0;
+}
+
+.admin-lnb__onedepth {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 15px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.admin-lnb__onedepth:hover,
+.admin-lnb__onedepth.current {
+    background: #2B1B16;
+    color: #fff;
+}
+
+.admin-lnb__list {
+    display: none;
+    margin-top: 8px;
+}
+
+.admin-lnb__list.is-active {display: block;}
+
+.admin-lnb__list--li {
+    margin-bottom: 5px;
+}
+
+.admin-lnb__list--li:last-child {
+    margin-bottom: 0;
+}
+
+.admin-lnb__twodepth {
+    display: block;
+    font-size: 12px;
+    color: #333;
+    padding: 10px 15px;
+    background: #f5f5f5;
+    border-radius: 6px;
+    position: relative;
+}
+
+.admin-lnb__twodepth::after {
+    position: absolute;
+    content: '●';
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    font-size: 6px;
+    line-height: 1;
+    display: none;
+}
+
+.admin-lnb__twodepth:hover::after,
+.admin-lnb__twodepth.is-active::after {
+    display: block;
 }
