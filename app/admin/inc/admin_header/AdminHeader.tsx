@@ -19,7 +19,10 @@ const AdminHeader = () => {
                         />
                         앱 이동
                     </Link>
-                    <button className='admin-header__logout'>로그아웃</button>
+                    <button className='admin-header__logout'>
+                        관리자<br />
+                        로그아웃
+                    </button>
                 </nav>
             </header>
 

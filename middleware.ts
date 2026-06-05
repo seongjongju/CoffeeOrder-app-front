@@ -1,42 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
+import { authority } from "./middlewares/authority";
+import { adminRefresh } from "./middlewares/adminRefresh";
+import { userRefresh } from "./middlewares/userRefresh";
 
-export async function middleware(request: NextRequest) {
-    const pathname = request.nextUrl.pathname;
+export default async function middleware(request: NextRequest) {
+    //어드민 / 사용자 권한
+    const authorityRes = await authority(request);
 
-    const adminToken = request.cookies.get('admin_access_token')?.value; //어드민
-    const token = request.cookies.get('access_token')?.value; //사용자
+    // if(authorityRes) {
+    //     return authorityRes;
+    // }
 
-    //어드민 페이지
-    if(pathname.startsWith("/admin")) {
-        if(pathname === "/admin/admin_login") {
-            return NextResponse.next();
-        }
+    //어드민 리프레쉬 토큰
+    // const adminRefreshRes = await adminRefresh(request);
+    // if(adminRefreshRes) {
+    //     return adminRefreshRes;
+    // }
 
-        if(!adminToken) {
-            return NextResponse.redirect(new URL("/admin/admin_login?error=login_required", request.url));
-        }
-    }
-
-    //사용자 페이지
-    if (!token && pathname === "/") {
-        return NextResponse.redirect(
-            new URL("/client/intro?error=login_required", request.url)
-        );
-    }
-
-    if(pathname.startsWith("/client")) {
-        if(
-            pathname === "/client/intro" ||
-            pathname.includes('/client/auth') ||
-            pathname.includes('/client/user_find')
-        ) {
-            return NextResponse.next();
-        }
-
-        if(!token) {
-            return NextResponse.redirect(new URL("/client/intro?error=login_required", request.url))
-        }
-    }
+    //사용자 리프레쉬 토큰
+    // const userRefreshRes = await userRefresh(request);
+    // if(userRefreshRes) {
+    //     return userRefreshRes;
+    // }
 
     return NextResponse.next();
 };

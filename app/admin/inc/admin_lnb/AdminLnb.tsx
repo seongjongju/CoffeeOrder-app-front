@@ -5,53 +5,39 @@ import React, { useState } from 'react';
 
 const adminLnbs = [
     {
-        id: 0, 
+        id: "0", 
         oneDepth: "HOME",
         href: "/admin/admin_main"
     },
     {
-        id: 1, 
+        id: "1", 
         oneDepth: "회원관리 ↓", 
         twoDepths: [
             {
-                id: 1_0,
+                id: "1_0",
                 twoDepth: "회원목록",
                 href: "/admin/admin_users"
             },
             {
-                id: 1_1,
+                id: "1_1",
                 twoDepth: "회원 주문/결제 내역",
                 href: "/admin/admin_orders"
             },
         ],
     },
     {
-        id: 2, 
-        oneDepth: "제품관리 ↓", 
-        twoDepths: [
-            {
-                id: 2_0,
-                twoDepth: "제품목록",
-                href: ""
-            },
-            {
-                id: 2_1,
-                twoDepth: "제품등록",
-                href: ""
-            },
-        ],
+        id: "2", 
+        oneDepth: "제품관리", 
+        href: "/admin/admin_products",
     },
-    {
-        id: 3,
-        oneDepth: "통계/차트", 
-        href: "/admin/admin_statistics"
-    }
 ]
 
 const AdminLnb = () => {
-    const [oneDepth, setOneDepth] = useState(0);
+    const [oneDepth, setOneDepth] = useState("");
     const pathName = usePathname();
     const router = useRouter();
+
+    console.log(oneDepth)
 
     return (
         <div id='admin-lnb'>
@@ -69,14 +55,18 @@ const AdminLnb = () => {
                                         lnb?.href === pathName ? 'current' : ''
                                     ) :
                                     (
-                                        lnb.id === oneDepth ? 'current' : ''
-                                    )
+                                        lnb.id === oneDepth ||
+                                        lnb.twoDepths?.find(twoDepth => twoDepth.href === pathName) ? 'current' : ''
+                                    ) 
                                 }`}
                                 onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
                                     e.preventDefault();
                                     setOneDepth(lnb.id);
-
                                     !lnb.twoDepths ? router.push(lnb?.href) : null;
+
+                                    if(oneDepth === lnb.id) {
+                                        setOneDepth("");
+                                    }
                                 }}
                             >
                                 {lnb.oneDepth}
@@ -84,7 +74,11 @@ const AdminLnb = () => {
                             {
                                 lnb.twoDepths && 
                                 (
-                                    <ul className={`admin-lnb__list ${lnb.id === oneDepth || lnb?.href === pathName ? 'is-active' : ''}`}>
+                                    <ul className={`admin-lnb__list ${
+                                        lnb.id === oneDepth ||
+                                        lnb.twoDepths?.find(twoDepth => twoDepth.href === pathName) || 
+                                        lnb?.href === pathName ? 'is-active' : ''
+                                    }`}>
                                         {
                                             lnb.twoDepths?.map((depth) => (
                                                 <li 
