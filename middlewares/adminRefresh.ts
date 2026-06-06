@@ -1,37 +1,70 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+import { jwtVerify, SignJWT } from "jose";
 
 const accessTokenKey = process.env.JWT_ADMIN_ACCESS_SECRET;
 const refreshTokenKey = process.env.JWT_ADMIN_REFRESH_SECRET;
 
 export async function adminRefresh(request: NextRequest) {
+    const pathname = request.nextUrl.pathname;
+        if (!pathname.startsWith("/admin")) {
+        return;
+    }
+
+    if (pathname === "/admin/admin_login") {
+        return;
+    }
+
     const adminRefreshToken = request.cookies.get("admin_refresh_token")?.value; //어드민
+    const adminAccessToken = request.cookies.get("admin_access_token")?.value; //어드민
 
     //어드민 리프레쉬 토큰 검사
     if(!adminRefreshToken) {
-        return NextResponse.json({ error: "refresh_token 토큰 없음", message: "refresh_token 토큰 없음" }, {status: 401});
+        return NextResponse.redirect(new URL("/admin/admin_login?error=token_expired", request.url));
+    }
+
+    //어드민이 refresh_token이 검증되면, 새로운 access_token을 발급한다.
+    const refreshSecret = new TextEncoder().encode(
+        refreshTokenKey!
+    );
+
+    const accessSecret = new TextEncoder().encode(
+        accessTokenKey!
+    );
+
+    //엑세스 토큰 만료검사
+    if (adminAccessToken) {
+        try {
+            await jwtVerify(adminAccessToken, accessSecret);
+            return;
+        } catch {}
     }
 
     try{
-        //어드민이 refresh_token이 검증되면, 새로운 access_token을 발급한다.
-        const decoded = jwt.verify(
+        const { payload } = await jwtVerify(
             adminRefreshToken,
-            refreshTokenKey!
-        ) as jwt.JwtPayload;
-
-        const accessToken = jwt.sign(
-            {
-                id: decoded._id,
-                adminId: decoded.adminId,
-                role: decoded.role,
-            },
-            accessTokenKey!,
-            {
-                expiresIn:'1h'
-            }
+            refreshSecret
         );
 
-        const res = NextResponse.json({ success: true, message: "새 access_token 발급 완료"}, {status: 200});
+        //타입 지정
+        const jwtPayload = payload as {
+            _id: string;
+            adminId: string;
+            role: string;
+        };
+
+        const accessToken = await new SignJWT(
+            {
+                id: jwtPayload._id,
+                adminId: jwtPayload.adminId,
+                role: jwtPayload.role,
+            },
+        )
+        .setProtectedHeader({ alg: "HS256" })
+        .setIssuedAt()
+        .setExpirationTime("1h")
+        .sign(accessSecret);
+
+        const res = NextResponse.next();
 
         res.cookies.set(
             "admin_access_token",
@@ -47,6 +80,6 @@ export async function adminRefresh(request: NextRequest) {
         return res;
     } catch(err) {
         console.error(err);
-        return NextResponse.json({ error: "서버 오류", message: "새 access_token발급 오류" }, {status: 500});
+        return NextResponse.redirect(new URL("/admin/admin_login?error=token_expired", request.url));
     }
 };

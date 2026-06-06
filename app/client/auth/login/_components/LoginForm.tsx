@@ -7,11 +7,9 @@ import Button from '@/shared/client/components/button/Button';
 import Link from 'next/link';
 import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/store/hook';
-import { loginSuccess } from '@/store/auth/authSlice';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
-import { loginActionApi } from '@/features/actions/login/login.action';
+import { loginApi } from '@/features/clientApi/authApi';
 
 const LoginForm = () => {
     const [userId, setUserId] = useState('');
@@ -21,7 +19,6 @@ const LoginForm = () => {
         passwordErrorMsg: ''
     });
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
-    const dispatch = useAppDispatch();
     const router = useRouter();
 
     const loginUserId = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -62,18 +59,14 @@ const LoginForm = () => {
         }
 
         try{
-            const data = await loginActionApi.submitLogin(userId, userPwd);
-            if(data.status === "success") {
-                dispatch(loginSuccess({
-                    _id: data.user._id,
-                    id: data.user.id,
-                    name: data.user.name,
-                    phoneNumber: data.user.phoneNumber,
-                    email: data.user.email,
-                    birth: data.user.birth
-                }));
-                router.push('/main');
+            const data = await loginApi(userId, userPwd);
+            if(!data.success) {
+                setModalText(`${data.message}`);
+                setModalShow(true);
+                return;
             }; 
+
+            router.push('/');
         } catch(err: any) {
             console.error(err);
             setModalText(err.response?.data?.message);

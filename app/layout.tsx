@@ -26,7 +26,6 @@ export const metadata: Metadata = {
 
 export {viewport};
 
-
 export default function RootLayout({
   children,
 }: Readonly<{

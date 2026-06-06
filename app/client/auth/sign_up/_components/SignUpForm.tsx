@@ -10,7 +10,7 @@ import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { authCodeReduplicationApi, idReduplicationApi, memberResisterApi, sendEmailApi } from '@/features/clientApi/authApi';
-import { formatPhoneNumber } from '@/app/util/client/format';
+import { formatPhoneNumber } from '@/app/util/format';
 
 const SignUpForm = () => {
     const {signUpState, signUpInputChange, signUpInputReset} = useSignUpInputState();

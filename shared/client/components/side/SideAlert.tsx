@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import '@/shared/styled/sideGnb/sideGnb.css';
+import '@/shared/client/styled/sideGnb/sideGnb.css';
 import useAlert from '@/features/hooks/alert/useAlert';
 import { useAppDispatch } from '@/store/hook';
 import { allDeleteAlert } from '@/store/alert/alertSlice';

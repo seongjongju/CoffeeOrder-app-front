@@ -12,11 +12,11 @@ const AdminLoginForm = () => {
     //리다이렉트 처리
     useEffect(() => {
         const error = searchParams.get('error');
-        if(error === "login_required") {
+        if(error === "token_expired") {
             alert('로그인이 필요합니다.');
             router.replace('/admin/admin_login');
             return;
-        }
+        } 
     }, [])
 
     const handleClickLoginSubmit = async () => {

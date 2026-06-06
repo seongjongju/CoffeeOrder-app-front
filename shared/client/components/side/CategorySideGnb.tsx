@@ -1,5 +1,5 @@
 import React from 'react';
-import '@/shared/styled/sideGnb/sideGnb.css';
+import '@/shared/client/styled/sideGnb/sideGnb.css';
 import Link from 'next/link';
 
 interface CategorySideGnbOnProps {

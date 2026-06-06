@@ -3,7 +3,6 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect, Suspense, useState } from 'react';
 import { Provider } from "react-redux";
 import { persistor, store } from "../store/store";
-import LoadingUi from '@/shared/client/components/loading/LoadingUi'; 
 import { PersistGate } from 'redux-persist/integration/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Header from './client/inc/header/Header';
@@ -41,7 +40,7 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     return (
         <QueryClientProvider client={queryClient}>
             <Provider store={store}>
-                <PersistGate loading={<LoadingUi />} persistor={persistor}>
+                <PersistGate persistor={persistor}>
                     {
                         isAdminLoginPage ? null 
                         : isAdminPage ? <AdminHeader /> 

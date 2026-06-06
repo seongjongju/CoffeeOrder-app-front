@@ -70,3 +70,16 @@ export const findIdApi = async (email: string) => {
     const data = await res.data;
     return data;
 };
+
+//************************* 로그인
+export const loginApi = async (
+    id: string, 
+    password: string,
+) => {
+    const res = await api.post('/login',
+        { id, password,}
+    );
+
+    const data = await res.data;
+    return data;
+};

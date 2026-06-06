@@ -1,9 +1,29 @@
+'use client';
 import React from 'react';
 import "../_styled/admin_inc.css";
 import Link from 'next/link';
 import AdminLnb from '../admin_lnb/AdminLnb';
+import { adminLogoutApi } from '@/features/adminApi/adminAuthApi';
+import { useRouter } from 'next/navigation';
 
 const AdminHeader = () => {
+    const router = useRouter(); 
+
+    const adminLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        try{
+            const data = await adminLogoutApi();
+            alert(`${data.message}`);
+            router.push('/admin/admin_login');
+
+            return;
+        } catch(err:any) {
+            console.error(err.response?.data?.message);
+            alert(`${err.response?.data?.message}`);
+            return;
+        }
+    };
+
     return (
         <>
             <header id='admin-header'>
@@ -19,7 +39,10 @@ const AdminHeader = () => {
                         />
                         앱 이동
                     </Link>
-                    <button className='admin-header__logout'>
+                    <button 
+                        className='admin-header__logout'
+                        onClick={adminLogout}
+                    >
                         관리자<br />
                         로그아웃
                     </button>

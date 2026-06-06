@@ -1,8 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import MemberList from '@/shared/admin/components/list/MemberList';
+import { getMembersApi } from '@/features/adminApi/adminMembersApi';
 
-const MembersDashBoard = () => {
+const MembersDashBoard = async () => {
+    const allMembers = await getMembersApi();
+
     return (
         <div className='dashboard' style={{
             width: "33.3%", 
@@ -19,7 +22,9 @@ const MembersDashBoard = () => {
                 </Link>
             </div> {/* .admin-title-ui : end */}
 
-            <MemberList />
+            <MemberList 
+                members={allMembers.members}
+            />
         </div>
     );
 };

@@ -15,11 +15,10 @@ const IntroPage = () => {
     //리다이렉트 처리
     useEffect(() => {
         const error = searchParams.get('error');
-        if(error === 'login_required') {
-            alert('로그인이 필요합니다.');   
+        if(error === 'token_expired') {   
             router.replace('/client/intro');
             return;
-        }
+        } 
     }, []);
     
     return (
