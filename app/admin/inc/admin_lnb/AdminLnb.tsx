@@ -30,14 +30,17 @@ const adminLnbs = [
         oneDepth: "제품관리", 
         href: "/admin/admin_products",
     },
+    {
+        id: "3", 
+        oneDepth: "재고관리", 
+        href: "/admin/admin_inventory",
+    },
 ]
 
 const AdminLnb = () => {
     const [oneDepth, setOneDepth] = useState("");
     const pathName = usePathname();
     const router = useRouter();
-
-    console.log(oneDepth)
 
     return (
         <div id='admin-lnb'>

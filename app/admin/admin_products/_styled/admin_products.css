@@ -1,0 +1,108 @@
+.product-form {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.product-form__regi {
+    font-size: 14px;
+    color: #fff;
+    background: #2B1B16;
+    padding: 10px 16px;
+    height: 40px;
+}
+
+.product-form__select {
+    width: 200px;
+    height: 40px;
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+.product-form__input {
+    width: 200px;
+    height: 40px;
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+.product-form__search {
+    font-size: 14px;
+    color: #fff;
+    background: #2B1B16;
+    padding: 10px 16px;
+    height: 40px;
+}
+
+.product-regi-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    padding: 20px;
+    border-radius: 20px;
+    background: #fff;
+    width: 500px;
+    display: none;
+}
+
+.product-regi-modal__write {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    display: flex; 
+    align-items: center;
+    gap: 8px 10px;
+}
+
+.product-regi-modal__write.check {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.product-regi-modal__label {
+    font-size: 14px;
+}
+
+.product-regi-modal__input {
+    font-size: 14px;
+    padding: 0 10px;
+    height: 40px;
+    width: 200px;
+}
+
+.product-regi-modal__select {
+    font-size: 14px;
+    padding: 0 10px;
+    height: 37px;
+    width: 150px;
+}
+
+.product-regi-modal__check-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.product-regi-modal__check {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.product-regi-modal__checkbox {
+    width: 14px;
+    height: 14px;
+}
+
+.product-regi-modal__button {
+    font-size: 14px;
+    color: #fff;
+    background: #2B1B16;
+    padding: 10px 16px;
+    height: 40px;
+    display: block;
+    margin: 30px auto 0;
+}

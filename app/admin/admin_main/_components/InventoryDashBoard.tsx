@@ -1,8 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import InventoryList from '@/shared/admin/components/list/InventoryList';
+import { inventoryGetApi } from '@/features/adminApi/adminInventoryApi';
 
-const InventoryDashBoard = () => {
+const InventoryDashBoard = async () => {
+    const allInventory = await inventoryGetApi();
+
     return (
         <div className='dashboard' style={{
             width: "33.3%", 
@@ -12,14 +15,16 @@ const InventoryDashBoard = () => {
             <div className='admin-title-ui'>
                 <h3 className='admin-title-ui__title'>재고 현황</h3>
                 <Link 
-                    href={'/admin/admin_products'}
+                    href={'/admin/admin_inventory'}
                     className='admin-title-ui__more'
                 >
                     전체보기
                 </Link>
             </div> {/* .admin-title-ui : end */}
 
-            <InventoryList />
+            <InventoryList 
+                inventorys={allInventory.inventorys}
+            />
         </div>
     );
 };

@@ -75,6 +75,6 @@ export async function POST(request: NextRequest) {
         }, {status: 201});
     } catch(err) {
         console.error(err);
-        return NextResponse.json({ error: "서버 오류", message: "회원가입 서버 오류" });
+        return NextResponse.json({ error: "서버 오류", message: "회원가입 서버 오류" }, {status: 500});
     }
 }

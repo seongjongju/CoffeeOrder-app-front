@@ -6,7 +6,7 @@ const dbName = process.env.DB_NAME;
 export async function GET() {
     try {
         const db = (await connectDB).db(dbName);
-        const usersColletion = await db.collection('users').find().toArray(); 
+        const usersColletion = await db.collection('users').find().sort({ 'createdAt': -1 }).toArray(); 
         
         if(usersColletion.length === 0) {
             return NextResponse.json({ message: "가입된 회원이 없습니다." }, {status: 400});
