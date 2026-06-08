@@ -4,27 +4,27 @@ import { inventoryGetApi } from '@/features/adminApi/adminInventoryApi';
 
 const categorys = [
     {
-        id: "원두",
+        id: "cate_0",
         cate: "원두"
     },
     {
-        id: "우유",
+        id: "cate_1",
         cate: "우유"
     },
     {
-        id: "과일",
+        id: "cate_2",
         cate: "과일"
     },
     {
-        id: "치즈",
+        id: "cate_3",
         cate: "치즈"
     },
     {
-        id: "설탕",
+        id: "cate_4",
         cate: "설탕"
     },
     {
-        id: "시럽",
+        id: "cate_5",
         cate: "시럽"
     },
 ];

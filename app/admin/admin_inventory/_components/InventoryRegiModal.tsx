@@ -1,4 +1,5 @@
 import { inventoryRegiApi } from '@/features/adminApi/adminInventoryApi';
+import { useRouter } from 'next/navigation';
 import React, { Dispatch, SetStateAction } from 'react';
 
 interface ModalProps {
@@ -27,6 +28,8 @@ const InventoryRegiModal = ({
     setInvenQuantity,
     invenQuantity
 }: ModalProps) => {
+    const router = useRouter();
+
     const handleInvenSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
@@ -60,6 +63,8 @@ const InventoryRegiModal = ({
             //모달창 종료
             alert(`${data.message}`);
             setInventoryModalShow(false);
+            router.refresh();
+            return;
         }catch(err: any) {
             console.error(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);

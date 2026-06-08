@@ -58,7 +58,8 @@ const InventoryRegister = ({ categorys, inventorys }: Category) => {
             <div 
                 className='dashboard'
                 style={{
-                    minHeight: "80vh"
+                    minHeight: "80vh",
+                    position: "relative"
                 }}
             >
                 <InventoryList 

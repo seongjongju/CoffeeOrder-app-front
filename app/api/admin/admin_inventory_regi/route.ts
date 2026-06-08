@@ -21,6 +21,11 @@ export async function POST(request: NextRequest) {
         }
 
         const db = (await connectDB).db(dbName);
+        const findInventoryName = await db.collection('inventory').findOne({ inventoryName });
+
+        if(findInventoryName) {
+            return NextResponse.json({ error: "중복 값", message: "이미 등록된 재고입니다." }, {status: 409});
+        }
 
         await db.collection('inventory').insertOne({
             inventoryName: inventoryName,
