@@ -13,8 +13,9 @@ const InventoryList = ({ inventorys }: Inventory) => {
             <table className='admin-table'>
                 <tbody>
                     <tr>
+                        <th>선택</th>
                         <th>분류</th>
-                        <th>제품명</th>
+                        <th>재고명</th>
                         <th>재고 수량</th>
                         <th>상태</th>
                         <th></th>
@@ -22,6 +23,9 @@ const InventoryList = ({ inventorys }: Inventory) => {
                     {
                         inventorys?.map((inven) => (
                             <tr key={inven._id}>
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
                                 <td>{inven?.category}</td>
                                 <td>{inven?.inventoryName}</td>
                                 <td>{inven?.quantity}</td>
