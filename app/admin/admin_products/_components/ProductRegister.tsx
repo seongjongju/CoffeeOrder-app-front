@@ -1,44 +1,51 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import ProductRegiModal from './ProductRegiModal';
 import ProductList from '@/shared/admin/components/list/ProductList';
+import { categorys } from '@/app/util/admin/category';
+import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
+import { Inventory } from '@/app/types/inventorys/inventory';
 
-const ProductRegister = () => {
-    const [productModalShow, setProductModalShow] = useState<boolean>(false);
+const ProductRegister = ({inventorys}: Inventory) => {
+    const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
+
     return (
         <div>
-            <form className='product-form'>
+            <form className='admin-form'>
                 <button 
-                    className='product-form__regi'
+                    className='admin-form__regi'
                     onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                         e.preventDefault();
-                        setProductModalShow(true);
+                        setModalToggle("product-regi");
                     }}
                 >
-                    제품등록
+                    재고등록
                 </button>
-                <select className='product-form__select'>
+                <select className='admin-form__select'>
                     <option value="">카테고리</option>
-                    <option value="">커피</option>
-                    <option value="">에이드</option>
-                    <option value="">디저트</option>
+                    {
+                        categorys.map((cate) => (
+                            <option value={cate.cate} key={cate.id}>{cate.cate}</option>
+                        ))
+                    }
                 </select>
-                <div className='product-form__write'>
+                <div className='admin-form__write'>
                     <input 
                         type="text" 
-                        className='product-form__input'
+                        className='admin-form__input'
                         placeholder='검색어를 입력하세요.'
                     />
-                    <button className='product-form__search'>검색</button>
+                    <button className='admin-form__search'>검색</button>
                 </div>
-            </form> {/* .product-form : end */}
+            </form> {/* .admin-form : end */}
             
             {
-                productModalShow &&
+                modalToggle === "product-regi" &&
                 (
                     <ProductRegiModal 
-                        setProductModalShow={setProductModalShow}
-                        productModalShow={productModalShow}
+                        setModalToggle={setModalToggle}
+                        modalToggle={modalToggle}
+                        inventorys={inventorys}
                     />
                 )
             }

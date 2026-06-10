@@ -1,66 +1,61 @@
 'use client';
+import { Inventory } from '@/app/types/inventorys/inventory';
 import { categorys } from '@/app/util/admin/category';
-import { inventoryRegiApi } from '@/features/adminApi/adminInventoryApi';
+import { inventoryUpdateApi } from '@/features/adminApi/adminInventoryApi';
 import { useRouter } from 'next/navigation';
-import React, { Dispatch, memo, SetStateAction } from 'react';
+import React, { Dispatch, memo, SetStateAction, useState } from 'react';
 
-interface ModalProps {
+interface UpdateProps {
+    inventorys: Inventory['inventorys'];
     setModalToggle: Dispatch<SetStateAction<string>>;
     modalToggle: string;
-    setInvenName: Dispatch<SetStateAction<string>>;
-    invenName: string;
-    setInvenCate: Dispatch<SetStateAction<string>>;
-    invenCate: string;
-    setInvenQuantity: Dispatch<SetStateAction<number>>;
-    invenQuantity: number;
-};
+    invenId: string;
+}
 
-const InventoryRegiModal = memo(({ 
-    setModalToggle, 
+const InventoryUpdateModal = memo(({
+    inventorys,
+    setModalToggle,
     modalToggle,
-    setInvenName,
-    invenName,
-    setInvenCate,
-    invenCate,
-    setInvenQuantity,
-    invenQuantity,
-}: ModalProps) => {
+    invenId,
+}: UpdateProps) => {
+    const [objName, setObjName] = useState(inventorys.find(iv => iv._id === invenId)?.inventoryName);
+    const [objCategory, setObjCategory] = useState(inventorys.find(iv => iv._id === invenId)?.category);
+    const [objQuantity, setObjQuantity] = useState(inventorys.find(iv => iv._id === invenId)?.quantity);
+
     const router = useRouter();
 
-    const handleInvenSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleInvenUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if(invenName.trim() === "" || invenCate === "") {
+        if(!objName || !objCategory || !objQuantity) return;
+
+        if(objName.trim() === "" || objCategory === "") {
             alert("값을 모두 입력해주세요.");
             return;
         }
 
-        if(invenQuantity === 0) {
+        if(objQuantity === 0) {
             alert("수량은 1개 이상 필수 입니다.");
             return;
         }
 
-        if(invenQuantity > 100) {
+        if(objQuantity > 100) {
             alert("수량은 100개가 최대입니다.");
             return;
         }
 
         try{
-            const data = await inventoryRegiApi(
-                invenName.trim(),
-                invenCate,
-                invenQuantity
+            const data = await inventoryUpdateApi(
+                invenId,
+                objName.trim(),
+                objCategory,
+                objQuantity
             );
 
             if(!data.success) {
                 alert(`${data.message}`);
                 return;
             }
-
-            //초기값으로 되돌린다.
-            setInvenName("");
-            setInvenCate("");
-            setInvenQuantity(0);
 
             //모달창 종료
             alert(`${data.message}`);
@@ -83,18 +78,19 @@ const InventoryRegiModal = memo(({
             <div 
                 className='admin-modal'
                 style={{
-                    display: `${modalToggle === "inven-regi" ? "block" : "none"}`
+                    display: `${modalToggle === "inven-update" ? "block" : "none"}`
                 }}
             >                
                 <div className='admin-modal__write'> 
                     <label htmlFor="" className='admin-modal__label'>재고명</label>
                     <input 
                         type="text" 
+                        value={objName}
+                        onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
+                            setObjName(e.target.value);
+                        }}
                         className='admin-modal__input'
                         placeholder='재고명을 입력하세요.'
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setInvenName(e.target.value);
-                        }}
                     />
                 </div> {/* .admin-modal__write : end */}
 
@@ -102,11 +98,11 @@ const InventoryRegiModal = memo(({
                     <label htmlFor="" className='admin-modal__label'>카테고리</label>
                     <select 
                         className='admin-modal__select'
+                        value={objCategory}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            setInvenCate(e.target.value);
+                            setObjCategory(e.target.value);
                         }}
                     >
-                        <option value="">카테고리</option>
                         {
                             categorys.map((cate) => (
                                 <option value={cate.cate} key={cate.id}>{cate.cate}</option>
@@ -121,22 +117,23 @@ const InventoryRegiModal = memo(({
                         type="number" 
                         min={0}
                         max={100}
-                        className='admin-modal__number'
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setInvenQuantity(Number(e.target.value));
+                        value={objQuantity}
+                        onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
+                            setObjQuantity(Number(e.target.value));
                         }}
+                        className='admin-modal__number'
                     />
                 </div> {/* .admin-modal__write : end */}
 
                 <button 
                     className='admin-modal__button'
-                    onClick={handleInvenSubmit}
+                    onClick={handleInvenUpdate}
                 >
-                    등록하기
+                    수정하기
                 </button>
             </div> {/* .admin-modal : end */}
         </>
     );
 });
 
-export default InventoryRegiModal;
+export default InventoryUpdateModal;

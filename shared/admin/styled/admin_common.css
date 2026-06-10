@@ -74,3 +74,101 @@
     color: #ff0000;
     font-weight: 600;
 }
+
+/*** 공통 모달창 ***/
+.admin-form {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-form__regi {
+    font-size: 14px;
+    color: #fff;
+    background: #2B1B16;
+    padding: 10px 16px;
+    height: 40px;
+}
+
+.admin-form__select {
+    width: 200px;
+    height: 40px;
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+.admin-form__input {
+    width: 200px;
+    height: 40px;
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+.admin-form__search {
+    font-size: 14px;
+    color: #fff;
+    background: #2B1B16;
+    padding: 10px 16px;
+    height: 40px;
+}
+
+.admin-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    padding: 20px;
+    border-radius: 20px;
+    background: #fff;
+    width: 500px;
+    display: none;
+}
+
+.admin-modal__write {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    display: flex; 
+    align-items: center;
+    gap: 8px 10px;
+}
+
+.admin-modal__write.check {
+    flex-wrap: wrap;
+}
+
+.admin-modal__label {
+    font-size: 14px;
+}
+
+.admin-modal__input {
+    font-size: 14px;
+    padding: 0 10px;
+    height: 40px;
+    width: 200px;
+}
+
+.admin-modal__select {
+    font-size: 14px;
+    padding: 0 10px;
+    height: 37px;
+    width: 150px;
+}
+
+.admin-modal__number {
+    font-size: 14px;
+    padding: 0 10px;
+    height: 34px;
+    width: 80px;
+}
+
+.admin-modal__button {
+    font-size: 14px;
+    color: #fff;
+    background: #2B1B16;
+    padding: 10px 16px;
+    height: 40px;
+    display: block;
+    margin: 30px auto 0;
+}

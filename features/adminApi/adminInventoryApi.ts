@@ -80,3 +80,28 @@ export const inventoryAllDeleteApi = async (inventoryArray: Inventory['inventory
 
     return data;
 };
+
+//재고 업데이트
+export const inventoryUpdateApi = async (
+    _id: string,
+    inventoryName: string,
+    category: string,
+    quantity: number
+) => {
+    const url = `${baseUrl}/admin_inventory_update`;
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            _id, inventoryName, category, quantity
+        }),
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    return data;
+};
+

@@ -1,52 +1,53 @@
 'use client';
-import { Category } from '@/app/types/inventorys/inventory';
 import InventoryRegiModal from './InventoryRegiModal';
 import React, { useState } from 'react';
-import InventoryList from '@/shared/admin/components/list/InventoryList';
+import { categorys } from '@/app/util/admin/category';
+import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
 
-const InventoryRegister = ({ categorys, inventorys }: Category) => {
-    const [inventoryModalShow, setInventoryModalShow] = useState<boolean>(false); //모달창
+const InventoryRegister = ({ children }: { children: React.ReactNode }) => {
+    const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
     const [invenName, setInvenName] = useState<string>(""); //재고 명
     const [invenCate, setInvenCate] = useState<string>(""); //카테고리
     const [invenQuantity, setInvenQuantity] = useState<number>(0); //재고 수량
 
     return (
         <div>
-            <form className='inventory-form'>
+            <form className='admin-form'>
                 <button 
-                    className='inventory-form__regi'
+                    className='admin-form__regi'
                     onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                         e.preventDefault();
-                        setInventoryModalShow(true);
+                        setModalToggle("inven-regi");
                     }}
                 >
                     재고등록
                 </button>
-                <select className='inventory-form__select'>
+                <select className='admin-form__select'>
                     <option value="">카테고리</option>
-                    <option value="">원두</option>
-                    <option value="">우유</option>
-                    <option value="">과일</option>
+                    {
+                        categorys.map((cate) => (
+                            <option value={cate.cate} key={cate.id}>{cate.cate}</option>
+                        ))
+                    }
                 </select>
-                <div className='inventory-form__write'>
+                <div className='admin-form__write'>
                     <input 
                         type="text" 
-                        className='inventory-form__input'
+                        className='admin-form__input'
                         placeholder='검색어를 입력하세요.'
                     />
-                    <button className='inventory-form__search'>검색</button>
+                    <button className='admin-form__search'>검색</button>
                 </div>
-            </form> {/* .inventory-form : end */}
+            </form> {/* .admin-form : end */}
 
             {
-                inventoryModalShow &&
+                modalToggle === "inven-regi" &&
                 (
                     <InventoryRegiModal 
-                        setInventoryModalShow={setInventoryModalShow}
-                        inventoryModalShow={inventoryModalShow}
+                        setModalToggle={setModalToggle}
+                        modalToggle={modalToggle}
                         setInvenName={setInvenName}
                         invenName={invenName}
-                        categorys={categorys}
                         setInvenCate={setInvenCate}
                         invenCate={invenCate}
                         setInvenQuantity={setInvenQuantity}
@@ -62,9 +63,7 @@ const InventoryRegister = ({ categorys, inventorys }: Category) => {
                     position: "relative"
                 }}
             >
-                <InventoryList 
-                    inventorys={inventorys}
-                />
+                {children}
             </div>
         </div>
     );

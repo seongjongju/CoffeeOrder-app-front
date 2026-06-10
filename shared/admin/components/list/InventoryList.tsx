@@ -1,12 +1,19 @@
 'use client';
+import InventoryUpdateModal from '@/app/admin/admin_inventory/_components/InventoryUpdateModal';
 import { Inventory } from '@/app/types/inventorys/inventory';
 import { inventoryAllDeleteApi, inventoryDeleteApi } from '@/features/adminApi/adminInventoryApi';
+import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const InventoryList = ({ inventorys }: Inventory) => {   
+    const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
     const [inventoryArray, setInventoryArray] = useState<Inventory['inventorys']>([]);
-    const [allChecked, setAllChecked] = useState(false);
+    const [allChecked, setAllChecked] = useState(false); // Delete용 전체 체크
+
+    // Update시, 어떤 재고의 행을 선택했는지 고유 아이디 값 전달용
+    const [invenId, setInvenId] = useState<string>(""); 
+
     const router = useRouter();
     const pathName = usePathname();
     
@@ -145,6 +152,10 @@ const InventoryList = ({ inventorys }: Inventory) => {
                                             <div style={{display: "flex", gap: "8px", justifyContent: "center"}}>
                                                 <button
                                                     style={{color: "#4000ff"}}
+                                                    onClick={() => {
+                                                        setModalToggle("inven-update");
+                                                        setInvenId(inven._id)
+                                                    }}
                                                 >
                                                     수정
                                                 </button>
@@ -165,12 +176,24 @@ const InventoryList = ({ inventorys }: Inventory) => {
                     }
                 </tbody>
             </table> {/* .admin-table : end */}
+
+            {
+                modalToggle === "inven-update" &&
+                (
+                    <InventoryUpdateModal 
+                        inventorys={inventorys}
+                        setModalToggle={setModalToggle}
+                        modalToggle={modalToggle}
+                        invenId={invenId}
+                    />
+                )
+            }
             
             {
                 pathName !== "/admin/admin_main" && 
                 (
                     <button
-                        className='inventory-form__regi'
+                        className='admin-form__regi'
                         style={{
                             position: "absolute",
                             bottom: "10px",

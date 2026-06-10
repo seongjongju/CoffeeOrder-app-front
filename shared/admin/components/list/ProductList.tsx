@@ -40,9 +40,23 @@ const ProductList = () => {
                             <td>3,000원</td>
                             <td>ON</td>
                             <td>
-                                <Link href={''}>자세히</Link>
-                                <button>수정</button>
-                                <button>삭제</button>
+                                <div style={{display: "flex", gap: "8px", justifyContent: "center"}}>
+                                    <Link 
+                                        href={''}
+                                    >
+                                        자세히
+                                    </Link>
+                                    <button
+                                        style={{color: "#4000ff"}}
+                                    >
+                                        수정
+                                    </button>
+                                    <button
+                                        style={{color: "#ff0000"}}
+                                    >
+                                        삭제
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>

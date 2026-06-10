@@ -1,21 +1,28 @@
-import React, { Dispatch, SetStateAction } from 'react';
-
+'use client';
+import { Inventory } from '@/app/types/inventorys/inventory';
+import { categorys } from '@/app/util/admin/category';
+import React, { Dispatch, memo, SetStateAction } from 'react';
 interface ModalProps {
-    setProductModalShow: Dispatch<SetStateAction<boolean>>;
-    productModalShow: boolean;
+    setModalToggle: Dispatch<SetStateAction<string>>;
+    modalToggle: string;
+    inventorys: Inventory['inventorys'];
 };
 
-const ProductRegiModal = ({ setProductModalShow, productModalShow }: ModalProps) => {
+const ProductRegiModal = memo(({ 
+    setModalToggle, 
+    modalToggle, 
+    inventorys 
+}: ModalProps) => {
     return (
         <>
             <div 
                 className='dim'
-                onClick={() => setProductModalShow(false)}
+                onClick={() => setModalToggle("")}
             ></div>
             <div 
                 className='product-regi-modal'
                 style={{
-                    display: `${productModalShow ? "block" : "none"}`
+                    display: `${modalToggle === "product-regi" ? "block" : "none"}`
                 }}
             >
                 <div className='product-regi-modal__write'> 
@@ -35,24 +42,30 @@ const ProductRegiModal = ({ setProductModalShow, productModalShow }: ModalProps)
                 <div className='product-regi-modal__write'> 
                     <label htmlFor="" className='product-regi-modal__label'>카테고리</label>
                     <select className='product-regi-modal__select'>
-                        <option value="">카테고리</option>
-                        <option value="">커피</option>
-                        <option value="">에이드</option>
-                        <option value="">디저트</option>
+                        {
+                            categorys.map((cate) => (
+                                <option value={cate.cate} key={cate.id}>{cate.cate}</option>
+                            ))
+                        }
                     </select> {/* .product-regi-modal__select : end */}
                 </div> {/* .product-regi-modal__write : end */}
 
                 <div className='product-regi-modal__write check'> 
                     <label htmlFor="" className='product-regi-modal__label'>사용 재고 선택</label>
                     <div className='product-regi-modal__check-wrap'>
-                        <div className='product-regi-modal__check'>
-                            <input type="checkbox" className='product-regi-modal__checkbox' />
-                            <label htmlFor="" className='product-regi-modal__label'>OOO원두</label>
-                        </div> {/* .product-regi-modal__check : end */}
-                        <div className='product-regi-modal__check'>
-                            <input type="checkbox" className='product-regi-modal__checkbox' />
-                            <label htmlFor="" className='product-regi-modal__label'>OOO원두</label>
-                        </div> {/* .product-regi-modal__check : end */}
+                        {
+                            inventorys?.map((iv) => (
+                                <div
+                                    key={iv._id} 
+                                    className='product-regi-modal__check'>
+                                    <input 
+                                        type="checkbox"
+                                        className='product-regi-modal__checkbox' 
+                                    />
+                                    <label className='product-regi-modal__label'>{iv?.inventoryName}</label>
+                                </div>
+                            ))
+                        }
                     </div> {/* .product-regi-modal__check-wrap : end */}
                 </div> {/* .product-regi-modal__write : end */}
 
@@ -147,6 +160,6 @@ const ProductRegiModal = ({ setProductModalShow, productModalShow }: ModalProps)
             </div> {/* .product-regi-modal : end */}
         </>
     );
-};
+});
 
 export default ProductRegiModal;
