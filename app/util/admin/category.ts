@@ -24,3 +24,18 @@ export const categorys = [
         cate: "시럽"
     },
 ];
+
+export const productCategory = [
+    {
+        id: "product_cate_0",
+        cate: "커피"
+    },
+    {
+        id: "product_cate_1",
+        cate: "에이드"
+    },
+    {
+        id: "product_cate_2",
+        cate: "디저트"
+    },
+];

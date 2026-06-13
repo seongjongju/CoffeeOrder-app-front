@@ -9,11 +9,12 @@ export async function POST(request:NextRequest) {
         img,
         productName,
         category,
-        inventory
+        inventorys, //배열 객체 필수입력값
+        productInfos, //배열 객체 필수 아님
     } = body;
 
     try{
-        if(!img || !productName || !category || !inventory) {
+        if(!img || !productName || !category || !inventorys) {
             return NextResponse.json({ error: "값이 잘못되거나 필수 입력 값 누락", message: "필수 입력 값을 확인해주세요." }, {status: 400});
         }
 
@@ -31,7 +32,8 @@ export async function POST(request:NextRequest) {
             img: img,
             productName: productName,
             category: category,
-            inventory: inventory
+            inventorys: inventorys,
+            productInfos: productInfos
         });
 
         return NextResponse.json({ 

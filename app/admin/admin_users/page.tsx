@@ -1,7 +1,11 @@
 import React from 'react';
 import MembersInterface from './_components/MembersInterface';
+import { getMembersApi } from '@/features/adminApi/adminMembersApi';
+import MemberList from '@/shared/admin/components/list/MemberList';
 
-const AdminUsersPage = () => {    
+const AdminUsersPage = async () => {  
+    const allMembers = await getMembersApi();
+    
     return (
         <main className='main admin-main'>
             <h2 className='admin-title'>회원목록</h2>
@@ -12,7 +16,11 @@ const AdminUsersPage = () => {
                     minHeight: "80vh"
                 }}
             >
-                <MembersInterface />
+                <MembersInterface>
+                    <MemberList 
+                        members={allMembers.members}    
+                    />
+                </MembersInterface>
             </div>
         </main>
     );

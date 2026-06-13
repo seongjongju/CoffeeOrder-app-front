@@ -18,12 +18,14 @@ const ProductList = () => {
                 <table className='admin-table'>
                     <tbody>
                         <tr>
-                            <th>선택</th>
-                            <th>번호</th>
+                            <th>
+                                <input type="checkbox" />
+                            </th>
                             <th>제품 코드</th>
                             <th>제품 이미지</th>
                             <th>카테고리</th>
                             <th>제품명</th>
+                            <th>사용 재고</th>
                             <th>가격</th>
                             <th>추천제품</th>
                             <th></th>
@@ -32,20 +34,20 @@ const ProductList = () => {
                             <td>
                                 <input type="checkbox" />
                             </td>
-                            <td>1</td>
                             <td>PRD-1</td>
                             <td></td>
                             <td>커피</td>
                             <td>아메리카노</td>
+                            <td style={{ width: "10%" }}>
+                                기본원두
+                                기본원두 
+                                기본원두 
+                                기본원두
+                            </td>
                             <td>3,000원</td>
                             <td>ON</td>
                             <td>
                                 <div style={{display: "flex", gap: "8px", justifyContent: "center"}}>
-                                    <Link 
-                                        href={''}
-                                    >
-                                        자세히
-                                    </Link>
                                     <button
                                         style={{color: "#4000ff"}}
                                     >
