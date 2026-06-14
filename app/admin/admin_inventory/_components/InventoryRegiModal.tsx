@@ -87,7 +87,9 @@ const InventoryRegiModal = memo(({
                 }}
             >                
                 <div className='admin-modal__write'> 
-                    <label htmlFor="" className='admin-modal__label'>재고명</label>
+                    <label htmlFor="" className='admin-modal__label'>
+                        재고명<span style={{color: "#ff0000"}}>*</span>
+                    </label>
                     <input 
                         type="text" 
                         className='admin-modal__input'
@@ -99,7 +101,9 @@ const InventoryRegiModal = memo(({
                 </div> {/* .admin-modal__write : end */}
 
                 <div className='admin-modal__write'> 
-                    <label htmlFor="" className='admin-modal__label'>카테고리</label>
+                    <label htmlFor="" className='admin-modal__label'>
+                        카테고리<span style={{color: "#ff0000"}}>*</span>
+                    </label>
                     <select 
                         className='admin-modal__select'
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -116,7 +120,9 @@ const InventoryRegiModal = memo(({
                 </div> {/* .admin-modal__write : end */}
 
                 <div className='admin-modal__write'> 
-                    <label htmlFor="" className='admin-modal__label'>재고수량</label>
+                    <label htmlFor="" className='admin-modal__label'>
+                        재고수량<span style={{color: "#ff0000"}}>*</span>
+                    </label>
                     <input 
                         type="number" 
                         min={0}

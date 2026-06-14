@@ -5,8 +5,9 @@ import ProductList from '@/shared/admin/components/list/ProductList';
 import { categorys } from '@/app/util/admin/category';
 import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
 import { Inventory } from '@/app/types/inventorys/inventory';
+import { ProductGetType } from '@/app/types/products/product';
 
-const ProductsInterface = ({inventorys}: Inventory) => {
+const ProductsInterface = ({inventorys, products}: Inventory & ProductGetType) => {
     const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
 
     return (
@@ -50,7 +51,9 @@ const ProductsInterface = ({inventorys}: Inventory) => {
                 )
             }
 
-            <ProductList />
+            <ProductList 
+                products={products}
+            />
         </div>
     );
 };

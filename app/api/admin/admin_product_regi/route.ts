@@ -1,7 +1,14 @@
 import { connectDB } from "@/app/lib/database";
 import { NextRequest, NextResponse } from "next/server";
+import { v2 as cloudinary } from "cloudinary";
 
 const dbName = process.env.DB_NAME;
+
+cloudinary.config({
+    cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function POST(request:NextRequest) {
     const body = await request.json();
@@ -9,39 +16,49 @@ export async function POST(request:NextRequest) {
         img,
         productName,
         category,
-        inventorys, //배열 객체 필수입력값
-        productInfos, //배열 객체 필수 아님
+        usedInventorys,
+        price,
+        recommend,
+        productInfos
     } = body;
 
-    try{
-        if(!img || !productName || !category || !inventorys) {
-            return NextResponse.json({ error: "값이 잘못되거나 필수 입력 값 누락", message: "필수 입력 값을 확인해주세요." }, {status: 400});
+    try {
+        if(
+            !img ||
+            !productName ||
+            !category ||
+            !usedInventorys ||
+            !price
+        ) {
+            return NextResponse.json({ error: "필수 입력 값 누락", message: "필수 입력 값을 확인해주세요." }, {status: 401});
         }
 
         const db = (await connectDB).db(dbName);
-
-        //제품번호를 자동 부여
-        const counter = await db.collection('counter').findOneAndUpdate(
-            { name: 'totalPost' },
+        
+        //제품 코드를 위한 자동 카운팅
+        let counter = await db.collection('products_counter').findOneAndUpdate(
+            { name: "totalPost" },
             { $inc: { total: 1 } },
-            { returnDocument: 'after' } // 증가된 후의 데이터를 반환
+            { returnDocument: 'after' }
         );
 
-        await db.collection('products').insertOne({
-            productNumber: `PRD-${counter!.total}`,
+        let newProductId = counter?.total; 
+
+        //제품 등록
+        db.collection('products').insertOne({
+            productCode: `PRD-${newProductId}`,
             img: img,
             productName: productName,
             category: category,
-            inventorys: inventorys,
+            usedInventorys: usedInventorys,
+            price: price,
+            recommend: recommend,
             productInfos: productInfos
         });
 
-        return NextResponse.json({ 
-            success: true, 
-            message: "제품등록이 완료되었습니다.",
-        }, {status: 201});
+        return NextResponse.json({ success: true, message: "제품 등록이 완료되었습니다." }, {status: 200});
     } catch(err) {
         console.error(err);
-        return NextResponse.json({ error: "서버 오류", message: "제품등록 서버 오류" }, {status: 500});
+        return NextResponse.json({ error: "서버 오류", message: "제품등록 서버 오류" }, {status: 500})
     }
 };
