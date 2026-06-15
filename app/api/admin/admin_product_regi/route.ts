@@ -30,10 +30,15 @@ export async function POST(request:NextRequest) {
             !usedInventorys ||
             !price
         ) {
-            return NextResponse.json({ error: "필수 입력 값 누락", message: "필수 입력 값을 확인해주세요." }, {status: 401});
+            return NextResponse.json({ error: "필수 입력 값 누락", message: "필수 입력 값을 확인해주세요." }, {status: 400});
         }
 
         const db = (await connectDB).db(dbName);
+        const findProduct = await db.collection('products').findOne({productName});
+
+        if(findProduct) {
+            return NextResponse.json({ error: "중복 제품", message: "이미 등록된 제품입니다." }, {status: 409});
+        }
         
         //제품 코드를 위한 자동 카운팅
         let counter = await db.collection('products_counter').findOneAndUpdate(

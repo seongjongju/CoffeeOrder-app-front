@@ -25,10 +25,24 @@ export type ProductGetType = {
             publicId: string,
         };
         productCode: string,
-        productInfos?:ProductType;
+        productInfos?:ProductType[];
         productName: string,
         price: number;
         recommend: boolean;
         usedInventorys: Inventory['inventorys'];
     }>
 };
+
+//제품 업데이트 타입
+export type ProductUpdateType = {
+    id: string;
+    value?: number
+    name?: string;
+    label?: string;
+};
+
+//제품 등로 리듀서 타입
+export type ProductState = Array<ProductType>;
+
+//제품 업데이트 리듀서 타입
+export type ProductUpdateState = Array<ProductUpdateType>;

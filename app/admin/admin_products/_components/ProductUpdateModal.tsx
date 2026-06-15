@@ -1,86 +1,132 @@
 'use client';
 import { Inventory } from '@/app/types/inventorys/inventory';
-import { ProductState, ProductType } from '@/app/types/products/product';
+import { ProductGetType, ProductState, ProductUpdateState } from '@/app/types/products/product';
 import { productCategory } from '@/app/util/admin/category';
 import { productInfoWrites } from '@/app/util/admin/product';
-import { productRegiApi } from '@/features/adminApi/adminProductApi';
-import { CldUploadWidget, CloudinaryUploadWidgetInfo } from "next-cloudinary";
-import { useRouter } from 'next/navigation';
+import { CldUploadWidget } from 'next-cloudinary';
 import React, { Dispatch, memo, SetStateAction, useReducer, useState } from 'react';
-interface ModalProps {
+
+interface UpdateProps {
     setModalToggle: Dispatch<SetStateAction<string>>;
     modalToggle: string;
-    inventorys: Inventory['inventorys'];
-};
+    prdCode: string;
+    products: ProductGetType['products'],
+    inventorys: Inventory['inventorys'],
+}
 
-//제품 정보 텍스트로 받는 인풋들 초기값
-const initialState: ProductState = [
-    { id: "write_0", volume: 0 }, //용량
-    { id: "write_1", calory: 0 }, //칼로리
-    { id: "write_2", carbohydrate: 0 }, //탄수화물
-    { id: "write_3", protein: 0 }, //단백질
-    { id: "write_4", caffeine: 0 }, //카페인
-    { id: "write_5", sodium: 0 }, //나트륨
-    { id: "write_6", sugars : 0 }, //당류
-    { id: "write_7", saturatedFat : 0 }, //포화지방
-];
-
-//제품 정보 등 텍스트로 받는 인풋들 reducer
-const reducer = (state: ProductState, action: { type: string; payload: any }): ProductState => {
+//제품 업데이트 정보 등 텍스트로 받는 인풋들 reducer
+const reducer = (state: ProductUpdateState, action: { type: string; payload: any }): ProductUpdateState => {
     switch(action.type) {
-        case "INPUT_REGI":
+        case "INPUT_UPDATE":
             return state.map(item => 
                         item.id === action.payload.id ?
-                        {...item, ...action.payload.value} :
+                        {...item, value: action.payload.value} :
                         item
                     );
-        case "RESET":
-            return [];
         default:
             return state;
     }
 };
 
-const ProductRegiModal = memo(({ 
-    setModalToggle, 
-    modalToggle, 
-    inventorys 
-}: ModalProps) => {
-    const router = useRouter();
+const ProductUpdateModal = memo(({
+    setModalToggle,
+    modalToggle,
+    prdCode,
+    products,
+    inventorys,
+}: UpdateProps) => {
+    //현재 선택된 행
+    const currentProduct = products.find(prd => prd.productCode === prdCode);
+    if(!currentProduct) return;
 
-    const [img, setImg] = useState<{ imgName: string; format: string; publicId: string }>({
-        imgName: "",
-        format: "",
-        publicId: "",
+    // 제품 정보 텍스트로 받는 인풋들 업데이트 초기값
+    const productInfos = currentProduct.productInfos;
+    
+    const initialState: ProductUpdateState = [
+        { 
+            id: "write_0", 
+            name: "volume", 
+            label: "용량", 
+            value: productInfos?.find(info => info.id === "write_0")?.volume 
+        },
+        { 
+            id: "write_1", 
+            name: "calory", 
+            label: "칼로리", 
+            value: productInfos?.find(info => info.id === "write_1")?.calory 
+        },
+        { 
+            id: "write_2", 
+            name: "carbohydrate", 
+            label: "탄수화물", 
+            value: productInfos?.find(info => info.id === "write_2")?.carbohydrate 
+        },
+        { 
+            id: "write_3", 
+            name: "protein", 
+            label: "단백질", 
+            value: productInfos?.find(info => info.id === "write_3")?.protein 
+        },
+        { 
+            id: "write_4", 
+            name: "caffeine", 
+            label: "카페인", 
+            value: productInfos?.find(info => info.id === "write_4")?.caffeine 
+        },
+        { 
+            id: "write_5", 
+            name: "sodium", 
+            label: "나트륨", 
+            value: productInfos?.find(info => info.id === "write_5")?.sodium 
+        },
+        { 
+            id: "write_6", 
+            name: "sugars", 
+            label: "당류",  
+            value: productInfos?.find(info => info.id === "write_6")?.sugars 
+        },
+        { 
+            id: "write_7", 
+            name: "saturatedFat", 
+            label: "포화지방", 
+            value: productInfos?.find(info => info.id === "write_7")?.saturatedFat 
+        },
+    ];
+
+    //업데이트를 위한 상태관리
+    const [updateImg, setUpdateImg] = useState<{ imgName: string; format: string; publicId: string }>({
+        imgName: currentProduct.img.imgName,
+        format: currentProduct.img.format,
+        publicId: currentProduct.img.publicId,
     }); //이미지
 
-    const [productName, setProductName] = useState<string>(""); //제품명
-    const [isProductCategory, setIsProductCategory] = useState<string>(""); //제품 카테고리
-    const [usedInvens, setUsedInvens] = useState<Inventory['inventorys']>([]); //사용 재고
+    const [updateProductName, setUpdateProductName] = useState<string>(currentProduct.productName); //제품명
+    const [isUpdateProductCategory, setIsUpdateProductCategory] = useState<string>(currentProduct.category); //제품 카테고리
+    const [updateUsedInvens, setUpdateUsedInvens] = useState<Inventory['inventorys']>(currentProduct.usedInventorys); //사용 재고
 
-    const [productState, dispatch] = useReducer(reducer, initialState); //텍스트로 받는 인풋들 ex) 제품명, 칼로리...
+    const [updatePrice, setUpdatePrice] = useState<number>(currentProduct.price); //가격
+    const [updateRecommend, setUpdateRecommend] = useState<boolean>(currentProduct.recommend) //추천 제품 등록
 
-    const [price, setPrice] = useState<number>(0); //가격
-    const [recommend, setRecommend] = useState<boolean>(false) //추천 제품 등록
+    const [updateProductState, dispatch] = useReducer(reducer, initialState); //텍스트로 받는 인풋들 ex) 제품명, 칼로리...
 
-    //인풋 값 받기
-    const handleChangeProductInput = (id: string, item: string, value: number) => {
+    //수정 인풋 값 받기
+    const handleUpdateProductInput = (id: string, value: number) => {
         dispatch({ 
-                type: "INPUT_REGI", 
+                type: "INPUT_UPDATE", 
                 payload: {
                     id: id,
-                    value: { [item]: value },
+                    value: value,
                 }
             }
         );
     };
 
-    //사용 재고 체크
-    const checkedUsedInven = (_id: string) => {
+    //업데이트 재고 체크
+    const checkedUpdateInven = (_id: string) => {
         const currentInven = inventorys.find(iv => iv._id === _id);
         if(!currentInven) return;
 
-        setUsedInvens((prev) => {
+        setUpdateUsedInvens((prev) => {
             const exists = prev.some(iv => iv._id === _id);
             const next = exists
             ? prev.filter(iv => iv._id !== _id)
@@ -90,42 +136,6 @@ const ProductRegiModal = memo(({
         });
     };
 
-    //제품 등록
-    const handleSubmitProduct = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-
-        if(!img || !productName || !isProductCategory || !usedInvens || !price) {
-            alert('필수 입력 및 선택 값을 확인해주세요.');
-            return;
-        }
-
-        try {   
-            const data = await productRegiApi(
-                img,
-                productName.trim(),
-                isProductCategory,
-                usedInvens,
-                price,
-                recommend,
-                productState
-            );
-
-            if(!data.success) {
-                alert(`${data.message}`);
-                return;
-            }
-
-            alert(`${data.message}`);
-            setModalToggle("");
-            dispatch({ type: "RESET", payload: {}});
-            router.refresh();
-            return;
-        } catch(err: any) {
-            console.error(err.response?.data?.message);
-            alert(`${err.response?.data?.message}`);
-            return;
-        }
-    };
 
     return (
         <>
@@ -136,15 +146,13 @@ const ProductRegiModal = memo(({
             <div 
                 className='admin-modal'
                 style={{
-                    display: `${modalToggle === "product-regi" ? "block" : "none"}`
+                    display: `${modalToggle === "product-update" ? "block" : "none"}`
                 }}
             >
                 <form action="" encType='multipart/form-data'>
                     <div className='admin-modal__write'> 
-                        <label htmlFor="" className='admin-modal__label'>
-                            제품 이미지<span style={{color: "#ff0000"}}>*</span>
-                        </label>
-                        <CldUploadWidget 
+                        <label htmlFor="" className='admin-modal__label'>제품 이미지</label>
+                        <CldUploadWidget
                             uploadPreset="coffeOrder"
                             onSuccess={(results) => {
                                 if (results.event !== "success" || !results.info) return;
@@ -152,7 +160,7 @@ const ProductRegiModal = memo(({
                                 if (typeof results.info !== 'string') {
                                     const info = results.info;
 
-                                    setImg((prev) => ({
+                                    setUpdateImg((prev) => ({
                                         ...prev,
                                         imgName: info.display_name || '',
                                         format: info.format,
@@ -171,9 +179,9 @@ const ProductRegiModal = memo(({
                                         이미지 업로드
                                     </button>
                                     {
-                                        img.imgName !== "" && 
+                                        updateImg.imgName !== "" && 
                                         (
-                                            <p className='admin-file-name'>{`${img.imgName}.${img.format}`}</p>
+                                            <p className='admin-file-name'>{`${updateImg.imgName}.${updateImg.format}`}</p>
                                         )
                                     }
                                 </div>
@@ -183,31 +191,28 @@ const ProductRegiModal = memo(({
                     </div> {/* .admin-modal__write : end */}
                     
                     <div className='admin-modal__write'> 
-                        <label className='admin-modal__label'>
-                            제품명<span style={{color: "#ff0000"}}>*</span>
-                        </label>
+                        <label className='admin-modal__label'>제품명</label>
                         <input 
                             type="text" 
                             name='productName'
                             className='admin-modal__input'
                             placeholder='제품명을 입력하세요.'
+                            value={updateProductName}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                setProductName(e.target.value);
+                                setUpdateProductName(e.target.value);
                             }}
                         />
                     </div> {/* .admin-modal__write : end */}
 
                     <div className='admin-modal__write'> 
-                        <label htmlFor="" className='admin-modal__label'>
-                            카테고리<span style={{color: "#ff0000"}}>*</span>
-                        </label>
+                        <label htmlFor="" className='admin-modal__label'>카테고리</label>
                         <select 
                             className='admin-modal__select'
+                            value={isUpdateProductCategory}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                                setIsProductCategory(e.target.value);
+                                setIsUpdateProductCategory(e.target.value);
                             }}
                         >
-                            <option value="">카테고리 선택</option>
                             {
                                 productCategory.map((cate) => (
                                     <option value={cate.cate} key={cate.id}>{cate.cate}</option>
@@ -220,9 +225,7 @@ const ProductRegiModal = memo(({
                         flexDirection: "column", 
                         alignItems: "flex-start"
                     }}> 
-                        <label htmlFor="" className='admin-modal__label'>
-                            사용 재고 선택<span style={{color: "#ff0000"}}>*</span>
-                        </label>
+                        <label htmlFor="" className='admin-modal__label'>사용 재고 선택</label>
                         <div className='product-regi-modal__check-wrap'>
                             {
                                 inventorys?.map((inven) => (
@@ -233,9 +236,9 @@ const ProductRegiModal = memo(({
                                         <input 
                                             type="checkbox"
                                             className='product-regi-modal__checkbox' 
-                                            checked={usedInvens.some(iv => iv._id === inven._id)}
+                                            checked={updateUsedInvens.some(iv => iv._id === inven._id)}
                                             onChange={() => {
-                                                checkedUsedInven(inven._id);
+                                                checkedUpdateInven(inven._id);
                                             }}
                                         />
                                         <label className='admin-modal__label'>{inven?.inventoryName}</label>
@@ -246,17 +249,15 @@ const ProductRegiModal = memo(({
                     </div> {/* .admin-modal__write : end */}
 
                     <div className='admin-modal__write'> 
-                        <label className='admin-modal__label'>
-                            가격<span style={{color: "#ff0000"}}>*</span>
-                        </label>
+                        <label className='admin-modal__label'>가격</label>
                         <input 
                             type="number" 
                             min={0}
                             step="500"
                             className='admin-modal__input'
-                            placeholder='가격을 입력하세요.'
+                            placeholder={currentProduct.price.toString()}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                setPrice(Number(e.target.value));
+                                setUpdatePrice(Number(e.target.value));
                             }}
                         />
                     </div> {/* .admin-modal__write : end */}
@@ -273,8 +274,8 @@ const ProductRegiModal = memo(({
                                 <input 
                                     type="checkbox"
                                     className='product-regi-modal__checkbox'
-                                    checked={recommend}
-                                    onChange={() => setRecommend(prev => !prev)}
+                                    checked={updateRecommend}
+                                    onChange={() => setUpdateRecommend(prev => !prev)}
                                 />
                                 <label className='admin-modal__label'>ON</label>
                             </div>
@@ -282,7 +283,7 @@ const ProductRegiModal = memo(({
                     </div> {/* .admin-modal__write : end */}
 
                     {
-                        productInfoWrites.map((info) => (
+                        initialState.map((info) => (
                         <div 
                             className='admin-modal__write'
                             key={info.id}
@@ -293,9 +294,9 @@ const ProductRegiModal = memo(({
                                 name={info.name}
                                 min={0}
                                 className='admin-modal__input'
-                                placeholder={info.placeholder}
+                                placeholder={info.value?.toString()}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    handleChangeProductInput(info.id, e.target.name, Number(e.target.value));
+                                    handleUpdateProductInput(info.id, Number(e.target.value));
                                 }}
                             />
                         </div> 
@@ -304,9 +305,9 @@ const ProductRegiModal = memo(({
 
                     <button 
                         className='product-regi-modal__button'
-                        onClick={handleSubmitProduct}
+                        /* onClick={handleSubmitProduct} */
                     >
-                        등록하기
+                        수정하기
                     </button>
                 </form>
             </div> {/* .product-regi-modal : end */}
@@ -314,4 +315,4 @@ const ProductRegiModal = memo(({
     );
 });
 
-export default ProductRegiModal;
+export default ProductUpdateModal;

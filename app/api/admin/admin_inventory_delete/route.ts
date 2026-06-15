@@ -10,7 +10,7 @@ export async function DELETE(request:NextRequest) {
 
     try {
         if(!_id) {
-            return NextResponse.json({ error: "값이 없거나 잘못된 값", message: "잘못된 요청입니다." }, {status: 401});
+            return NextResponse.json({ error: "값이 없거나 잘못된 값", message: "잘못된 요청입니다." }, {status: 400});
         }
 
         const db = (await connectDB).db(dbName);

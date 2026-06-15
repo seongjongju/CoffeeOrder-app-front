@@ -47,3 +47,31 @@ export const productGetApi = async () => {
 
     return data;
 };
+
+//제품 수정
+export const productUpdateApi = async (
+    productCode: string,
+    img: { imgName: string; format: string; publicId: string },
+    productName: string,
+    category: string,
+    usedInventorys: Inventory['inventorys'],
+    price: number,
+    recommend: boolean,
+    productInfos: Array<ProductType>
+) => {
+    const url = `${baseUrl}/admin_product_update`;
+    const options = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            productCode, img, productName, category, usedInventorys, price, recommend, productInfos
+        }),
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    return data;
+};

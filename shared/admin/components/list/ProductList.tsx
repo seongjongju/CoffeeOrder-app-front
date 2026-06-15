@@ -1,11 +1,19 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { ProductGetType } from '@/app/types/products/product';
 import { CldImage } from 'next-cloudinary';
 import { formatPrice } from '@/app/util/format';
+import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
+import ProductUpdateModal from '@/app/admin/admin_products/_components/ProductUpdateModal';
+import { Inventory } from '@/app/types/inventorys/inventory';
 
-const ProductList = ({products}: ProductGetType) => {
+const ProductList = ({inventorys, products}: Inventory & ProductGetType) => {
+    const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
+
+    // Update시, 어떤 제품의 행을 선택했는지 고유 아이디 값 전달용
+    const [prdCode, setPrdCode] = useState<string>(""); 
+
     return (
         <div 
             className='dashboard'
@@ -76,6 +84,11 @@ const ProductList = ({products}: ProductGetType) => {
                                         <div style={{display: "flex", gap: "8px", justifyContent: "center"}}>
                                             <button
                                                 style={{color: "#4000ff"}}
+                                                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                                    e.preventDefault();
+                                                    setModalToggle("product-update");
+                                                    setPrdCode(prd.productCode);
+                                                }}
                                             >
                                                 수정
                                             </button>
@@ -92,6 +105,19 @@ const ProductList = ({products}: ProductGetType) => {
                     </tbody>
                 </table> {/* .admin-table : end */}
             </div>
+
+            {
+                modalToggle === "product-update" && 
+                (
+                    <ProductUpdateModal 
+                        setModalToggle={setModalToggle}
+                        modalToggle={modalToggle}
+                        prdCode={prdCode}
+                        products={products}
+                        inventorys={inventorys}
+                    />
+                )
+            }
         </div>
     );
 };
