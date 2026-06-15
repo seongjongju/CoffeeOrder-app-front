@@ -160,8 +160,7 @@ const ProductUpdateModal = memo(({
                                 if (typeof results.info !== 'string') {
                                     const info = results.info;
 
-                                    setUpdateImg((prev) => ({
-                                        ...prev,
+                                    setUpdateImg(() => ({
                                         imgName: info.display_name || '',
                                         format: info.format,
                                         publicId: info.public_id,
