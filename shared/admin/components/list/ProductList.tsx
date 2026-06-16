@@ -7,12 +7,36 @@ import { formatPrice } from '@/app/util/format';
 import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
 import ProductUpdateModal from '@/app/admin/admin_products/_components/ProductUpdateModal';
 import { Inventory } from '@/app/types/inventorys/inventory';
+import { productDeleteApi } from '@/features/adminApi/adminProductApi';
+import { useRouter } from 'next/navigation';
 
 const ProductList = ({inventorys, products}: Inventory & ProductGetType) => {
+    const router = useRouter();
+
     const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
 
     // Update시, 어떤 제품의 행을 선택했는지 고유 아이디 값 전달용
     const [prdCode, setPrdCode] = useState<string>(""); 
+
+    //제품 단일 삭제
+    const handleCLickProductDelete = async (productCode: string) => {
+        try{
+            const data = await productDeleteApi(productCode);
+
+            if(!data.success) {
+                alert(`${data.message}`);
+                return;
+            }
+
+            alert(`${data.message}`);
+            router.refresh();
+            return;
+        } catch(err: any) {
+            console.error(err.response?.data?.message);
+            alert(`${err.response?.data?.message}`);
+            return;
+        }
+    };
 
     return (
         <div 
@@ -54,7 +78,7 @@ const ProductList = ({inventorys, products}: Inventory & ProductGetType) => {
                                             src={prd.img.publicId}
                                             width={80}
                                             height={80}
-                                            alt="이미지 없음"
+                                            alt={prd.img.imgName}
                                         />
                                     </td>
                                     <td>{prd.category}</td>
@@ -94,6 +118,10 @@ const ProductList = ({inventorys, products}: Inventory & ProductGetType) => {
                                             </button>
                                             <button
                                                 style={{color: "#ff0000"}}
+                                                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                                    e.preventDefault();
+                                                    handleCLickProductDelete(prd.productCode);
+                                                }}
                                             >
                                                 삭제
                                             </button>

@@ -15,14 +15,14 @@ interface ModalProps {
 
 //제품 정보 텍스트로 받는 인풋들 초기값
 const initialState: ProductState = [
-    { id: "write_0", volume: 0 }, //용량
-    { id: "write_1", calory: 0 }, //칼로리
-    { id: "write_2", carbohydrate: 0 }, //탄수화물
-    { id: "write_3", protein: 0 }, //단백질
-    { id: "write_4", caffeine: 0 }, //카페인
-    { id: "write_5", sodium: 0 }, //나트륨
-    { id: "write_6", sugars : 0 }, //당류
-    { id: "write_7", saturatedFat : 0 }, //포화지방
+    { id: "write_0", name: "volume", value: 0 },         // 용량
+    { id: "write_1", name: "calory", value: 0 },         // 칼로리
+    { id: "write_2", name: "carbohydrate", value: 0 },   // 탄수화물
+    { id: "write_3", name: "protein", value: 0 },        // 단백질
+    { id: "write_4", name: "caffeine", value: 0 },       // 카페인
+    { id: "write_5", name: "sodium", value: 0 },         // 나트륨
+    { id: "write_6", name: "sugars", value: 0 },         // 당류
+    { id: "write_7", name: "saturatedFat", value: 0 },    // 포화지방
 ];
 
 //제품 정보 등 텍스트로 받는 인풋들 reducer
@@ -60,16 +60,18 @@ const ProductRegiModal = memo(({
 
     const [productState, dispatch] = useReducer(reducer, initialState); //텍스트로 받는 인풋들 ex) 제품명, 칼로리...
 
+    console.log(productState)
+
     const [price, setPrice] = useState<number>(0); //가격
     const [recommend, setRecommend] = useState<boolean>(false) //추천 제품 등록
 
     //인풋 값 받기
-    const handleChangeProductInput = (id: string, item: string, value: number) => {
+    const handleChangeProductInput = (id: string, value: number) => {
         dispatch({ 
                 type: "INPUT_REGI", 
                 payload: {
                     id: id,
-                    value: { [item]: value },
+                    value: { value: value },
                 }
             }
         );
@@ -295,7 +297,7 @@ const ProductRegiModal = memo(({
                                 className='admin-modal__input'
                                 placeholder={info.placeholder}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    handleChangeProductInput(info.id, e.target.name, Number(e.target.value));
+                                    handleChangeProductInput(info.id, Number(e.target.value));
                                 }}
                             />
                         </div> 

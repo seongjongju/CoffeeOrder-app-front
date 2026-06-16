@@ -137,7 +137,16 @@ const InventoryList = ({ inventorys }: Inventory) => {
                                 }
                                 <td>{inven?.category}</td>
                                 <td>{inven?.inventoryName}</td>
-                                <td>{inven?.quantity}</td>
+                                <td>
+                                    {
+                                        inven?.category === "원두" ? inven?.quantity + "Kg" : 
+                                        inven?.category === "설탕" ? inven?.quantity + "Kg" : 
+                                        inven?.category === "우유" ? inven?.quantity + "팩" :
+                                        inven?.category === "치즈" ? inven?.quantity + "개" :
+                                        inven?.category === "과일" ? inven?.quantity + "개" :
+                                        "0"
+                                    }
+                                </td>
                                 <td
                                     className={`${inven?.quantity <= 2 ? "lack" : "normal"}`}
                                 >

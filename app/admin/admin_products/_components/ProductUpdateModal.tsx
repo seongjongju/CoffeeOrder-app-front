@@ -2,8 +2,9 @@
 import { Inventory } from '@/app/types/inventorys/inventory';
 import { ProductGetType, ProductState, ProductUpdateState } from '@/app/types/products/product';
 import { productCategory } from '@/app/util/admin/category';
-import { productInfoWrites } from '@/app/util/admin/product';
+import { productUpdateApi } from '@/features/adminApi/adminProductApi';
 import { CldUploadWidget } from 'next-cloudinary';
+import { useRouter } from 'next/navigation';
 import React, { Dispatch, memo, SetStateAction, useReducer, useState } from 'react';
 
 interface UpdateProps {
@@ -35,61 +36,65 @@ const ProductUpdateModal = memo(({
     products,
     inventorys,
 }: UpdateProps) => {
+    const router = useRouter();
+
     //현재 선택된 행
     const currentProduct = products.find(prd => prd.productCode === prdCode);
     if(!currentProduct) return;
 
     // 제품 정보 텍스트로 받는 인풋들 업데이트 초기값
     const productInfos = currentProduct.productInfos;
+
+    if(!productInfos) return;
     
     const initialState: ProductUpdateState = [
         { 
             id: "write_0", 
             name: "volume", 
             label: "용량", 
-            value: productInfos?.find(info => info.id === "write_0")?.volume 
+            value: productInfos?.find(info => info.id === "write_0")?.value 
         },
         { 
             id: "write_1", 
             name: "calory", 
             label: "칼로리", 
-            value: productInfos?.find(info => info.id === "write_1")?.calory 
+            value: productInfos?.find(info => info.id === "write_1")?.value 
         },
         { 
             id: "write_2", 
             name: "carbohydrate", 
             label: "탄수화물", 
-            value: productInfos?.find(info => info.id === "write_2")?.carbohydrate 
+            value: productInfos?.find(info => info.id === "write_2")?.value 
         },
         { 
             id: "write_3", 
             name: "protein", 
             label: "단백질", 
-            value: productInfos?.find(info => info.id === "write_3")?.protein 
+            value: productInfos?.find(info => info.id === "write_3")?.value 
         },
         { 
             id: "write_4", 
             name: "caffeine", 
             label: "카페인", 
-            value: productInfos?.find(info => info.id === "write_4")?.caffeine 
+            value: productInfos?.find(info => info.id === "write_4")?.value 
         },
         { 
             id: "write_5", 
             name: "sodium", 
             label: "나트륨", 
-            value: productInfos?.find(info => info.id === "write_5")?.sodium 
+            value: productInfos?.find(info => info.id === "write_5")?.value 
         },
         { 
             id: "write_6", 
             name: "sugars", 
             label: "당류",  
-            value: productInfos?.find(info => info.id === "write_6")?.sugars 
+            value: productInfos?.find(info => info.id === "write_6")?.value 
         },
         { 
             id: "write_7", 
             name: "saturatedFat", 
             label: "포화지방", 
-            value: productInfos?.find(info => info.id === "write_7")?.saturatedFat 
+            value: productInfos?.find(info => info.id === "write_7")?.value 
         },
     ];
 
@@ -136,6 +141,52 @@ const ProductUpdateModal = memo(({
         });
     };
 
+    //업데이트 서브밋
+    const handleUpdateSubmitProduct = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        if(updateProductName.trim() === "") {
+            alert('제품명은 필수 입력 값입니다.');
+            return;
+        }
+
+        if(updateUsedInvens.length === 0) {
+            alert('사용 재고는 필수 값입니다.');
+            return;
+        }
+
+        if(updatePrice === 0) {
+            alert('가격을 책정해주세요.');
+            return;
+        }
+
+        try {
+            const data = await productUpdateApi(
+                prdCode,
+                updateImg,
+                updateProductName,
+                isUpdateProductCategory,
+                updateUsedInvens,
+                updatePrice,
+                updateRecommend,
+                updateProductState
+            );
+
+            if(!data.success) {
+                alert(`${data.message}`);
+                return;
+            }
+
+            alert(`${data.message}`);
+            router.refresh();
+            setModalToggle("");
+            return;
+        } catch(err: any) {
+            console.error(err.response?.data?.message);
+            alert(`${err.response?.data?.message}`);
+            return;
+        }
+    };
 
     return (
         <>
@@ -304,7 +355,7 @@ const ProductUpdateModal = memo(({
 
                     <button 
                         className='product-regi-modal__button'
-                        /* onClick={handleSubmitProduct} */
+                        onClick={handleUpdateSubmitProduct}
                     >
                         수정하기
                     </button>

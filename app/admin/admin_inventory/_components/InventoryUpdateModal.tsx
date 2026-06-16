@@ -117,7 +117,7 @@ const InventoryUpdateModal = memo(({
                         type="number" 
                         min={0}
                         max={100}
-                        value={objQuantity}
+                        placeholder={objQuantity?.toString()}
                         onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
                             setObjQuantity(Number(e.target.value));
                         }}

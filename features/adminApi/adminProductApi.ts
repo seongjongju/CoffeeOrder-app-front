@@ -75,3 +75,20 @@ export const productUpdateApi = async (
 
     return data;
 };
+
+//제품 삭제
+export const productDeleteApi = async (productCode: string) => {
+    const url = `${baseUrl_1}/admin_product_delete`;
+    const options = {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({productCode})
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    return data;
+};

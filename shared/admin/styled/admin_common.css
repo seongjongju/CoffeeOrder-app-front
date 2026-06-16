@@ -190,3 +190,11 @@
     color: #555;
     display: inline-block;
 }
+
+/*** 공통 상세페이지 ***/
+.admin-view__image {
+    display: block;
+    margin: 0 auto 40px;
+    background: #fff;
+    border: 1px solid #ddd;
+}
