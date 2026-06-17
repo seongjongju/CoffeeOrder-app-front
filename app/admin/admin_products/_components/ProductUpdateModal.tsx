@@ -2,6 +2,7 @@
 import { Inventory } from '@/app/types/inventorys/inventory';
 import { ProductGetType, ProductState, ProductUpdateState } from '@/app/types/products/product';
 import { productCategory } from '@/app/util/admin/category';
+import { formatNumber } from '@/app/util/format';
 import { productUpdateApi } from '@/features/adminApi/adminProductApi';
 import { CldUploadWidget } from 'next-cloudinary';
 import { useRouter } from 'next/navigation';
@@ -109,13 +110,13 @@ const ProductUpdateModal = memo(({
     const [isUpdateProductCategory, setIsUpdateProductCategory] = useState<string>(currentProduct.category); //제품 카테고리
     const [updateUsedInvens, setUpdateUsedInvens] = useState<Inventory['inventorys']>(currentProduct.usedInventorys); //사용 재고
 
-    const [updatePrice, setUpdatePrice] = useState<number>(currentProduct.price); //가격
+    const [updatePrice, setUpdatePrice] = useState<string>(currentProduct.price); //가격
     const [updateRecommend, setUpdateRecommend] = useState<boolean>(currentProduct.recommend) //추천 제품 등록
 
     const [updateProductState, dispatch] = useReducer(reducer, initialState); //텍스트로 받는 인풋들 ex) 제품명, 칼로리...
 
     //수정 인풋 값 받기
-    const handleUpdateProductInput = (id: string, value: number) => {
+    const handleUpdateProductInput = (id: string, value: string) => {
         dispatch({ 
                 type: "INPUT_UPDATE", 
                 payload: {
@@ -155,7 +156,7 @@ const ProductUpdateModal = memo(({
             return;
         }
 
-        if(updatePrice === 0) {
+        if(Number(updatePrice) === 0) {
             alert('가격을 책정해주세요.');
             return;
         }
@@ -301,13 +302,12 @@ const ProductUpdateModal = memo(({
                     <div className='admin-modal__write'> 
                         <label className='admin-modal__label'>가격</label>
                         <input 
-                            type="number" 
-                            min={0}
-                            step="500"
+                            type="text" 
                             className='admin-modal__input'
-                            placeholder={currentProduct.price.toString()}
+                            placeholder={currentProduct.price}
+                            value={updatePrice}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                setUpdatePrice(Number(e.target.value));
+                                setUpdatePrice(formatNumber(e.target.value));
                             }}
                         />
                     </div> {/* .admin-modal__write : end */}
@@ -333,20 +333,20 @@ const ProductUpdateModal = memo(({
                     </div> {/* .admin-modal__write : end */}
 
                     {
-                        initialState.map((info) => (
+                        updateProductState.map((info) => (
                         <div 
                             className='admin-modal__write'
                             key={info.id}
                         > 
                             <label htmlFor="" className='admin-modal__label'>{info.label}</label>
                             <input 
-                                type="number" 
+                                type="text" 
                                 name={info.name}
-                                min={0}
                                 className='admin-modal__input'
-                                placeholder={info.value?.toString()}
+                                placeholder={info.value}
+                                value={info.value}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    handleUpdateProductInput(info.id, Number(e.target.value));
+                                    handleUpdateProductInput(info.id, formatNumber(e.target.value));
                                 }}
                             />
                         </div> 

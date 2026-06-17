@@ -116,7 +116,12 @@ const InventoryList = ({ inventorys }: Inventory) => {
                         <th>재고명</th>
                         <th>재고 수량</th>
                         <th>상태</th>
-                        <th></th>
+                        {
+                            pathName !== "/admin/admin_main" &&
+                            (
+                                <th>설정</th>
+                            )  
+                        }
                     </tr>
                     {
                         inventorys?.map((inven) => (
@@ -144,14 +149,15 @@ const InventoryList = ({ inventorys }: Inventory) => {
                                         inven?.category === "우유" ? inven?.quantity + "팩" :
                                         inven?.category === "치즈" ? inven?.quantity + "개" :
                                         inven?.category === "과일" ? inven?.quantity + "개" :
+                                        inven?.category === "시럽" ? inven?.quantity + "개" :
                                         "0"
                                     }
                                 </td>
                                 <td
-                                    className={`${inven?.quantity <= 2 ? "lack" : "normal"}`}
+                                    className={`${Number(inven?.quantity) <= 2 ? "lack" : "normal"}`}
                                 >
                                     {
-                                        inven?.quantity <= 2 ? "부족" : "정상"
+                                        Number(inven?.quantity) <= 2 ? "부족" : "정상"
                                     }
                                 </td>
                                 {

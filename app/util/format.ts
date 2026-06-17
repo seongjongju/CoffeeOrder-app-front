@@ -26,3 +26,14 @@ export const formatBirth = (value: string) => {
 export const formatPrice = (price: number ) => {    
     return new Intl.NumberFormat('ko-KR').format(price);
 };
+
+//숫자 텍스트 타입
+export const formatNumber = (num: string) => {
+    const cleanNum = num.replaceAll(',', '');
+
+    if (!cleanNum || !/^[0-9]+$/.test(cleanNum)) {
+        return "0"; 
+    }
+
+    return new Intl.NumberFormat('ko-KR').format(Number(cleanNum));
+};

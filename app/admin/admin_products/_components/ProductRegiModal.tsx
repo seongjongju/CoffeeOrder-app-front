@@ -2,7 +2,7 @@
 import { Inventory } from '@/app/types/inventorys/inventory';
 import { ProductState, ProductType } from '@/app/types/products/product';
 import { productCategory } from '@/app/util/admin/category';
-import { productInfoWrites } from '@/app/util/admin/product';
+import { formatNumber } from '@/app/util/format';
 import { productRegiApi } from '@/features/adminApi/adminProductApi';
 import { CldUploadWidget, CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import { useRouter } from 'next/navigation';
@@ -15,14 +15,14 @@ interface ModalProps {
 
 //제품 정보 텍스트로 받는 인풋들 초기값
 const initialState: ProductState = [
-    { id: "write_0", name: "volume", value: 0 },         // 용량
-    { id: "write_1", name: "calory", value: 0 },         // 칼로리
-    { id: "write_2", name: "carbohydrate", value: 0 },   // 탄수화물
-    { id: "write_3", name: "protein", value: 0 },        // 단백질
-    { id: "write_4", name: "caffeine", value: 0 },       // 카페인
-    { id: "write_5", name: "sodium", value: 0 },         // 나트륨
-    { id: "write_6", name: "sugars", value: 0 },         // 당류
-    { id: "write_7", name: "saturatedFat", value: 0 },    // 포화지방
+    { id: "write_0", name: "volume", label: "용량", value: "0" },//용량
+    { id: "write_1", name: "calory", label: "칼로리", value: "0" },//칼로리
+    { id: "write_2", name: "carbohydrate", label: "탄수화물", value: "0" },//탄수화물
+    { id: "write_3", name: "protein", label: "단백질", value: "0" },//단백질
+    { id: "write_4", name: "caffeine", label: "카페인", value: "0" },//카페인
+    { id: "write_5", name: "sodium", label: "나트륨", value: "0" },//나트륨
+    { id: "write_6", name: "sugars", label: "당류", value: "0" },//당류
+    { id: "write_7", name: "saturatedFat", label: "포화지방", value: "0" },   // 포화지방
 ];
 
 //제품 정보 등 텍스트로 받는 인풋들 reducer
@@ -60,13 +60,11 @@ const ProductRegiModal = memo(({
 
     const [productState, dispatch] = useReducer(reducer, initialState); //텍스트로 받는 인풋들 ex) 제품명, 칼로리...
 
-    console.log(productState)
-
-    const [price, setPrice] = useState<number>(0); //가격
+    const [price, setPrice] = useState<string>("0"); //가격
     const [recommend, setRecommend] = useState<boolean>(false) //추천 제품 등록
 
     //인풋 값 받기
-    const handleChangeProductInput = (id: string, value: number) => {
+    const handleChangeProductInput = (id: string, value: string) => {
         dispatch({ 
                 type: "INPUT_REGI", 
                 payload: {
@@ -119,7 +117,10 @@ const ProductRegiModal = memo(({
 
             alert(`${data.message}`);
             setModalToggle("");
+
+            //초기값으로 되돌린다.
             dispatch({ type: "RESET", payload: {}});
+            setPrice("0");
             router.refresh();
             return;
         } catch(err: any) {
@@ -133,7 +134,11 @@ const ProductRegiModal = memo(({
         <>
             <div 
                 className='dim'
-                onClick={() => setModalToggle("")}
+                onClick={() => {
+                    setModalToggle("");
+                    dispatch({ type: "RESET", payload: {}});
+                    setPrice("0");
+                }}
             ></div>
             <div 
                 className='admin-modal'
@@ -252,13 +257,12 @@ const ProductRegiModal = memo(({
                             가격<span style={{color: "#ff0000"}}>*</span>
                         </label>
                         <input 
-                            type="number" 
-                            min={0}
-                            step="500"
+                            type="text" 
                             className='admin-modal__input'
                             placeholder='가격을 입력하세요.'
+                            value={price}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                setPrice(Number(e.target.value));
+                                setPrice(formatNumber(e.target.value));
                             }}
                         />
                     </div> {/* .admin-modal__write : end */}
@@ -284,20 +288,19 @@ const ProductRegiModal = memo(({
                     </div> {/* .admin-modal__write : end */}
 
                     {
-                        productInfoWrites.map((info) => (
+                        productState.map((info) => (
                         <div 
                             className='admin-modal__write'
                             key={info.id}
                         > 
                             <label htmlFor="" className='admin-modal__label'>{info.label}</label>
                             <input 
-                                type="number" 
+                                type="text" 
                                 name={info.name}
-                                min={0}
                                 className='admin-modal__input'
-                                placeholder={info.placeholder}
+                                value={info.value}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    handleChangeProductInput(info.id, Number(e.target.value));
+                                    handleChangeProductInput(info.id, formatNumber(e.target.value));
                                 }}
                             />
                         </div> 

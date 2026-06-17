@@ -1,5 +1,5 @@
 import { Inventory } from "@/app/types/inventorys/inventory";
-import { ProductType } from "@/app/types/products/product";
+import { ProductGetType, ProductType } from "@/app/types/products/product";
 
 const baseUrl = '/api/admin';
 const baseUrl_1 = `${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/admin`;
@@ -10,7 +10,7 @@ export const productRegiApi = async (
     productName: string,
     category: string,
     usedInventorys: Inventory['inventorys'],
-    price: number,
+    price: string,
     recommend: boolean,
     productInfos: Array<ProductType>
 ) => {
@@ -55,7 +55,7 @@ export const productUpdateApi = async (
     productName: string,
     category: string,
     usedInventorys: Inventory['inventorys'],
-    price: number,
+    price: string,
     recommend: boolean,
     productInfos: Array<ProductType>
 ) => {
@@ -85,6 +85,23 @@ export const productDeleteApi = async (productCode: string) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({productCode})
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    return data;
+};
+
+//제품 일괄 삭제
+export const productAllDeleteApi = async (productArray: ProductGetType['products']) => {
+    const url = `${baseUrl_1}/admin_product_all_delete`;
+    const options = {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({productArray})
     };
 
     const res = await fetch(url, options);

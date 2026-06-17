@@ -4,6 +4,7 @@ import Suggestion from './Suggestion';
 import MenuTabItems from './MenuTabItems';
 
 const MainUI = () => {
+    
     return (
         <main className='main'>
             <MainVisual />

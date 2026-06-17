@@ -1,5 +1,6 @@
 'use client';
 import { categorys } from '@/app/util/admin/category';
+import { formatNumber } from '@/app/util/format';
 import { inventoryRegiApi } from '@/features/adminApi/adminInventoryApi';
 import { useRouter } from 'next/navigation';
 import React, { Dispatch, memo, SetStateAction } from 'react';
@@ -11,8 +12,8 @@ interface ModalProps {
     invenName: string;
     setInvenCate: Dispatch<SetStateAction<string>>;
     invenCate: string;
-    setInvenQuantity: Dispatch<SetStateAction<number>>;
-    invenQuantity: number;
+    setInvenQuantity: Dispatch<SetStateAction<string>>;
+    invenQuantity: string;
 };
 
 const InventoryRegiModal = memo(({ 
@@ -27,6 +28,8 @@ const InventoryRegiModal = memo(({
 }: ModalProps) => {
     const router = useRouter();
 
+    console.log(invenQuantity)
+
     const handleInvenSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
@@ -35,12 +38,12 @@ const InventoryRegiModal = memo(({
             return;
         }
 
-        if(invenQuantity === 0) {
+        if(Number(invenQuantity) === 0) {
             alert("수량은 1개 이상 필수 입니다.");
             return;
         }
 
-        if(invenQuantity > 100) {
+        if(Number(invenQuantity.replaceAll(',', '')) > 100) {
             alert("수량은 100개가 최대입니다.");
             return;
         }
@@ -60,7 +63,7 @@ const InventoryRegiModal = memo(({
             //초기값으로 되돌린다.
             setInvenName("");
             setInvenCate("");
-            setInvenQuantity(0);
+            setInvenQuantity("0");
 
             //모달창 종료
             alert(`${data.message}`);
@@ -78,7 +81,10 @@ const InventoryRegiModal = memo(({
         <>
             <div 
                 className='dim'
-                onClick={() => setModalToggle("")}
+                onClick={() => {
+                    setModalToggle("");
+                    setInvenQuantity("0");
+                }}
             ></div>
             <div 
                 className='admin-modal'
@@ -124,12 +130,11 @@ const InventoryRegiModal = memo(({
                         재고수량<span style={{color: "#ff0000"}}>*</span>
                     </label>
                     <input 
-                        type="number" 
-                        min={0}
-                        max={100}
+                        type="text" 
                         className='admin-modal__number'
+                        value={invenQuantity}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setInvenQuantity(Number(e.target.value));
+                            setInvenQuantity(formatNumber(e.target.value));
                         }}
                     />
                 </div> {/* .admin-modal__write : end */}

@@ -7,7 +7,7 @@ const baseUrl_1 = `${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/admin`;
 export const inventoryRegiApi = async (
     inventoryName: string,
     category: string,
-    quantity: number
+    quantity: string
 ) => {
     const url = `${baseUrl}/admin_inventory_regi`;
     const options = {
@@ -86,7 +86,7 @@ export const inventoryUpdateApi = async (
     _id: string,
     inventoryName: string,
     category: string,
-    quantity: number
+    quantity: string
 ) => {
     const url = `${baseUrl}/admin_inventory_update`;
     const options = {

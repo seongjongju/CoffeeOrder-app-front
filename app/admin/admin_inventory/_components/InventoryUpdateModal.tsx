@@ -1,6 +1,7 @@
 'use client';
 import { Inventory } from '@/app/types/inventorys/inventory';
 import { categorys } from '@/app/util/admin/category';
+import { formatNumber } from '@/app/util/format';
 import { inventoryUpdateApi } from '@/features/adminApi/adminInventoryApi';
 import { useRouter } from 'next/navigation';
 import React, { Dispatch, memo, SetStateAction, useState } from 'react';
@@ -34,12 +35,12 @@ const InventoryUpdateModal = memo(({
             return;
         }
 
-        if(objQuantity === 0) {
+        if(Number(objQuantity) === 0) {
             alert("수량은 1개 이상 필수 입니다.");
             return;
         }
 
-        if(objQuantity > 100) {
+        if(Number(objQuantity.replaceAll(',', '')) > 100) {
             alert("수량은 100개가 최대입니다.");
             return;
         }
@@ -114,12 +115,11 @@ const InventoryUpdateModal = memo(({
                 <div className='admin-modal__write'> 
                     <label htmlFor="" className='admin-modal__label'>재고수량</label>
                     <input 
-                        type="number" 
-                        min={0}
-                        max={100}
+                        type="text" 
                         placeholder={objQuantity?.toString()}
+                        value={objQuantity}
                         onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
-                            setObjQuantity(Number(e.target.value));
+                            setObjQuantity(formatNumber(e.target.value));
                         }}
                         className='admin-modal__number'
                     />

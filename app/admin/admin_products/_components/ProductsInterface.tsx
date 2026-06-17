@@ -50,11 +50,18 @@ const ProductsInterface = ({inventorys, products}: Inventory & ProductGetType) =
                     />
                 )
             }
-
-            <ProductList 
-                products={products}
-                inventorys={inventorys}
-            />
+            <div 
+                className='dashboard'
+                style={{
+                    minHeight: "80vh",
+                    position: "relative"
+                }}
+            >
+                <ProductList 
+                    products={products}
+                    inventorys={inventorys}
+                />
+            </div>
         </div>
     );
 };

@@ -56,6 +56,11 @@
     font-weight: 500;
 }
 
+.tab-btn.is-active {
+    color: #fff;
+    background: #2B1B16;
+}
+
 /* search input */
 .menu-tab-input {
     font-family: 'Pretendard', sans-serif;
@@ -102,6 +107,17 @@
     width: 100%;
 }
 
+.none-meun {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    border: 1px dashed #ddd;
+    font-size: 14px;
+    color: #666;
+}
+
 /* fail text */
 .fail-text-wrap {
     display: flex;
@@ -113,7 +129,7 @@
 }
 
 .fail-text-wrap p {
-    font-size: 18px; /* 기존 오타 font-siez → font-size */
+    font-size: 18px;
     color: #2B1B16;
     font-weight: 600;
 }

@@ -2,9 +2,10 @@ import { Inventory } from "../inventorys/inventory";
 
 //제품 타입
 export type ProductType = {
-    id?: string;
+    id: string;
     name?: string;
-    value?: number;
+    label?: string;
+    value?: string;
 };
 
 //제품 조회 타입
@@ -20,7 +21,7 @@ export type ProductGetType = {
         productCode: string,
         productInfos?:ProductType[];
         productName: string,
-        price: number;
+        price: string;
         recommend: boolean;
         usedInventorys: Inventory['inventorys'];
     }>
@@ -29,7 +30,7 @@ export type ProductGetType = {
 //제품 업데이트 타입
 export type ProductUpdateType = {
     id: string;
-    value?: number
+    value?: string
     name?: string;
     label?: string;
 };

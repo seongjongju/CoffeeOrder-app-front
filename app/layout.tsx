@@ -5,6 +5,9 @@ import '@/shared/admin/styled/admin_common.css';
 import ClientLayout from "./ClientLayout";
 import viewport from "./viewport";
 import Script from "next/script";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { productGetApi } from "@/features/adminApi/adminProductApi";
+import QueryProvider from "./globalProvider/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,11 +29,20 @@ export const metadata: Metadata = {
 
 export {viewport};
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const queryClient = new QueryClient();
+
+  const allProduct = await productGetApi(); //전체 제품 조회
+
+  await Promise.all([
+    queryClient.prefetchQuery({ queryKey: ['products'], queryFn: allProduct }),
+  ]);
+
   return (
     <html 
       lang="ko"
@@ -41,9 +53,13 @@ export default function RootLayout({
           src="https://pay.nicepay.co.kr/v1/js/"
           strategy="beforeInteractive"
         />
-        <ClientLayout>
-          {children}
-        </ClientLayout>
+        <QueryProvider>
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <ClientLayout>
+              {children}
+            </ClientLayout>
+          </HydrationBoundary>
+        </QueryProvider>
       </body>
     </html>
   );
