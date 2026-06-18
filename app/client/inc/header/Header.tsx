@@ -7,7 +7,7 @@ import alert from '@/public/images/alert.svg';
 import menu from '@/public/images/menu.svg';
 import React, { useState } from 'react';
 import "../_styled/inc.css";
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { getTitle } from '@/app/util/client/get.header.title';
 import Link from 'next/link';
 import useAlert from '@/features/hooks/alert/useAlert';
@@ -24,6 +24,7 @@ const Header = () => {
     const {alertItems} = useAlert();
     const pathName = usePathname();
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     return (
         <header
@@ -85,7 +86,7 @@ const Header = () => {
                             <Image src={BackIco} alt='뒤로가기' />
                         </button>
                         <h2 className='app-bar-title'>
-                            {getTitle(pathName)}
+                            {getTitle(pathName, searchParams)}
                         </h2>
                         {
                             !pathName.includes('/auth') &&

@@ -1,4 +1,4 @@
-import '@/shared/client/styled/view/view.css';
+import '@/app/client/view/_styled/view.css';
 import '@/shared/client/styled/policyStyle/policyStyle.css';
 import ViewLayout from '../../_components/ViewLayout';
 

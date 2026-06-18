@@ -3,7 +3,7 @@ import { productGetApi } from '@/features/adminApi/adminProductApi';
 import React from 'react';
 import ProductView from '../_components/ProductView';
 
-const AdminProductsViewPage = async ({ params  }: {params : Promise<{ PRD: string; }>}) => {
+const AdminProductsViewPage = async ({ params }: {params : Promise<{ PRD: string; }>}) => {
     const { PRD } = await params ; //제품 코드
     if(!PRD) return;
     

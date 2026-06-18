@@ -19,7 +19,7 @@ export type ProductGetType = {
             publicId: string,
         };
         productCode: string,
-        productInfos?:ProductType[];
+        productInfos:ProductType[];
         productName: string,
         price: string;
         recommend: boolean;

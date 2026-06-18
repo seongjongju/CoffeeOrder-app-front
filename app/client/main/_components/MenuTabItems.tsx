@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import '@/shared/client/styled/main/main.css';
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import useProductQuery from '@/features/hooks/query/useProductQuery';
 import { CldImage } from 'next-cloudinary';
 import { ProductGetType } from '@/app/types/products/product';
@@ -18,7 +17,6 @@ const MenuTabItems = () => {
     const [tabState, setTabState] = useState<string>(menuTabs[0].id); //탭메뉴
     const [menuSearch, setMenuSearch] = useState<string>(""); //메뉴 검색
     const [debounceSearch, setDebounceSearch] = useState<ProductGetType['products']>([]); //디바운스
-    const router = useRouter();
 
     //탭 메뉴의 탭명과, 전체 메뉴의 카테고리가 같은 것
     const findTab = menuTabs.find(tab => tab.id === tabState)?.tab;
@@ -60,7 +58,7 @@ const MenuTabItems = () => {
                 placeholder={menuTabs.find(tab => tab.id === tabState)?.tab + "를 검색해주세요."}
                 onChange={(e:React.ChangeEvent<HTMLInputElement>) => {setMenuSearch(e.target.value);}}
             />
-
+            
             <div
                 className='menu-wrap'
                 style={
@@ -68,13 +66,13 @@ const MenuTabItems = () => {
                 }
             >   
                 {
-                    debounceSearch.length > 0 ? 
+                    debounceSearch.length > 0 ?
                     (
                         debounceSearch.map((prd) => {
                             return(
                                 <Link 
                                     key={prd.productCode}
-                                    href={''}
+                                    href={`/client/view/${prd.productCode}?category=${prd.category}`}
                                     className='menu-item'
                                 >
                                     <CldImage
