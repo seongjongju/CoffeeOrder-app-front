@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import '../_styled/view.css';
+import '../../auth/_styled/policyStyle.css';
 import VIewInterface from '../_components/VIewInterface';
 import LoadingUi from '@/shared/client/components/loading/LoadingUi';
 
