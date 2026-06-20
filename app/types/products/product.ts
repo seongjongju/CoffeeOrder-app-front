@@ -40,3 +40,13 @@ export type ProductState = Array<ProductType>;
 
 //제품 업데이트 리듀서 타입
 export type ProductUpdateState = Array<ProductUpdateType>;
+
+//제품 추가 옵션 타입
+export type OptionItem = {
+    id: string;
+    label: string;
+    count: number;
+    addPrice: number;
+};
+
+export type OptionState = Array<OptionItem>;

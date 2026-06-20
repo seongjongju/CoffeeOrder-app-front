@@ -30,7 +30,7 @@ export const formatPrice = (price: number ) => {
 //숫자 텍스트 타입
 export const formatNumber = (num: string) => {
     const cleanNum = num.replaceAll(',', '');
-
+    
     if (!cleanNum || !/^[0-9]+$/.test(cleanNum)) {
         return "0"; 
     }

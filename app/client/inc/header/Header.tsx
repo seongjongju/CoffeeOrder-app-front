@@ -93,7 +93,7 @@ const Header = () => {
                             !pathName.includes('/user_find') ?
                             (
                                 <div className='header-util'>
-                                    <Link href={'/cart'} style={{ position: "relative" }}>
+                                    <Link href={'/client/cart'} style={{ position: "relative" }}>
                                         <span className='quantity'>{cartItemQuantity}</span>
                                         <Image src={cart} alt='장바구니' />
                                     </Link>

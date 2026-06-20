@@ -11,22 +11,38 @@ import Modal from '@/shared/client/components/modal/Modal';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { addToAlert } from '@/store/alert/alertSlice';
-import { ProductGetType } from '@/app/types/products/product';
-import { QuantityOption } from './VIewInterface';
+import { OptionState } from '@/app/types/products/product';
+import { formatPrice } from '@/app/util/format';
 
 interface OptionProps {
     viewProduct: {
         price: string;
     };
-    optionArray: Array<QuantityOption>;
+    lightly: boolean;
+    addState: OptionState;
 }
 
-const OrderBar = ({viewProduct, optionArray }: OptionProps) => {
+const OrderBar = ({viewProduct, lightly, addState }: OptionProps) => {
     console.log(viewProduct)
+    const [totlaCount, setTotalCount] = useState<number>(1);
+
+    //옵션 합산금액
+    const addPriceSum = addState.map(add => add.addPrice).reduce((acc, current) => acc + current, 0);
+
+    //최종 금액
+    const calcPrice = (Number(viewProduct.price.replaceAll(',', '')) + addPriceSum) * totlaCount;
+
+    const totalIncrement = () => {
+        setTotalCount(totlaCount + 1);
+    };
+
+    const totalDecrement = () => {
+        setTotalCount(Math.max(1, totlaCount - 1));
+    };
 
     /* const { lightly, shot, syrup, whipping, price, count } = useAppSelector(state => state.option); */
     //옵션 선택 커스텀 훅
-   /*  const {
+    /*  const {
         countIncrement,
         countDecrement,
     } = useOptions();
@@ -98,54 +114,56 @@ const OrderBar = ({viewProduct, optionArray }: OptionProps) => {
 
     return (
         <div className='order-bar'>
-            {
-                optionArray !== undefined ? (
-                    <div className='order-bar__options'>
-                        {
-                            optionArray.map((op) => {
-                                    if(op.count === 0 && !op.lightly) return;
-                                    return(
-                                        <p 
-                                            key={op.id}
-                                            className='order-bar__option'
-                                        >
-                                            {
-                                                op.id === "lightly" && op.lightly ? "연하게" :
-                                                op.id === "shot" && op.count > 0 ? `샷 추가 x ${op.count}` :
-                                                op.id === "syrup" && op.count > 0 ? `시럽 추가 x ${op.count}` :
-                                                op.id === "whipping" && op.count > 0 ? `휘핑크림 추가 x ${op.count}` :
-                                                null
-                                            }
-                                        </p>
-                                    )
-                                }
-                            )
-                        }
-                    </div>
-                ) : null
-            }
+            <div className='order-bar__options'>
+                {
+                    lightly &&
+                    (
+                        <p className='order-bar__option'>연하게</p>
+                    )
+                }
+                {
+                    addState !== undefined &&
+                    addState.map((add) => {
+                        if(add.count === 0) return;
+                        return (
+                            <p 
+                                key={add.id}
+                                className='order-bar__option'
+                            >
+                                {add.label} x {add.count}
+                            </p>
+                        )
+                    })
+                }
+            </div>
             
             <form className='order-bar__form'>
                 <div className='view-option'>
                     <p className='order-bar__price'>
-                        Total : {viewProduct.price}원
+                        Total : {formatPrice(calcPrice)}원
                     </p>
                     <div className='view-option__quantity-wrap'>
                         <button 
                             className='view-option__button'
-                            /* onClick={countDecrement} */
+                            onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                                e.preventDefault();
+                                totalDecrement();
+                            }}
                         >
                             <Image src={minusIco} alt='마이너스버튼' />
                         </button>
                         <input 
                             className='view-option__input'
                             type="number" 
-                            /* value={count} */
+                            value={totlaCount}
                             readOnly
                         />
                         <button 
                             className='view-option__button'
-                            /* onClick={countIncrement} */
+                            onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                                e.preventDefault();
+                                totalIncrement();
+                            }}
                         >
                             <Image src={plusIco} alt='플러스버튼' />
                         </button>
