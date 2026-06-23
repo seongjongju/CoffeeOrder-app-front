@@ -2,82 +2,79 @@
 import Image from 'next/image';
 import plusIco from '@/public/icons/view_plus.svg';
 import minusIco from '@/public/icons/view_minus.svg';
-import React, { useState } from 'react';
-import useOptions from '@/features/hooks/view/useOptions';
-import { useAppDispatch, useAppSelector } from '@/store/hook';
-import { addToCart } from '@/store/cart/cartSlice';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { addToAlert } from '@/store/alert/alertSlice';
-import { OptionState } from '@/app/types/products/product';
+import { OptionState, ProductImgType } from '@/app/types/products/product';
 import { formatPrice } from '@/app/util/format';
+import { addCartApi } from '@/features/clientApi/cartApi';
 
 interface OptionProps {
     viewProduct: {
+        img: ProductImgType
+        productName: string;
         price: string;
     };
     lightly: boolean;
     addState: OptionState;
 }
 
-const OrderBar = ({viewProduct, lightly, addState }: OptionProps) => {
-    console.log(viewProduct)
-    const [totlaCount, setTotalCount] = useState<number>(1);
+const OrderBar = memo(({
+    viewProduct, 
+    lightly, 
+    addState 
+}: OptionProps) => {
+    const {modalShow, setModalShow, modalText, setModalText} = useModalShow(); //모달창
+    const [totalCount, setTotalCount] = useState<number>(1);
 
     //옵션 합산금액
-    const addPriceSum = addState.map(add => add.addPrice).reduce((acc, current) => acc + current, 0);
+    const addPriceSum = useMemo(() => {
+        return addState.map(add => add.addPrice).reduce((acc, current) => acc + current, 0);
+    }, [addState]);
 
     //최종 금액
-    const calcPrice = (Number(viewProduct.price.replaceAll(',', '')) + addPriceSum) * totlaCount;
+    const calcPrice = useMemo(() => {
+        const basePrice = Number(viewProduct.price.replaceAll(',', ''));
+        return (basePrice + addPriceSum) * totalCount;
+    }, [viewProduct.price, addPriceSum, totalCount]);
 
-    const totalIncrement = () => {
-        setTotalCount(totlaCount + 1);
-    };
+    const totalIncrement = useCallback(() => {
+        setTotalCount(prev => prev + 1);
+    }, []);
 
-    const totalDecrement = () => {
-        setTotalCount(Math.max(1, totlaCount - 1));
-    };
+    const totalDecrement = useCallback(() => {
+        setTotalCount(prev => Math.max(1, prev - 1));
+    }, []);
 
-    /* const { lightly, shot, syrup, whipping, price, count } = useAppSelector(state => state.option); */
-    //옵션 선택 커스텀 훅
-    /*  const {
-        countIncrement,
-        countDecrement,
-    } = useOptions();
-    const dispatch = useAppDispatch();
-    const users = useAppSelector(state => state.auth); */
+    //장바구니 추가 핸들러
+    const handleClickAddToCart = useCallback(async () => {
+        try {
+            const data = await addCartApi(
+                viewProduct.img,
+                viewProduct.productName,
+                viewProduct.price,
+                calcPrice, 
+                totalCount,
+                lightly, 
+                addState
+            );
 
-    //모달창
-    const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
+            setModalShow(true);
+            
+            if(!data.success) {
+                setModalText(data.message);
+                return;
+            }
 
-    //가격
-    /* const OPTION_PRICE = 500;
-
-    const optionPrice = (shot + syrup + whipping) * OPTION_PRICE;
-
-    const totalPrice = (price + optionPrice) * count; */
-
-    //장바구니로 이동
-    /* const handleClickCartMoving = (e:React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-
-        //장바구니에 추가
-        dispatch(addToCart({
-            lightly: lightly,
-            shot: shot,
-            syrup: syrup,
-            whipping: whipping,
-            price: price,
-            count: count,
-            img: img,
-            menuName: menuName
-        }));
-
-        setModalText('장바구니에 추가되었습니다.');
-        setModalShow(true);
-    }; */
+            setModalText(data.message);
+            return;
+        } catch(err: any) {
+            console.error(err.response?.data?.message);
+            setModalShow(true);
+            setModalText(err.response?.data?.message);
+            return;
+        }
+    }, [calcPrice, lightly, addState, setModalShow, setModalText]);
 
     //결제
     /* const handleSinglePayment = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -155,7 +152,7 @@ const OrderBar = ({viewProduct, lightly, addState }: OptionProps) => {
                         <input 
                             className='view-option__input'
                             type="number" 
-                            value={totlaCount}
+                            value={totalCount}
                             readOnly
                         />
                         <button 
@@ -172,6 +169,10 @@ const OrderBar = ({viewProduct, lightly, addState }: OptionProps) => {
                 <div className='order-bar__btns'>
                     <button 
                         className='order-bar__button--cart'
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                            e.preventDefault();
+                            handleClickAddToCart();
+                        }}
                     >
                         장바구니
                     </button>
@@ -194,6 +195,6 @@ const OrderBar = ({viewProduct, lightly, addState }: OptionProps) => {
             }
         </div>
     );
-};
+});
 
 export default OrderBar;

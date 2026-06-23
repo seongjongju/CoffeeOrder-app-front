@@ -8,16 +8,19 @@ export type ProductType = {
     value?: string;
 };
 
+//제품 이미지 타입
+export type ProductImgType = {
+    format: string;
+    imgName: string;
+    publicId: string;
+}
+
 //제품 조회 타입
 export type ProductGetType = {
     products: Array<{
         _id: string;
         category: string,
-        img: {
-            format: string,
-            imgName: string,
-            publicId: string,
-        };
+        img: ProductImgType;
         productCode: string,
         productInfos:ProductType[];
         productName: string,

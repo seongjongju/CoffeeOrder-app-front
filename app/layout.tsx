@@ -8,6 +8,7 @@ import Script from "next/script";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { productGetApi } from "@/features/adminApi/adminProductApi";
 import QueryProvider from "./globalProvider/QueryProvider";
+import { getCartApi } from "@/features/clientApi/cartApi";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,9 +39,11 @@ export default async function RootLayout({
   const queryClient = new QueryClient();
 
   const allProduct = await productGetApi(); //전체 제품 조회
+  const allCarts = await getCartApi(); //전체 장바구니 조회
 
   await Promise.all([
     queryClient.prefetchQuery({ queryKey: ['products'], queryFn: allProduct }),
+    queryClient.prefetchQuery({ queryKey: ['carts'], queryFn: allCarts }),
   ]);
 
   return (
