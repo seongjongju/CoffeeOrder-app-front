@@ -19,28 +19,28 @@ const InventoryUpdateModal = memo(({
     modalToggle,
     invenId,
 }: UpdateProps) => {
-    const [objName, setObjName] = useState(inventorys.find(iv => iv._id === invenId)?.inventoryName);
-    const [objCategory, setObjCategory] = useState(inventorys.find(iv => iv._id === invenId)?.category);
-    const [objQuantity, setObjQuantity] = useState(inventorys.find(iv => iv._id === invenId)?.quantity);
+    const [invenName, setInvenName] = useState(inventorys.find(iv => iv._id === invenId)?.inventoryName);
+    const [invenCategory, setInvenCategory] = useState(inventorys.find(iv => iv._id === invenId)?.category);
+    const [invenQuantity, setInvenQuantity] = useState(inventorys.find(iv => iv._id === invenId)?.quantity);
 
     const router = useRouter();
 
     const handleInvenUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if(!objName || !objCategory || !objQuantity) return;
+        if(!invenName || !invenCategory || !invenQuantity) return;
 
-        if(objName.trim() === "" || objCategory === "") {
+        if(invenName.trim() === "" || invenCategory === "") {
             alert("값을 모두 입력해주세요.");
             return;
         }
 
-        if(Number(objQuantity) === 0) {
+        if(Number(invenQuantity) === 0) {
             alert("수량은 1개 이상 필수 입니다.");
             return;
         }
 
-        if(Number(objQuantity.replaceAll(',', '')) > 100) {
+        if(Number(invenQuantity.replaceAll(',', '')) > 100) {
             alert("수량은 100개가 최대입니다.");
             return;
         }
@@ -48,9 +48,9 @@ const InventoryUpdateModal = memo(({
         try{
             const data = await inventoryUpdateApi(
                 invenId,
-                objName.trim(),
-                objCategory,
-                objQuantity
+                invenName.trim(),
+                invenCategory,
+                invenQuantity
             );
 
             if(!data.success) {
@@ -86,9 +86,9 @@ const InventoryUpdateModal = memo(({
                     <label htmlFor="" className='admin-modal__label'>재고명</label>
                     <input 
                         type="text" 
-                        value={objName}
+                        value={invenName}
                         onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
-                            setObjName(e.target.value);
+                            setInvenName(e.target.value);
                         }}
                         className='admin-modal__input'
                         placeholder='재고명을 입력하세요.'
@@ -99,9 +99,9 @@ const InventoryUpdateModal = memo(({
                     <label htmlFor="" className='admin-modal__label'>카테고리</label>
                     <select 
                         className='admin-modal__select'
-                        value={objCategory}
+                        value={invenCategory}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            setObjCategory(e.target.value);
+                            setInvenCategory(e.target.value);
                         }}
                     >
                         {
@@ -116,10 +116,10 @@ const InventoryUpdateModal = memo(({
                     <label htmlFor="" className='admin-modal__label'>재고수량</label>
                     <input 
                         type="text" 
-                        placeholder={objQuantity?.toString()}
-                        value={objQuantity}
+                        placeholder={invenQuantity?.toString()}
+                        value={invenQuantity}
                         onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
-                            setObjQuantity(formatNumber(e.target.value));
+                            setInvenQuantity(formatNumber(e.target.value));
                         }}
                         className='admin-modal__number'
                     />

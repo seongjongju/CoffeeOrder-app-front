@@ -8,12 +8,12 @@ import { useAppDispatch, useAppSelector } from '@/store/hook';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
 /* import { authApi } from '@/features/services/auth/auth.services'; */
-import { logout } from '@/store/auth/authSlice';
-import { allDeleteCart } from '@/store/cart/cartSlice';
+/* import { logout } from '@/store/auth/authSlice';
+import { allDeleteCart } from '@/store/cart/cartSlice'; */
 
 const MypageUi = () => {
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
-    const auth = useAppSelector(state => state.auth);
+/*     const auth = useAppSelector(state => state.auth); */
 
     const dispatch = useAppDispatch();
 
@@ -37,7 +37,7 @@ const MypageUi = () => {
         <>
             <div className='mypage-user'>
                 <Image src={logo} alt='로고' />
-                <p className='mypage-name'>{auth.user?.name} 님</p>
+               {/*  <p className='mypage-name'>{auth.user?.name} 님</p> */}
             </div>
             <div className='inner'>
                 <Link

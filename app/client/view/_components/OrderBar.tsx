@@ -8,7 +8,7 @@ import Modal from '@/shared/client/components/modal/Modal';
 import { OptionState, ProductImgType } from '@/app/types/products/product';
 import { formatPrice } from '@/app/util/format';
 import { addCartApi } from '@/features/clientApi/cartApi';
-
+import { useQueryClient } from '@tanstack/react-query';
 interface OptionProps {
     viewProduct: {
         img: ProductImgType
@@ -47,6 +47,7 @@ const OrderBar = memo(({
     }, []);
 
     //장바구니 추가 핸들러
+    const queryClient = useQueryClient(); //헤더에 실시간 갯수 반영을 위해
     const handleClickAddToCart = useCallback(async () => {
         try {
             const data = await addCartApi(
@@ -67,6 +68,7 @@ const OrderBar = memo(({
             }
 
             setModalText(data.message);
+            queryClient.invalidateQueries({ queryKey: ['carts'] });
             return;
         } catch(err: any) {
             console.error(err.response?.data?.message);

@@ -9,7 +9,6 @@ import Modal from '@/shared/client/components/modal/Modal';
 import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
 import { userFindApi } from '@/features/services/userFind/userFind.services';
-import { userFindActionApi } from '@/features/actions/userFind/userFind.action';
 
 const PasswordFindForm = () => {
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
@@ -85,7 +84,7 @@ const PasswordFindForm = () => {
             //유저정보가 일치하면 비밀번호 변경
             if(data.status === "success") {
                 try{
-                    const data = await userFindActionApi.changedPassword(userId, newPwd);
+                    //const data = await userFindActionApi.changedPassword(userId, newPwd);
 
                     setModalText(data.message);
                     setModalShow(true);

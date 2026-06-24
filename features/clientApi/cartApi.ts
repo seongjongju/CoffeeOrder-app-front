@@ -36,3 +36,21 @@ export const getCartApi = async () => {
     const data = await res.data;
     return data;
 };
+
+//장바구니 단일 삭제
+export const deleteCartApi = async (_id: string) => {
+    const res = await api.delete('/delete_cart', {
+        params: { _id }
+    });
+
+    const data = await res.data;
+    return data;
+};
+
+//장바구니 전체 삭제
+export const allDeleteCartApi = async () => {
+    const res = await api.delete('/all_delete_cart', {});
+
+    const data = await res.data;
+    return data;
+};

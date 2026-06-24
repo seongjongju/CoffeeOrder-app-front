@@ -81,8 +81,6 @@ const ProductList = ({inventorys, products}: Inventory & ProductGetType) => {
         try{
             const data = await productAllDeleteApi(productArray);
 
-            console.log(data)
-
             if(!data.success) {
                 alert(`${data.message}`);
                 return;

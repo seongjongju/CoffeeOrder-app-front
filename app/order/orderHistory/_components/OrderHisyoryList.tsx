@@ -5,23 +5,23 @@ import LoadingUi from '@/shared/client/components/loading/LoadingUi';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import { useAppSelector } from '@/store/hook';
-import useHistory from '@/features/hooks/order/useHistory';
+/* import useHistory from '@/features/hooks/order/useHistory'; */
 
 const OrderHistoryList = () => {
     const router = useRouter();
-    const users = useAppSelector(state => state.auth);
-    const {isLoading, formatDate, orderHistory, fetchOrders} = useHistory();
+    /* const users = useAppSelector(state => state.auth);
+    const {isLoading, formatDate, orderHistory, fetchOrders} = useHistory(); */
 
-    useEffect(() => {
+    /* useEffect(() => {
         if(!users.user?.id) return;
         fetchOrders();
     }, [])
 
-    if (isLoading) return <LoadingUi />;
+    if (isLoading) return <LoadingUi />; */
 
     return (
-        <main className={orderHistory.length !== 0 ? 'main order-main' : 'main cart-null'}>
-            <div className='inner'>
+        <main className="">
+            {/* <div className='inner'>
                 {orderHistory.length === 0 ? (
                     <div className='cart-null__ui'>
                         <Image src={mascot} alt='마스코트' />
@@ -68,7 +68,7 @@ const OrderHistoryList = () => {
                         })}
                     </div>
                 )}
-            </div>
+            </div> */}
         </main>
     );
 };

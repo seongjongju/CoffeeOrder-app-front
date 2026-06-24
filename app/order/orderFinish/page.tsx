@@ -8,7 +8,7 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import { addToAlert } from '@/store/alert/alertSlice';
 import { orderApi } from '@/features/services/order/order.services';
-import { allDeleteCart } from '@/store/cart/cartSlice';
+/* import { allDeleteCart } from '@/store/cart/cartSlice'; */
 
 type orderItemObject = {
     menuName: string
@@ -17,9 +17,9 @@ type orderItemObject = {
 const OrderFinishPage = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const users = useAppSelector(state => state.auth);
+    /* const users = useAppSelector(state => state.auth); */
 
-    const orderFinishEvent = async () => {
+   /*  const orderFinishEvent = async () => {
         if(!users.user?.id) return;
 
         const data = await orderApi.getOrderHistory(users.user?.id);
@@ -43,7 +43,7 @@ const OrderFinishPage = () => {
         }
         
         router.push('/main');
-    };
+    }; */
 
     return (
         <div>
@@ -56,7 +56,7 @@ const OrderFinishPage = () => {
             <div className='next-button-container'>
                 <Button 
                     buttonText='확인'
-                    onClick={orderFinishEvent}
+                    /* onClick={orderFinishEvent} */
                 />
             </div>
         </div>

@@ -163,6 +163,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+    margin-top: -80px;
 }
 
 .cart-null .cart-inner {

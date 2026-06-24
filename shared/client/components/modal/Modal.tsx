@@ -15,18 +15,11 @@ const Modal = ({ modalShow, setModalShow, modalText, setModalText } : ModalProps
     const pathName = usePathname();
     const router = useRouter();
 
-    const modalInit = () => {
+    const modalInit = (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         if(modalShow) {
             setModalShow(false);
             setModalText('');
-            
-            if(modalText === '아이디, 휴대폰 번호, 새 비밀번호를 입력해주세요.') {
-                return;
-            } else if (modalText === '비밀번호가 변경되었습니다.') {
-                router.push('/login');
-            } else if(modalText === '로그아웃이 완료되었습니다.') {
-                router.push('/');
-            }
         };
     }; 
 

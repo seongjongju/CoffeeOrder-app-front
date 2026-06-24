@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import '@/shared/client/styled/main/main.css';
 import React, { useEffect, useState } from 'react';
 import useProductQuery from '@/features/hooks/query/useProductQuery';
 import { CldImage } from 'next-cloudinary';

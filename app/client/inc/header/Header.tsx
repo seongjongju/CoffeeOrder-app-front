@@ -11,16 +11,14 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { getTitle } from '@/app/util/client/get.header.title';
 import Link from 'next/link';
 import useAlert from '@/features/hooks/alert/useAlert';
-import useCartQuantity from '@/features/hooks/cart/useCartQuantity';
-import useAppBarTitles from '@/features/hooks/appBar/useAppBarTitles';
 import CategorySideGnb from '@/shared/client/components/side/CategorySideGnb';
 import SideAlert from '@/shared/client/components/side/SideAlert';
+import useCartQuery from '@/features/hooks/query/useCartQuery';
 
 const Header = () => {
-    const [categorySideOn, setCategorySideOn] = useState<boolean>(false);
-    const [sideAlertOn, setSideAlertOn] = useState<boolean>(false);
-    const {appBarTitles} = useAppBarTitles();
-    const {cartItemQuantity} = useCartQuantity(); // 전체 count, 수량 커스텀 훅
+    const [categorySideOn, setCategorySideOn] = useState<boolean>(false); //사이드 gnb (카테고리)
+    const [sideAlertOn, setSideAlertOn] = useState<boolean>(false); //사이드 gnb (알림창)
+    const {carts} = useCartQuery() // 장바구니 리액트쿼리 커스텀 훅
     const {alertItems} = useAlert();
     const pathName = usePathname();
     const router = useRouter();
@@ -43,8 +41,8 @@ const Header = () => {
                             <Image src={logo} alt='로고' />
                         </Link>
                         <div className='header-util'>
-                            <Link href={'/cart'} style={{ position: "relative" }}>
-                                <span className='quantity'>{cartItemQuantity}</span>
+                            <Link href={'/client/cart'} style={{ position: "relative" }}>
+                                <span className='quantity'>{carts.length}</span>
                                 <Image src={cart} alt='장바구니' />
                             </Link>
                             <button
@@ -94,7 +92,7 @@ const Header = () => {
                             (
                                 <div className='header-util'>
                                     <Link href={'/client/cart'} style={{ position: "relative" }}>
-                                        <span className='quantity'>{cartItemQuantity}</span>
+                                        <span className='quantity'>{carts.length}</span>
                                         <Image src={cart} alt='장바구니' />
                                     </Link>
                                     <button

@@ -7,9 +7,7 @@ const CartPage = () => {
         <main 
             className='main cart-main'
         >
-            <div className='inner cart-inner'>
-                <CartList />
-            </div>
+            <CartList />
         </main>
     );
 };

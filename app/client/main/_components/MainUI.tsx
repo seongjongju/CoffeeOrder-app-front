@@ -1,4 +1,5 @@
 import React from 'react';
+import '../_styled/main.css';
 import MainVisual from './MainVisual';
 import Suggestion from './Suggestion';
 import MenuTabItems from './MenuTabItems';

@@ -3,16 +3,16 @@ import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import LoadingUi from '@/shared/client/components/loading/LoadingUi';
 import { useAppSelector } from '@/store/hook';
-import useHistory from '@/features/hooks/order/useHistory';
+/* import useHistory from '@/features/hooks/order/useHistory'; */
 import OrderErrorUi from '../../_components/OrderErrorUi';
 
 
 const OrderViewLayout = () => {
     const params = useParams();
-    const users = useAppSelector(state => state.auth);
-    const {isLoading, error, formatDate, orderDetail, fetchOrderDetail} = useHistory();
+/*     const users = useAppSelector(state => state.auth);
+    const {isLoading, error, formatDate, orderDetail, fetchOrderDetail} = useHistory(); */
 
-    useEffect(() => {
+   /*  useEffect(() => {
         if(!users.user?.id) return;
         fetchOrderDetail(params);
     }, [])
@@ -29,11 +29,11 @@ const OrderViewLayout = () => {
         )
     }
 
-    if (!orderDetail) return;
+    if (!orderDetail) return; */
 
     return (
         <main className='main order-main'>
-            <div className='inner'>
+            {/* <div className='inner'>
                 {orderDetail.items.map(item => (
                     <div className='order-view' key={item._id}>
                         <div className='order-view__intro'>
@@ -100,7 +100,7 @@ const OrderViewLayout = () => {
                         </div> 
                     </div>
                 ))}
-            </div>
+            </div> */}
         </main>
     );
 };

@@ -10,7 +10,7 @@ import { useAppSelector } from '@/store/hook';
 const IntroPage = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const auth = useAppSelector(state => state.auth);
+    /* const auth = useAppSelector(state => state.auth); */
 
     //리다이렉트 처리
     useEffect(() => {
@@ -24,14 +24,10 @@ const IntroPage = () => {
     return (
         <div className='intro-container'>
             <Image className='intro-image' src={BigMascot} alt='머그컵 캐릭터' />
-            {
-                !auth.isLoggedIn ? (
-                    <div className='intro-buttons'>
-                        <Link className='intro-link' href={'/client/auth/policy'} >가입하기</Link>
-                        <Link className='intro-link' href={'/client/auth/login'} >로그인</Link>
-                    </div>
-                ) : null
-            }
+            <div className='intro-buttons'>
+                <Link className='intro-link' href={'/client/auth/policy'} >가입하기</Link>
+                <Link className='intro-link' href={'/client/auth/login'} >로그인</Link>
+            </div> 
         </div>
     );
 };
