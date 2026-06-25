@@ -9,6 +9,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import { productGetApi } from "@/features/adminApi/adminProductApi";
 import QueryProvider from "./globalProvider/QueryProvider";
 import { getCartApi } from "@/features/clientApi/cartApi";
+import AuthProvider from "./globalProvider/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,7 +60,9 @@ export default async function RootLayout({
         <QueryProvider>
           <HydrationBoundary state={dehydrate(queryClient)}>
             <ClientLayout>
-              {children}
+              <AuthProvider>
+                {children}
+              </AuthProvider>
             </ClientLayout>
           </HydrationBoundary>
         </QueryProvider>

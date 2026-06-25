@@ -9,6 +9,7 @@ import { OptionState, ProductImgType } from '@/app/types/products/product';
 import { formatPrice } from '@/app/util/format';
 import { addCartApi } from '@/features/clientApi/cartApi';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAppSelector } from '@/store/hook';
 interface OptionProps {
     viewProduct: {
         img: ProductImgType
@@ -25,6 +26,7 @@ const OrderBar = memo(({
     addState 
 }: OptionProps) => {
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow(); //모달창
+    const user = useAppSelector(state => state.auth.user); //유저 정보
     const [totalCount, setTotalCount] = useState<number>(1);
 
     //옵션 합산금액
@@ -51,6 +53,8 @@ const OrderBar = memo(({
     const handleClickAddToCart = useCallback(async () => {
         try {
             const data = await addCartApi(
+                user.userId,
+                user.userName,
                 viewProduct.img,
                 viewProduct.productName,
                 viewProduct.price,

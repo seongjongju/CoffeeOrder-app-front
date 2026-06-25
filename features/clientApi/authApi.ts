@@ -1,14 +1,10 @@
-import axios from "axios";
-
-export const api = axios.create({
-    baseURL: '/api/auth',
-    withCredentials: true
-});
-
 //*************************회원가입
+
+import { api, api_1 } from "./base";
+
 //아이디 중복확인
 export const idReduplicationApi = async (id: string) => {
-    const res = await api.post('/id_reduplication',
+    const res = await api.post('/auth/id_reduplication',
         { id }
     );
 
@@ -18,7 +14,7 @@ export const idReduplicationApi = async (id: string) => {
 
 //이메일 중복확인 및 인증번호 발송
 export const sendEmailApi = async (email: string) => {
-    const res = await api.post('/send_authentication', 
+    const res = await api.post('/auth/send_authentication', 
         { email }
     );
 
@@ -28,7 +24,7 @@ export const sendEmailApi = async (email: string) => {
 
 //인증번호 확인
 export const authCodeReduplicationApi = async (email: string, authCode: string) => {
-    const res = await api.post('/check_authentication',
+    const res = await api.post('/auth/check_authentication',
         { email, authCode }
     );
 
@@ -46,7 +42,7 @@ export const memberResisterApi = async (
     email: string,
     birth: string
 ) => {
-    const res = await api.post('/join_member',
+    const res = await api.post('/auth/join_member',
         { 
             id,
             password,
@@ -63,7 +59,7 @@ export const memberResisterApi = async (
 
 //************************* 아이디 찾기 및 패스워드 재 설정
 export const findIdApi = async (email: string) => {
-    const res = await api.post('/find_id',
+    const res = await api.post('/auth/find_id',
         { email }
     );
 
@@ -76,9 +72,17 @@ export const loginApi = async (
     id: string, 
     password: string,
 ) => {
-    const res = await api.post('/login',
+    const res = await api.post('/auth/login',
         { id, password,}
     );
+
+    const data = await res.data;
+    return data;
+};
+
+// 유저 정보
+export const meApi = async () => {
+    const res = await api_1.get('/auth/me', {});
 
     const data = await res.data;
     return data;

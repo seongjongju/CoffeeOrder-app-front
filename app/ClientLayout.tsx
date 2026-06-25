@@ -31,7 +31,7 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     if (isIntroPage) {
         return (
             <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
+                <PersistGate persistor={persistor}>
                     {children}
                 </PersistGate>
             </Provider>

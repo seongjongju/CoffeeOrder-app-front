@@ -6,6 +6,8 @@ const dbName = process.env.DB_NAME;
 export async function POST(request:NextRequest) {
     const body = await request.json();
     const {
+        userId,
+        userName,
         img,
         productName,
         price,
@@ -26,6 +28,8 @@ export async function POST(request:NextRequest) {
 
         const db = (await connectDB).db(dbName);
         await db.collection('carts').insertOne({
+            userId: userId,
+            userName: userName,
             img: img,
             productName: productName,
             price: price,

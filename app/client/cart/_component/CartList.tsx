@@ -7,17 +7,22 @@ import { allDeleteCartApi } from '@/features/clientApi/cartApi';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
 import CartItemNone from './CartItemNone';
+import { useAppSelector } from '@/store/hook';
 
 const CartList = () => {
     const { modalShow, setModalShow, modalText, setModalText } = useModalShow();
     const { carts } = useCartQuery(); //카트 전체 조회
+    const user = useAppSelector(state => state.auth.user); //유저 목록
+
+    const userCarts = carts.filter(cart => cart.userId === user.userId); //로그인 된 유저의 장바구니 목록
+
 
     //장바구니 전체 삭제 핸들러
     const queryClient = useQueryClient();
     const allDeleteCartItem = useCallback(async (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         try {
-            await allDeleteCartApi();
+            await allDeleteCartApi(user.userId);
             queryClient.invalidateQueries({ queryKey: ['carts'] });
             return;
         } catch(err: any) {
@@ -29,9 +34,9 @@ const CartList = () => {
     }, []);
     
     return (
-        <div className={`inner cart-inner ${carts.length === 0 ? "cart-null" : ""}`}>
+        <div className={`inner cart-inner ${userCarts.length === 0 ? "cart-null" : ""}`}>
             {
-                carts.length === 0 ?
+                userCarts.length === 0 ?
                 (
                     <CartItemNone />
                 ) :
@@ -46,7 +51,7 @@ const CartList = () => {
 
                         <div className='cart'>
                             {
-                                carts.map((item) => (
+                                userCarts.map((item) => (
                                     <CartItem 
                                         key={item._id}
                                         cartItem={item}
@@ -54,6 +59,14 @@ const CartList = () => {
                                 ))
                             }
                         </div>
+
+                        <button 
+                            className='common-button' 
+                            style={{ marginTop: "10px" }}
+                            
+                        >
+                            주문하기 <span className='totla-length'>총 원</span>
+                        </button>
                     </>
                 )
             }

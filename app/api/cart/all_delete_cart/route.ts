@@ -1,12 +1,15 @@
 import { connectDB } from "@/app/lib/database";
-import { NextResponse } from "next/server";
+import { NextRequest ,NextResponse } from "next/server";
 
 const dbName = process.env.DB_NAME;
 
-export async function DELETE() {
+export async function DELETE(request: NextRequest) {
+    const searchParams = request.nextUrl.searchParams;
+    const userId = searchParams.get("userId");
+
     try{
         const db = (await connectDB).db(dbName);
-        await db.collection('carts').deleteMany({});
+        await db.collection('carts').deleteMany({userId});
 
         return NextResponse.json({ success: true, message: "삭제가 완료되었습니다." }, {status: 200});
     }catch(err) {

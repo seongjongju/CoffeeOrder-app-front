@@ -1,8 +1,6 @@
 import { Inventory } from "@/app/types/inventorys/inventory";
 import { ProductGetType, ProductType } from "@/app/types/products/product";
-
-const baseUrl = '/api/admin';
-const baseUrl_1 = `${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/admin`;
+import { baseUrl, baseUrl_1 } from "./base";
 
 //제품 등록
 export const productRegiApi = async (

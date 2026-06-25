@@ -1,7 +1,5 @@
 import { Inventory } from "@/app/types/inventorys/inventory";
-
-const baseUrl = '/api/admin';
-const baseUrl_1 = `${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/admin`;
+import { baseUrl, baseUrl_1 } from "./base";
 
 //재고등록
 export const inventoryRegiApi = async (

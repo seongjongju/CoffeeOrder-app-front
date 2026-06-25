@@ -1,4 +1,4 @@
-const baseUrl = '/api/admin';
+import { baseUrl } from "./base";
 
 //로그인
 export const adminLoginApi = async (adminId: string, password: string) => {

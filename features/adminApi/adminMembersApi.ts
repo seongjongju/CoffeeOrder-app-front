@@ -1,8 +1,8 @@
-const baseUrl = `${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/admin`;
+import { baseUrl_1 } from "./base";
 
 //전체 회원 조회
 export const getMembersApi = async () => {
-    const url = `${baseUrl}/admin_members`;
+    const url = `${baseUrl_1}/admin_members`;
     const options = {
         method: 'GET',
         headers: {
