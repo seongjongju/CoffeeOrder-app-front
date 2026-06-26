@@ -60,3 +60,19 @@ export const allDeleteCartApi = async (userId: string) => {
     const data = await res.data;
     return data;
 };
+
+//장바구니 업데이트 (수량, 총 가격 변경)
+export const updateCartApi = async (
+    _id: string,
+    totalPrice: number,
+    totalCount: number
+) => {
+    const res = await api.patch('/cart/update_cart', {
+        _id,
+        totalPrice,
+        totalCount
+    });
+
+    const data = await res.data;
+    return data;
+};

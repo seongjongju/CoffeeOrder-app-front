@@ -175,7 +175,7 @@ const ProductList = ({inventorys, products}: Inventory & ProductGetType) => {
                                                 setPrdCode(prd.productCode);
                                             }}
                                         >
-                                            수정
+                                            자세히보기
                                         </button>
                                         <button
                                             style={{color: "#ff0000"}}

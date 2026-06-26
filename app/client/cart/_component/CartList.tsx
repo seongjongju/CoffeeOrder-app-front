@@ -1,6 +1,6 @@
 'use client';
 import useCartQuery from '@/features/hooks/query/useCartQuery';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import CartItem from './CartItem';
 import { useQueryClient } from '@tanstack/react-query';
 import { allDeleteCartApi } from '@/features/clientApi/cartApi';
@@ -8,6 +8,7 @@ import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
 import CartItemNone from './CartItemNone';
 import { useAppSelector } from '@/store/hook';
+import { formatPrice } from '@/app/util/format';
 
 const CartList = () => {
     const { modalShow, setModalShow, modalText, setModalText } = useModalShow();
@@ -15,7 +16,6 @@ const CartList = () => {
     const user = useAppSelector(state => state.auth.user); //유저 목록
 
     const userCarts = carts.filter(cart => cart.userId === user.userId); //로그인 된 유저의 장바구니 목록
-
 
     //장바구니 전체 삭제 핸들러
     const queryClient = useQueryClient();
@@ -59,14 +59,20 @@ const CartList = () => {
                                 ))
                             }
                         </div>
+                        
+                        {(() => {
+                            const count = userCarts.map(item => item.totalCount).reduce((acc, cur) => acc + cur, 0);
+                            const price = userCarts.map(item => item.totalPrice).reduce((acc, cur) => acc + cur, 0);
 
-                        <button 
-                            className='common-button' 
-                            style={{ marginTop: "10px" }}
-                            
-                        >
-                            주문하기 <span className='totla-length'>총 원</span>
-                        </button>
+                            return (
+                                <button 
+                                    className='common-button' 
+                                    style={{ marginTop: "10px" }}
+                                >
+                                    주문하기 <span className='totla-length'>총 {count}개 {formatPrice(price)}원</span>
+                                </button>
+                            );
+                        })()}
                     </>
                 )
             }

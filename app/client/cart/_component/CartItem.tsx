@@ -6,7 +6,7 @@ import plusIco from '@/public/icons/view_plus.svg';
 import minusIco from '@/public/icons/view_minus.svg';
 import { formatPrice } from '@/app/util/format';
 import { Cart } from '@/app/types/carts/carts';
-import { deleteCartApi } from '@/features/clientApi/cartApi';
+import { deleteCartApi, updateCartApi } from '@/features/clientApi/cartApi';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
 import { useQueryClient } from '@tanstack/react-query';
@@ -20,23 +20,51 @@ const CartItem = ({cartItem}: CartItemProps) => {
     const [cartCount, setCartCount] = useState<number>(cartItem.totalCount); //장바구니 메뉴 수량 변경
     const [cartItemTotalPrice, setCartItemTotalPrice] = useState<number>(cartItem.totalPrice); //장바구니 메뉴  총가격 변경
 
-    //메뉴 수량 및 총 가격변경 핸들러
-    const countPriceUpdateHandler = useCallback((name: string) => {
+    const queryClient = useQueryClient(); //리액트 쿼리
+
+    //장바구니 업데이트 서브밋
+    const updateCartItem = useCallback(async (name: string, _id: string) => {
         const calcCartItemPrice = cartItem.totalPrice / cartItem.totalCount;
 
-        if(name === "decrement") {
-            setCartCount(prev => Math.max(1, prev - 1));
-            setCartItemTotalPrice(prev => Math.max(calcCartItemPrice, prev - calcCartItemPrice));
-        }
+        //계산 된 값을 미리 받아 놓기 위한 초기값.
+        let nextCount = cartCount;
+        let nextTotalPrice = cartItemTotalPrice;
 
-        if(name === "increment") {
-            setCartCount(prev => prev + 1);
-            setCartItemTotalPrice(prev => prev + calcCartItemPrice);
+        try{
+            if(name === "decrement") {
+                nextCount = Math.max(1, cartCount - 1);
+                nextTotalPrice = Math.max(calcCartItemPrice, cartItemTotalPrice - calcCartItemPrice);
+            }
+
+            if(name === "increment") {
+                nextCount = cartCount + 1;
+                nextTotalPrice = cartItemTotalPrice + calcCartItemPrice;
+            }
+
+            setCartCount(nextCount);
+            setCartItemTotalPrice(nextTotalPrice);
+
+            const data = await updateCartApi(
+                _id,
+                nextTotalPrice,
+                nextCount
+            );
+
+            if(!data.success) {
+                setModalText(data.message);
+                setModalShow(true);
+                return;
+            };
+
+            queryClient.invalidateQueries({ queryKey: ['carts'] });
+            return;
+        }catch(err: any) {
+            console.error(err.response?.data?.message);
+            return;
         }
-    }, [cartCount, cartItemTotalPrice]);
+    }, [cartCount, cartItemTotalPrice, cartItem.totalPrice, cartItem.totalCount]);
 
     //장바구니 단일 삭제 핸들러
-    const queryClient = useQueryClient();
     const deleteCartItem = useCallback(async (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         try {
@@ -115,7 +143,7 @@ const CartItem = ({cartItem}: CartItemProps) => {
                                 name='decrement'
                                 onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
                                     e.preventDefault();
-                                    countPriceUpdateHandler(e.currentTarget.name);
+                                    updateCartItem(e.currentTarget.name, cartItem._id);
                                 }}
                             >
                                 <Image src={minusIco} alt='마이너스' />
@@ -126,7 +154,7 @@ const CartItem = ({cartItem}: CartItemProps) => {
                                 name='increment'
                                 onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
                                     e.preventDefault();
-                                    countPriceUpdateHandler(e.currentTarget.name);
+                                    updateCartItem(e.currentTarget.name, cartItem._id);
                                 }}
                             >
                                 <Image src={plusIco} alt='플러스' />

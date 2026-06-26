@@ -2,7 +2,7 @@
 import React from 'react';
 import ProductRegiModal from './ProductRegiModal';
 import ProductList from '@/shared/admin/components/list/ProductList';
-import { categorys } from '@/app/util/admin/category';
+import { productCategory } from '@/app/util/admin/category';
 import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
 import { Inventory } from '@/app/types/inventorys/inventory';
 import { ProductGetType } from '@/app/types/products/product';
@@ -20,12 +20,12 @@ const ProductsInterface = ({inventorys, products}: Inventory & ProductGetType) =
                         setModalToggle("product-regi");
                     }}
                 >
-                    재고등록
+                    제품등록
                 </button>
                 <select className='admin-form__select'>
-                    <option value="">카테고리</option>
+                    <option value="">전체</option>
                     {
-                        categorys.map((cate) => (
+                        productCategory.map((cate) => (
                             <option value={cate.cate} key={cate.id}>{cate.cate}</option>
                         ))
                     }
