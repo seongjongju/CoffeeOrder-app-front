@@ -3,12 +3,25 @@ import InventoryRegiModal from './InventoryRegiModal';
 import React, { useState } from 'react';
 import { categorys } from '@/app/util/admin/category';
 import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
+import { useRouter, useSearchParams } from 'next/navigation';
+import InventoryList from '@/shared/admin/components/list/InventoryList';
+import { Inventory } from '@/app/types/inventorys/inventory';
 
-const InventoryInterface = ({ children }: { children: React.ReactNode }) => {
+export interface InventoryListProps {
+    inventorys: Inventory['inventorys'];
+    params?: string;
+};
+
+const InventoryInterface = ({inventorys, params}:InventoryListProps) => {
+    const router = useRouter();
+    const searchParams =  useSearchParams().get('cate') || "";
     const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
     const [invenName, setInvenName] = useState<string>(""); //재고 명
     const [invenCate, setInvenCate] = useState<string>(""); //카테고리
     const [invenQuantity, setInvenQuantity] = useState<string>("0"); //재고 수량
+    const [search, setSearch] = useState<string>(""); //검색용 상태관리
+
+    console.log(search)
 
     return (
         <div>
@@ -22,8 +35,21 @@ const InventoryInterface = ({ children }: { children: React.ReactNode }) => {
                 >
                     재고등록
                 </button>
-                <select className='admin-form__select'>
-                    <option value="">카테고리</option>
+                <select 
+                    className='admin-form__select'
+                    value={searchParams}
+                    onChange={(e:React.ChangeEvent<HTMLSelectElement>) => {
+                        setSearch("");
+
+                        if(e.target.value === "") {
+                            router.push(`/admin/admin_inventory`);
+                            return;
+                        }
+
+                        router.push(`/admin/admin_inventory?cate=${e.target.value}`);
+                    }}
+                >
+                    <option value="">전체</option>
                     {
                         categorys.map((cate) => (
                             <option value={cate.cate} key={cate.id}>{cate.cate}</option>
@@ -34,9 +60,33 @@ const InventoryInterface = ({ children }: { children: React.ReactNode }) => {
                     <input 
                         type="text" 
                         className='admin-form__input'
-                        placeholder='검색어를 입력하세요.'
+                        placeholder='재고명을 입력하세요.'
+                        value={search}
+                        onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
+                            setSearch(e.target.value);
+                        }}
                     />
-                    <button className='admin-form__search'>검색</button>
+                    <button 
+                        className='admin-form__search'
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                            e.preventDefault();
+                            //검색어가 없으면 전체 보여주기
+                            if(search.trim() === "") {
+                                router.push(`/admin/admin_inventory`);
+                                return;
+                            }
+
+                            //카테고리가 undefined이면 cate쿼리 스트링 없이 전체에서 검색
+                            if(params === undefined) {
+                                router.push(`/admin/admin_inventory?q=${search}`);
+                                return;
+                            }
+
+                            router.push(`/admin/admin_inventory?cate=${searchParams}&q=${search}`);
+                        }}
+                    >
+                        검색
+                    </button>
                 </div>
             </form> {/* .admin-form : end */}
 
@@ -63,7 +113,10 @@ const InventoryInterface = ({ children }: { children: React.ReactNode }) => {
                     position: "relative"
                 }}
             >
-                {children}
+                <InventoryList 
+                    inventorys={inventorys}
+                    params={params}
+                />
             </div>
         </div>
     );

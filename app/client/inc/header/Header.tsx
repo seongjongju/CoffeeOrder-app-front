@@ -26,7 +26,7 @@ const Header = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const userCarts = carts.filter(cart => cart.userId === user.userId); //로그인 된 유저의 장바구니 목록
+    const userCarts = user ? carts.filter(cart => cart.userId === user.userId) : undefined; //로그인 된 유저의 장바구니 목록
 
     return (
         <header
@@ -46,7 +46,7 @@ const Header = () => {
                         </Link>
                         <div className='header-util'>
                             <Link href={'/client/cart'} style={{ position: "relative" }}>
-                                <span className='quantity'>{userCarts.length}</span>
+                                <span className='quantity'>{userCarts?.length}</span>
                                 <Image src={cart} alt='장바구니' />
                             </Link>
                             <button
@@ -96,7 +96,7 @@ const Header = () => {
                             (
                                 <div className='header-util'>
                                     <Link href={'/client/cart'} style={{ position: "relative" }}>
-                                        <span className='quantity'>{userCarts.length}</span>
+                                        <span className='quantity'>{userCarts?.length}</span>
                                         <Image src={cart} alt='장바구니' />
                                     </Link>
                                     <button

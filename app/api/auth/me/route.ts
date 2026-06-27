@@ -4,7 +4,10 @@ import { jwtVerify } from 'jose';
 
 const accessTokenKey = process.env.JWT_ACCESS_SECRET;
 
-export async function GET () {
+export async function GET (request: NextRequest) {
+    const pathname = request.nextUrl.pathname;
+    if(pathname.startsWith("/admin")) return; 
+
     const cookieStore = await cookies();
     const accessToken = cookieStore.get('access_token')?.value;
 

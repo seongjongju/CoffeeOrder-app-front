@@ -15,7 +15,7 @@ const InventoryDashBoard = async () => {
             <div className='admin-title-ui'>
                 <h3 className='admin-title-ui__title'>재고 현황</h3>
                 <Link 
-                    href={'/admin/admin_inventory'}
+                    href={'/admin/admin_inventory?cate=전체'}
                     className='admin-title-ui__more'
                 >
                     전체보기

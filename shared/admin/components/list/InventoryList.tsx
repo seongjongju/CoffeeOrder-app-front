@@ -1,21 +1,37 @@
 'use client';
+import { InventoryListProps } from '@/app/admin/admin_inventory/_components/InventoryInterface';
 import InventoryUpdateModal from '@/app/admin/admin_inventory/_components/InventoryUpdateModal';
 import { Inventory } from '@/app/types/inventorys/inventory';
 import { inventoryAllDeleteApi, inventoryDeleteApi } from '@/features/adminApi/adminInventoryApi';
 import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React, { useMemo, useState } from 'react';
 
-const InventoryList = ({ inventorys }: Inventory) => {   
+const InventoryList = ({ inventorys, params }: InventoryListProps) => {   
+    const router = useRouter();
+    const pathName = usePathname();
+    const searchParams =  useSearchParams().get('q') || ""; //검색어
     const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
     const [inventoryArray, setInventoryArray] = useState<Inventory['inventorys']>([]);
     const [allChecked, setAllChecked] = useState(false); // Delete용 전체 체크
 
+    //메인 페이지가 아니라면 카테고리 필터링을 적용한다.
+    const categoryFiltered = useMemo(() => {
+        return pathName.includes('/admin_inventory') && params !== undefined 
+                ? inventorys.filter(iv => iv.category === params) 
+                : inventorys;
+    }, [pathName, params, inventorys]);
+
+    //메인 페이지가 아니라면 검색을 적용한다.
+    const searchFiltered = useMemo(() => {
+        return pathName.includes('/admin_inventory') && searchParams !== "" 
+                ? categoryFiltered.filter(iv => iv.inventoryName.includes(searchParams.trim().toUpperCase())) 
+                : categoryFiltered;
+    }, [pathName, searchParams, categoryFiltered]);
+    
+
     // Update시, 어떤 재고의 행을 선택했는지 고유 아이디 값 전달용
     const [invenId, setInvenId] = useState<string>(""); 
-
-    const router = useRouter();
-    const pathName = usePathname();
     
     //전체선택
     const handleAllChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,7 +140,7 @@ const InventoryList = ({ inventorys }: Inventory) => {
                         }
                     </tr>
                     {
-                        inventorys?.map((inven) => (
+                        searchFiltered?.map((inven) => (
                             <tr key={inven._id}>
                                 {
                                     pathName !== "/admin/admin_main" && 

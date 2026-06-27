@@ -1,14 +1,20 @@
 'use client';
 import { meApi } from '@/features/clientApi/authApi';
 import { loginSuccess } from '@/store/auth/authSlice';
+import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 const AuthProvider = ({children}: {children: React.ReactNode}) => {
     const dispatch = useDispatch();
+    const pathName = usePathname();
+
+    console.log(pathName)
 
     useEffect(() => {
         const userInfo = async () => {
+            if(pathName.includes('/admin/')) return;
+
             try{
                 const data = await meApi();
                 dispatch(loginSuccess(data));
