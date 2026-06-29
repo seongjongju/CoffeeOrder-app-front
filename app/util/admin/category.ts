@@ -39,3 +39,14 @@ export const productCategory = [
         cate: "디저트"
     },
 ];
+
+export const memberCategory = [
+    {
+        id: "member_cate_0",
+        cate: "이름"
+    },
+    {
+        id: "member_cate_1",
+        cate: "이메일"
+    },
+];

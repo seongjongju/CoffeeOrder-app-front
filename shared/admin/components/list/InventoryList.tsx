@@ -1,5 +1,5 @@
 'use client';
-import { InventoryListProps } from '@/app/admin/admin_inventory/_components/InventoryInterface';
+import { InventoryProps } from '@/app/admin/admin_inventory/_components/InventoryInterface';
 import InventoryUpdateModal from '@/app/admin/admin_inventory/_components/InventoryUpdateModal';
 import { Inventory } from '@/app/types/inventorys/inventory';
 import { inventoryAllDeleteApi, inventoryDeleteApi } from '@/features/adminApi/adminInventoryApi';
@@ -7,13 +7,16 @@ import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 
-const InventoryList = ({ inventorys, params }: InventoryListProps) => {   
+const InventoryList = ({ inventorys, params }: InventoryProps) => {   
     const router = useRouter();
     const pathName = usePathname();
     const searchParams =  useSearchParams().get('q') || ""; //검색어
     const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
     const [inventoryArray, setInventoryArray] = useState<Inventory['inventorys']>([]);
     const [allChecked, setAllChecked] = useState(false); // Delete용 전체 체크
+
+    // Update시, 어떤 재고의 행을 선택했는지 고유 아이디 값 전달용
+    const [invenId, setInvenId] = useState<string>(""); 
 
     //메인 페이지가 아니라면 카테고리 필터링을 적용한다.
     const categoryFiltered = useMemo(() => {
@@ -23,15 +26,16 @@ const InventoryList = ({ inventorys, params }: InventoryListProps) => {
     }, [pathName, params, inventorys]);
 
     //메인 페이지가 아니라면 검색을 적용한다.
+    // 재고가 부족한 순
     const searchFiltered = useMemo(() => {
-        return pathName.includes('/admin_inventory') && searchParams !== "" 
-                ? categoryFiltered.filter(iv => iv.inventoryName.includes(searchParams.trim().toUpperCase())) 
-                : categoryFiltered;
+        const filteredList = pathName.includes('/admin_inventory') && searchParams !== "" 
+            ? categoryFiltered.filter(iv => iv.inventoryName.includes(searchParams.trim().toUpperCase())) 
+            : categoryFiltered;
+
+        return [...filteredList].sort((a, b) => Number(a.quantity) - Number(b.quantity));
+
     }, [pathName, searchParams, categoryFiltered]);
     
-
-    // Update시, 어떤 재고의 행을 선택했는지 고유 아이디 값 전달용
-    const [invenId, setInvenId] = useState<string>(""); 
     
     //전체선택
     const handleAllChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +119,10 @@ const InventoryList = ({ inventorys, params }: InventoryListProps) => {
         >
             <table className='admin-table'>
                 <tbody>
-                    <tr>
+                    <tr style={{ 
+                        position: "sticky",
+                        top: "0"
+                    }}>
                         {
                             pathName !== "/admin/admin_main" && 
                             (

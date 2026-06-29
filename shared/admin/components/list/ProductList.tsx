@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ProductGetType } from '@/app/types/products/product';
 import { CldImage } from 'next-cloudinary';
@@ -8,21 +8,33 @@ import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
 import ProductUpdateModal from '@/app/admin/admin_products/_components/ProductUpdateModal';
 import { Inventory } from '@/app/types/inventorys/inventory';
 import { productAllDeleteApi, productDeleteApi } from '@/features/adminApi/adminProductApi';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { ProductProps } from '@/app/admin/admin_products/_components/ProductsInterface';
 
-const ProductList = ({inventorys, products}: Inventory & ProductGetType) => {
+const ProductList = ({inventorys, products, params}: ProductProps) => {
     const router = useRouter();
-
+    const pathName = usePathname();
     const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
+    const searchParams =  useSearchParams().get('q') || ""; //검색어
+    const [productArray, setProductArray] = useState<ProductGetType['products']>([]);//일괄 삭제용 배열
+    const [allChecked, setAllChecked] = useState(false); //전체 삭제용 상태관리
 
     // Update시, 어떤 제품의 행을 선택했는지 고유 아이디 값 전달용
     const [prdCode, setPrdCode] = useState<string>(""); 
 
-    //일괄 삭제용 배열
-    const [productArray, setProductArray] = useState<ProductGetType['products']>([]);
+    //카테고리 필터링
+    const categoryFiltered = useMemo(() => {
+            return params !== undefined 
+                    ? products.filter(prd => prd.category === params) 
+                    : products;
+        }, [pathName, params, products]);
 
-    //전체 삭제용 상태관리
-    const [allChecked, setAllChecked] = useState(false);
+    //검색
+    const searchFiltered = useMemo(() => {
+        return searchParams !== "" 
+                ? categoryFiltered.filter(prd => prd.productName.includes(searchParams.trim().toUpperCase())) 
+                : categoryFiltered;
+    }, [pathName, searchParams, categoryFiltered]);
 
     //제품 단일 삭제
     const handleCLickProductDelete = async (productCode: string) => {
@@ -106,7 +118,10 @@ const ProductList = ({inventorys, products}: Inventory & ProductGetType) => {
         >
             <table className='admin-table'>
                 <tbody>
-                    <tr>
+                    <tr style={{ 
+                        position: "sticky",
+                        top: "0"
+                    }}>
                         <th>
                             <input 
                                 type="checkbox" 
@@ -124,7 +139,7 @@ const ProductList = ({inventorys, products}: Inventory & ProductGetType) => {
                         <th>설정</th>
                     </tr>
                     {
-                        products?.map((prd) => (
+                        searchFiltered?.map((prd) => (
                             <tr key={prd._id}>
                                 <td>
                                     <input 

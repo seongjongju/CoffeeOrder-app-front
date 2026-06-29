@@ -17,7 +17,10 @@ const LatelyOrderList = () => {
                     <col style={{width: "25%"}} />
                 </colgroup>
                 <tbody>
-                    <tr>
+                    <tr style={{ 
+                        position: "sticky",
+                        top: "0"
+                    }}>
                         <th>주문번호</th>
                         <th>회원명</th>
                         <th>주문제품</th>

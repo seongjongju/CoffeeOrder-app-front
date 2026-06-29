@@ -9,8 +9,6 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
     const dispatch = useDispatch();
     const pathName = usePathname();
 
-    console.log(pathName)
-
     useEffect(() => {
         const userInfo = async () => {
             if(pathName.includes('/admin/')) return;

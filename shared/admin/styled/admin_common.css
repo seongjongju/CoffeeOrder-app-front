@@ -83,6 +83,12 @@
     gap: 10px;
 }
 
+.admin-form__write.date {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .admin-form__regi {
     font-size: 14px;
     color: #fff;
@@ -125,6 +131,10 @@
     background: #fff;
     width: 500px;
     display: none;
+}
+
+.admin-modal__item {
+    width: 50%;
 }
 
 .admin-modal__write {

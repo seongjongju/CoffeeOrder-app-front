@@ -1,8 +1,31 @@
-import { Members } from '@/app/types/members/member';
+'use client';
+import { MembersProps } from '@/app/admin/admin_users/_components/MembersInterface';
 import { formatBirth, formatCreatedAt, formatPhoneNumber } from '@/app/util/format';
-import React from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import React, { useMemo } from 'react';
 
-const MemberList = ({members}: Members) => {
+const MemberList = ({members, params}: MembersProps) => {
+    const router = useRouter();
+    const pathName = usePathname();
+    const searchParams =  useSearchParams().get('q') || ""; //검색어
+
+    //메인 페이지가 아니라면 검색을 적용한다.
+    const searchFiltered = useMemo(() => {
+        if(params === "이름") {
+            const nameList = members.filter(mem => mem.name.includes(searchParams.trim().toUpperCase()));
+            return [...nameList];                        
+        } else if (params === "이메일") {
+            const emailList = members.filter(mem => mem.email.includes(searchParams.trim()));
+            return [...emailList];   
+        } else {
+            return members;
+        }
+    }, [pathName, params, members]);
+
+    //가입일 필터링
+
+
     return (
         <div
             style={{
@@ -19,7 +42,10 @@ const MemberList = ({members}: Members) => {
                     <col style={{width: "15%"}} />
                 </colgroup>
                 <tbody>
-                    <tr>
+                    <tr style={{ 
+                        position: "sticky",
+                        top: "0"
+                    }}>
                         <th>이름</th>
                         <th>가입일</th>
                         <th>이메일</th>
@@ -27,7 +53,7 @@ const MemberList = ({members}: Members) => {
                         <th>생년월일</th>
                     </tr>
                     {
-                        members?.map((member) => (
+                        searchFiltered?.map((member) => (
                             <tr key={member._id}>
                                 <td>{member?.name}</td>
                                 <td>

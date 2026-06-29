@@ -3,25 +3,22 @@ import InventoryRegiModal from './InventoryRegiModal';
 import React, { useState } from 'react';
 import { categorys } from '@/app/util/admin/category';
 import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import InventoryList from '@/shared/admin/components/list/InventoryList';
 import { Inventory } from '@/app/types/inventorys/inventory';
 
-export interface InventoryListProps {
+export interface InventoryProps {
     inventorys: Inventory['inventorys'];
     params?: string;
 };
 
-const InventoryInterface = ({inventorys, params}:InventoryListProps) => {
+const InventoryInterface = ({inventorys, params}:InventoryProps) => {
     const router = useRouter();
-    const searchParams =  useSearchParams().get('cate') || "";
     const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
     const [invenName, setInvenName] = useState<string>(""); //재고 명
     const [invenCate, setInvenCate] = useState<string>(""); //카테고리
     const [invenQuantity, setInvenQuantity] = useState<string>("0"); //재고 수량
     const [search, setSearch] = useState<string>(""); //검색용 상태관리
-
-    console.log(search)
 
     return (
         <div>
@@ -37,7 +34,7 @@ const InventoryInterface = ({inventorys, params}:InventoryListProps) => {
                 </button>
                 <select 
                     className='admin-form__select'
-                    value={searchParams}
+                    value={params}
                     onChange={(e:React.ChangeEvent<HTMLSelectElement>) => {
                         setSearch("");
 
@@ -82,7 +79,7 @@ const InventoryInterface = ({inventorys, params}:InventoryListProps) => {
                                 return;
                             }
 
-                            router.push(`/admin/admin_inventory?cate=${searchParams}&q=${search}`);
+                            router.push(`/admin/admin_inventory?cate=${params}&q=${search}`);
                         }}
                     >
                         검색

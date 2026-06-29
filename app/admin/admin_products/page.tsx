@@ -4,7 +4,10 @@ import ProductsInterface from './_components/ProductsInterface';
 import { inventoryGetApi } from '@/features/adminApi/adminInventoryApi';
 import { productGetApi } from '@/features/adminApi/adminProductApi';
 
-const AdminProductsPage = async () => {
+const AdminProductsPage = async ({ searchParams }: { searchParams: Promise<{ cate: string; }>}) => {
+    const cateSearchParams = await searchParams;
+    const {cate} = cateSearchParams;
+
     const allInventory = await inventoryGetApi(); //재고
     const allProduct = await productGetApi(); //제품
 
@@ -15,6 +18,7 @@ const AdminProductsPage = async () => {
             <ProductsInterface 
                 inventorys={allInventory.inventorys}
                 products={allProduct.products}
+                params={cate}
             />
         </main>
     );

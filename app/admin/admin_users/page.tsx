@@ -1,27 +1,20 @@
 import React from 'react';
 import MembersInterface from './_components/MembersInterface';
 import { getMembersApi } from '@/features/adminApi/adminMembersApi';
-import MemberList from '@/shared/admin/components/list/MemberList';
 
-const AdminUsersPage = async () => {  
-    const allMembers = await getMembersApi();
+const AdminUsersPage = async ({searchParams}: {searchParams: Promise<{cate: string}>}) => {  
+    const cateSearchParams = await searchParams;
+    const {cate} = cateSearchParams;
+    const allMembers = await getMembersApi(); //회원 목록
     
     return (
         <main className='main admin-main'>
             <h2 className='admin-title'>회원목록</h2>
             
-            <div 
-                className='dashboard'
-                style={{
-                    minHeight: "80vh"
-                }}
-            >
-                <MembersInterface>
-                    <MemberList 
-                        members={allMembers.members}    
-                    />
-                </MembersInterface>
-            </div>
+            <MembersInterface
+                members={allMembers.members}
+                params={cate}
+            />
         </main>
     );
 };

@@ -4,7 +4,7 @@ import { ProductState, ProductType } from '@/app/types/products/product';
 import { productCategory } from '@/app/util/admin/category';
 import { formatNumber } from '@/app/util/format';
 import { productRegiApi } from '@/features/adminApi/adminProductApi';
-import { CldUploadWidget, CloudinaryUploadWidgetInfo } from "next-cloudinary";
+import { CldImage, CldUploadWidget, CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import { useRouter } from 'next/navigation';
 import React, { Dispatch, memo, SetStateAction, useReducer, useState } from 'react';
 interface ModalProps {
@@ -143,169 +143,202 @@ const ProductRegiModal = memo(({
             <div 
                 className='admin-modal'
                 style={{
-                    display: `${modalToggle === "product-regi" ? "block" : "none"}`
+                    display: `${modalToggle === "product-regi" ? "block" : "none"}`,
+                    width: "1200px"
                 }}
             >
                 <form action="" encType='multipart/form-data'>
-                    <div className='admin-modal__write'> 
-                        <label htmlFor="" className='admin-modal__label'>
-                            제품 이미지<span style={{color: "#ff0000"}}>*</span>
-                        </label>
-                        <CldUploadWidget 
-                            uploadPreset="coffeOrder"
-                            onSuccess={(results) => {
-                                if (results.event !== "success" || !results.info) return;
-                                
-                                if (typeof results.info !== 'string') {
-                                    const info = results.info;
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: "30px"
+                        }}
+                    >
+                        <div className='admin-modal__item'>
+                            <div className='admin-modal__write'> 
+                                <label htmlFor="" className='admin-modal__label'>
+                                    제품 이미지<span style={{color: "#ff0000"}}>*</span>
+                                </label>
+                                <CldUploadWidget 
+                                    uploadPreset="coffeOrder"
+                                    onSuccess={(results) => {
+                                        if (results.event !== "success" || !results.info) return;
+                                        
+                                        if (typeof results.info !== 'string') {
+                                            const info = results.info;
 
-                                    setImg((prev) => ({
-                                        ...prev,
-                                        imgName: info.display_name || '',
-                                        format: info.format,
-                                        publicId: info.public_id,
-                                    }));
-                                }
-                            }}
-                        >
-                            {({ open }) => (
-                                <div>
-                                    <button 
-                                        type='button' 
-                                        className='admin-file'
-                                        onClick={() => open()}
-                                    >
-                                        이미지 업로드
-                                    </button>
-                                    {
-                                        img.imgName !== "" && 
-                                        (
-                                            <p className='admin-file-name'>{`${img.imgName}.${img.format}`}</p>
-                                        )
-                                    }
-                                </div>
-                                
-                            )}
-                        </CldUploadWidget>
-                    </div> {/* .admin-modal__write : end */}
-                    
-                    <div className='admin-modal__write'> 
-                        <label className='admin-modal__label'>
-                            제품명<span style={{color: "#ff0000"}}>*</span>
-                        </label>
-                        <input 
-                            type="text" 
-                            name='productName'
-                            className='admin-modal__input'
-                            placeholder='제품명을 입력하세요.'
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                setProductName(e.target.value);
-                            }}
-                        />
-                    </div> {/* .admin-modal__write : end */}
-
-                    <div className='admin-modal__write'> 
-                        <label htmlFor="" className='admin-modal__label'>
-                            카테고리<span style={{color: "#ff0000"}}>*</span>
-                        </label>
-                        <select 
-                            className='admin-modal__select'
-                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                                setIsProductCategory(e.target.value);
-                            }}
-                        >
-                            <option value="">카테고리 선택</option>
+                                            setImg((prev) => ({
+                                                ...prev,
+                                                imgName: info.display_name || '',
+                                                format: info.format,
+                                                publicId: info.public_id,
+                                            }));
+                                        }
+                                    }}
+                                >
+                                    {({ open }) => (
+                                        <div>
+                                            <button 
+                                                type='button' 
+                                                className='admin-file'
+                                                onClick={() => open()}
+                                            >
+                                                이미지 업로드
+                                            </button>
+                                            {
+                                                img.imgName !== "" && 
+                                                (
+                                                    <p className='admin-file-name'>{`${img.imgName}.${img.format}`}</p>
+                                                )
+                                            }
+                                        </div>
+                                        
+                                    )}
+                                </CldUploadWidget>
+                            </div> {/* .admin-modal__write : end */}
                             {
-                                productCategory.map((cate) => (
-                                    <option value={cate.cate} key={cate.id}>{cate.cate}</option>
-                                ))
-                            }
-                        </select> {/* .admin-modal__select : end */}
-                    </div> {/* .admin-modal__write : end */}
-
-                    <div className='admin-modal__write' style={{ 
-                        flexDirection: "column", 
-                        alignItems: "flex-start"
-                    }}> 
-                        <label htmlFor="" className='admin-modal__label'>
-                            사용 재고 선택<span style={{color: "#ff0000"}}>*</span>
-                        </label>
-                        <div className='product-regi-modal__check-wrap'>
-                            {
-                                inventorys?.map((inven) => (
-                                    <div
-                                        key={inven._id} 
-                                        className='product-regi-modal__check'
-                                    >
-                                        <input 
-                                            type="checkbox"
-                                            className='product-regi-modal__checkbox' 
-                                            checked={usedInvens.some(iv => iv._id === inven._id)}
-                                            onChange={() => {
-                                                checkedUsedInven(inven._id);
-                                            }}
+                                img.publicId !== "" ? 
+                                (
+                                    <div className='admin-modal__write'>
+                                        <CldImage
+                                            src={img.publicId}
+                                            width={80}
+                                            height={80}
+                                            alt={img.imgName}
                                         />
-                                        <label className='admin-modal__label'>{inven?.inventoryName}</label>
                                     </div>
+                                ) : null
+                            }
+                            
+                            <div className='admin-modal__write'> 
+                                <label className='admin-modal__label'>
+                                    제품명<span style={{color: "#ff0000"}}>*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name='productName'
+                                    className='admin-modal__input'
+                                    placeholder='제품명을 입력하세요.'
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setProductName(e.target.value);
+                                    }}
+                                />
+                            </div> {/* .admin-modal__write : end */}
+
+                            <div className='admin-modal__write'> 
+                                <label htmlFor="" className='admin-modal__label'>
+                                    카테고리<span style={{color: "#ff0000"}}>*</span>
+                                </label>
+                                <select 
+                                    className='admin-modal__select'
+                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                        setIsProductCategory(e.target.value);
+                                    }}
+                                >
+                                    <option value="">카테고리 선택</option>
+                                    {
+                                        productCategory.map((cate) => (
+                                            <option value={cate.cate} key={cate.id}>{cate.cate}</option>
+                                        ))
+                                    }
+                                </select> {/* .admin-modal__select : end */}
+                            </div> {/* .admin-modal__write : end */}
+                                    
+                            <div className='admin-modal__write' style={{ 
+                                flexDirection: "column", 
+                                alignItems: "flex-start"
+                            }}> 
+                                <label htmlFor="" className='admin-modal__label'>
+                                    사용 재고 선택<span style={{color: "#ff0000"}}>*</span>
+                                </label>
+                                <div className='product-regi-modal__check-wrap'>
+                                    {
+                                        inventorys?.map((inven) => (
+                                            <div
+                                                key={inven._id} 
+                                                className='product-regi-modal__check'
+                                            >
+                                                <input 
+                                                    type="checkbox"
+                                                    className='product-regi-modal__checkbox' 
+                                                    checked={usedInvens.some(iv => iv._id === inven._id)}
+                                                    onChange={() => {
+                                                        checkedUsedInven(inven._id);
+                                                    }}
+                                                />
+                                                <label className='admin-modal__label'>{inven?.inventoryName}</label>
+                                            </div>
+                                        ))
+                                    }
+                                </div> {/* .product-regi-modal__check-wrap : end */}
+                            </div> {/* .admin-modal__write : end */}
+
+                            <div className='admin-modal__write'> 
+                                <label className='admin-modal__label'>
+                                    가격<span style={{color: "#ff0000"}}>*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    className='admin-modal__input'
+                                    placeholder='가격을 입력하세요.'
+                                    value={price}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setPrice(formatNumber(e.target.value));
+                                    }}
+                                />
+                            </div> {/* .admin-modal__write : end */}
+                        </div> {/* .admin-modal__item : end */}
+                        
+                        <div 
+                            className='admin-modal__item'
+                            style={{
+                                display: "grid",
+                                gridTemplateColumns: "repeat(2, 1fr)"
+                            }}
+                        >
+                            <div className='admin-modal__write' style={{ 
+                                flexDirection: "column", 
+                                alignItems: "flex-start",
+                                gridColumn: "span 2"
+                            }}> 
+                                <label htmlFor="" className='admin-modal__label'>추천 제품 등록</label>
+                                    <div className='product-regi-modal__check-wrap'>
+                                        <div
+                                            className='product-regi-modal__check'
+                                        >
+                                            <input 
+                                                type="checkbox"
+                                                className='product-regi-modal__checkbox'
+                                                checked={recommend}
+                                                onChange={() => setRecommend(prev => !prev)}
+                                            />
+                                            <label className='admin-modal__label'>ON</label>
+                                        </div>
+                                    </div> {/* .product-regi-modal__check-wrap : end */}
+                                </div> {/* .admin-modal__write : end */}
+
+                            {
+                                productState.map((info) => (
+                                <div 
+                                    className='admin-modal__write'
+                                    key={info.id}
+                                > 
+                                    <label htmlFor="" className='admin-modal__label'>{info.label}</label>
+                                    <input 
+                                        type="text" 
+                                        name={info.name}
+                                        className='admin-modal__input'
+                                        value={info.value}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            handleChangeProductInput(info.id, formatNumber(e.target.value));
+                                        }}
+                                    />
+                                </div> 
                                 ))
                             }
-                        </div> {/* .product-regi-modal__check-wrap : end */}
-                    </div> {/* .admin-modal__write : end */}
-
-                    <div className='admin-modal__write'> 
-                        <label className='admin-modal__label'>
-                            가격<span style={{color: "#ff0000"}}>*</span>
-                        </label>
-                        <input 
-                            type="text" 
-                            className='admin-modal__input'
-                            placeholder='가격을 입력하세요.'
-                            value={price}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                setPrice(formatNumber(e.target.value));
-                            }}
-                        />
-                    </div> {/* .admin-modal__write : end */}
-
-                    <div className='admin-modal__write' style={{ 
-                        flexDirection: "column", 
-                        alignItems: "flex-start"
-                    }}> 
-                        <label htmlFor="" className='admin-modal__label'>추천 제품 등록</label>
-                        <div className='product-regi-modal__check-wrap'>
-                            <div
-                                className='product-regi-modal__check'
-                            >
-                                <input 
-                                    type="checkbox"
-                                    className='product-regi-modal__checkbox'
-                                    checked={recommend}
-                                    onChange={() => setRecommend(prev => !prev)}
-                                />
-                                <label className='admin-modal__label'>ON</label>
-                            </div>
-                        </div> {/* .product-regi-modal__check-wrap : end */}
-                    </div> {/* .admin-modal__write : end */}
-
-                    {
-                        productState.map((info) => (
-                        <div 
-                            className='admin-modal__write'
-                            key={info.id}
-                        > 
-                            <label htmlFor="" className='admin-modal__label'>{info.label}</label>
-                            <input 
-                                type="text" 
-                                name={info.name}
-                                className='admin-modal__input'
-                                value={info.value}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    handleChangeProductInput(info.id, formatNumber(e.target.value));
-                                }}
-                            />
-                        </div> 
-                        ))
-                    }
+                        </div>
+                    </div> {/* .admin-modal__item : end */}
 
                     <button 
                         className='product-regi-modal__button'
