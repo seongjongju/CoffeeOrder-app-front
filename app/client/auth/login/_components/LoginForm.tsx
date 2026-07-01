@@ -9,9 +9,12 @@ import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
-import { loginApi } from '@/features/clientApi/authApi';
+import { loginApi, meApi } from '@/features/clientApi/authApi';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '@/store/auth/authSlice';
 
 const LoginForm = () => {
+    const dispatch = useDispatch();
     const [userId, setUserId] = useState('');
     const [userPwd, setUserPwd] = useState('');
     const [loginErrorMsg, setLoginErrorMsg] = useState({
@@ -66,7 +69,10 @@ const LoginForm = () => {
                 return;
             }; 
 
+            const loginData = await meApi();
+            dispatch(loginSuccess(loginData));
             router.push('/');
+            return;
         } catch(err: any) {
             console.error(err);
             setModalText(err.response?.data?.message);

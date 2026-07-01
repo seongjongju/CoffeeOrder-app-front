@@ -6,7 +6,7 @@ export const formatPhoneNumber = (value: string) => {
 };
 
 //날짜
-export const formatCreatedAt = (date: string) => {
+export const formatCreatedAt = (date: any) => {
     const targetDate = new Date(date);
 
     const kstDate = new Date(

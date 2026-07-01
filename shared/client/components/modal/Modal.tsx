@@ -21,6 +21,11 @@ const Modal = ({ modalShow, setModalShow, modalText, setModalText } : ModalProps
             setModalShow(false);
             setModalText('');
         };
+
+        if(pathName.includes('/mypage')) {
+            router.push('/client/intro');
+            return;
+        }
     }; 
 
     return (

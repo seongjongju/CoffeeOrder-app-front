@@ -5,11 +5,11 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import React, { useMemo } from 'react';
 
-const MemberList = ({members, params}: MembersProps) => {
+const MemberList = ({members, params, firstDateParams, lastDateParams}: MembersProps) => {
     const router = useRouter();
     const pathName = usePathname();
     const searchParams =  useSearchParams().get('q') || ""; //검색어
-
+    
     //메인 페이지가 아니라면 검색을 적용한다.
     const searchFiltered = useMemo(() => {
         if(params === "이름") {
@@ -21,10 +21,23 @@ const MemberList = ({members, params}: MembersProps) => {
         } else {
             return members;
         }
-    }, [pathName, params, members]);
+    }, [pathName, params, searchParams, members]);
 
     //가입일 필터링
+    const dateFiltered = useMemo(() => {
+        if(!firstDateParams || !lastDateParams) {
+            return searchFiltered;
+        }
 
+        //전체 기간 필터링
+        if(params === firstDateParams) {
+            const dateList = members.filter(mem => formatCreatedAt(mem.createdAt));
+            return [...dateList];
+        }
+
+        const searchDateList  = searchFiltered.filter(mem => firstDateParams < formatCreatedAt(mem.createdAt) && lastDateParams > formatCreatedAt(mem.createdAt));
+        return [...searchDateList];
+    }, [pathName, params, firstDateParams, lastDateParams, members]);
 
     return (
         <div
@@ -53,7 +66,7 @@ const MemberList = ({members, params}: MembersProps) => {
                         <th>생년월일</th>
                     </tr>
                     {
-                        searchFiltered?.map((member) => (
+                        dateFiltered?.map((member) => (
                             <tr key={member._id}>
                                 <td>{member?.name}</td>
                                 <td>

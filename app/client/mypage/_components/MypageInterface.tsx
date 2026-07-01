@@ -7,49 +7,52 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
-/* import { authApi } from '@/features/services/auth/auth.services'; */
-/* import { logout } from '@/store/auth/authSlice';
-import { allDeleteCart } from '@/store/cart/cartSlice'; */
+import { logoutApi } from '@/features/clientApi/authApi';
+import { logout } from '@/store/auth/authSlice';
 
-const MypageUi = () => {
+const MypageInterface = () => {
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
-/*     const auth = useAppSelector(state => state.auth); */
-
+    const user = useAppSelector(state => state.auth.user);
     const dispatch = useAppDispatch();
 
-    /* const handleClickLogout = async () => {
+    const handleClickLogout = async () => {
         try{
-            const data = await authApi.isLogout();
-
-            dispatch(logout());
-            dispatch(allDeleteCart());
-
-            setModalText(data.message);
+            const data = await logoutApi();
+            
             setModalShow(true);
+            if(!data.success) {
+                setModalText(data.message);
+                return;
+            };
+
+            setModalText(data.message);   
+            dispatch(logout());         
+            return;
         } catch(error: any) {
             console.error(error.response?.data?.message);
-            setModalText("로그아웃 서버 오류");
+            setModalText(`${error.response?.data?.message}`);
             setModalShow(true);
+            return;
         }
     };
- */
+
     return (
-        <>
+        <section className='section'>
             <div className='mypage-user'>
                 <Image src={logo} alt='로고' />
-               {/*  <p className='mypage-name'>{auth.user?.name} 님</p> */}
+                <p className='mypage-name'>{user?.userName} 님</p>
             </div>
             <div className='inner'>
                 <Link
                     className='mypage-link'
-                    href={'/userFind/passwordFind'}
+                    href={'/client/user_find/password_find'}
                 >
                     비밀번호 재설정
                     <Image src={linkArrow} alt="링크 이동 화살표" />
                 </Link>
                 <button
                     className='mypage-link'
-                    /* onClick={handleClickLogout} */
+                    onClick={handleClickLogout}
                 >
                     로그아웃
                     <Image src={linkArrow} alt="링크 이동 화살표" />
@@ -65,8 +68,8 @@ const MypageUi = () => {
                     setModalText={setModalText}
                 />
             }
-        </>
+        </section>
     );
 };
 
-export default MypageUi;
+export default MypageInterface;

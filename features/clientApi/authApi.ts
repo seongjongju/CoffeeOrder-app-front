@@ -87,3 +87,11 @@ export const meApi = async () => {
     const data = await res.data;
     return data;
 };
+
+//************************* 로그아웃
+export const logoutApi = async () => {
+    const res = await api.post('/auth/logout');
+
+    const data = await res.data;
+    return data;
+};

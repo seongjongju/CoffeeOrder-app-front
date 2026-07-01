@@ -25,19 +25,19 @@ const CategorySideGnb = ({categorySideOn, setCategorySideOn}:CategorySideGnbOnPr
                 </button>
 
                 <Link 
-                    className='side-gnb-link' href={'/main'}
+                    className='side-gnb-link' href={'/'}
                     onClick={() => {setCategorySideOn(false);}}
                 >
                     HOME
                 </Link>
                 <Link 
-                    className='side-gnb-link' href={'/mypage'} 
+                    className='side-gnb-link' href={'/client/mypage'} 
                     onClick={() => {setCategorySideOn(false);}}
                 >
                     MY PAGE
                 </Link>
                 <Link 
-                    className='side-gnb-link' href={'/order/orderHistory'}
+                    className='side-gnb-link' href={'/client/'}
                     onClick={() => {setCategorySideOn(false);}}
                 >
                     ORDER HISTORY
