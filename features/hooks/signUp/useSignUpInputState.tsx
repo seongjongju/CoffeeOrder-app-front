@@ -42,8 +42,6 @@ const useSignUpInputState = () => {
     const signUpInputChange = useCallback((e:React.ChangeEvent<HTMLInputElement>, field: keyof State) => {
         let value = e.target.value;
 
-        console.log(field)
-
         if (field === 'phoneNumber') {
             value = value.replace(/\D/g, '').slice(0, 11); 
         }

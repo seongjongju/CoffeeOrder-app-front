@@ -9,6 +9,7 @@ import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
 import { logoutApi } from '@/features/clientApi/authApi';
 import { logout } from '@/store/auth/authSlice';
+import { formatPhoneNumber } from '@/app/util/format';
 
 const MypageInterface = () => {
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
@@ -43,6 +44,9 @@ const MypageInterface = () => {
                 <p className='mypage-name'>{user?.userName} 님</p>
             </div>
             <div className='inner'>
+                <p className='mypage-link'>ID. {user?.userId}</p>
+                <p className='mypage-link'>TEL. {formatPhoneNumber(user?.phoneNumber)}</p>
+                <p className='mypage-link'>EMAIL. {user?.email}</p>
                 <Link
                     className='mypage-link'
                     href={'/client/user_find/password_find'}

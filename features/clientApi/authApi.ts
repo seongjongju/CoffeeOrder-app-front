@@ -67,6 +67,19 @@ export const findIdApi = async (email: string) => {
     return data;
 };
 
+export const resetPasswordApi = async (
+    userId: string,
+    phoneNumber: string,
+    newPassword: string
+) => {
+    const res = await api.patch('/auth/password_reset',
+        { userId, phoneNumber, newPassword }
+    );
+
+    const data = await res.data;
+    return data;
+};
+
 //************************* 로그인
 export const loginApi = async (
     id: string, 

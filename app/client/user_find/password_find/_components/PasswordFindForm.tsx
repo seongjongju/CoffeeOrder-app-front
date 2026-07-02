@@ -9,14 +9,17 @@ import Modal from '@/shared/client/components/modal/Modal';
 import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
 import { userFindApi } from '@/features/services/userFind/userFind.services';
+import { resetPasswordApi } from '@/features/clientApi/authApi';
+import { useAppSelector } from '@/store/hook';
+import { formatPhoneNumber } from '@/app/util/format';
 
 const PasswordFindForm = () => {
+    const user = useAppSelector(state => state.auth.user);
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
     const [userId, setUserId] = useState<string>('');
     const [userPhoneNumber, setUserPhoneNumber] = useState<string>('');
     const [newPwd, setNewPwd] = useState<string>('');
     const [newPwdCheck, setNewPwdCheck] = useState<string>('');
-    const router = useRouter();
 
     //아이디 입력
     const handleChangeUserId = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +28,7 @@ const PasswordFindForm = () => {
 
     //휴대폰 번호 입력
     const handleChangeUserPhoneNumber = (e:React.ChangeEvent<HTMLInputElement>) => {
-        setUserPhoneNumber(e.target.value);
+        setUserPhoneNumber(e.target.value.replace(/\D/g, '').slice(0, 11));
     };
 
     //새 비밀번호 작성
@@ -42,63 +45,73 @@ const PasswordFindForm = () => {
     const handleCertificationSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setModalShow(true);
+
         //아무것도 안적었을 시
         if(userId.trim() === '' || userPhoneNumber.trim() === '' || newPwd.trim() === '') {
             setModalText('아이디, 휴대폰 번호, 새 비밀번호를 입력해주세요.');
-            setModalShow(true);
-            return false;
+            return;
         }
 
         //아이디 형식 오류
         if(!validations.idRegex.test(userId.trim())) {
             setModalText('아이디 형식이 올바르지 않습니다.');
-            setModalShow(true);
-            return false;
+            return;
         }
 
         //휴대폰 번호 형식 오류
         if(!validations.phoneNumberRegex.test(userPhoneNumber.trim())) {
             setModalText('휴대폰 번호 형식이 올바르지 않습니다.');
-            setModalShow(true);
-            return false;
+            return;
         }
 
         //비밀번호 형식 오류
         if(!validations.passwordRegex.test(newPwd.trim())) {
             setModalText('비밀번호 형식이 올바르지 않습니다.');
-            setModalShow(true);
-            return false;
+            return;
         };
+
+        //아이디가 로컬에 저장된 아이디와 일치 하지 않을 때
+        if(user?.userId !== userId) {
+            setModalText('아이디를 확인해주세요.');
+            return;
+        }
+
+        //휴대폰 번호가 로컬에 저장된 휴대폰 번호와 일치 하지 않을 때
+        if(user?.phoneNumber !== userPhoneNumber) {
+            setModalText('휴대폰 번호를 확인해주세요.');
+            return;
+        }
 
         //새 비밀번호가 일치 하지 않을 때
         if(newPwd !== newPwdCheck) {
             setModalText('새 비밀번호가 일치하지 않습니다.');
-            setModalShow(true);
-            return false;
+            return;
         }
+
+        setModalShow(false);
 
         //유저 인증정보를 서버로 전송
         try {
-            const data = await userFindApi.certificationUser(userId, userPhoneNumber);
+            const data = await resetPasswordApi(
+                userId, 
+                userPhoneNumber,
+                newPwd
+            );  
 
-            //유저정보가 일치하면 비밀번호 변경
-            if(data.status === "success") {
-                try{
-                    //const data = await userFindActionApi.changedPassword(userId, newPwd);
-
-                    setModalText(data.message);
-                    setModalShow(true);
-                } catch(err: any) {
-                    console.error(err);
-                    setModalText(err.response?.data?.message);
-                    setModalShow(true);
-                    return;
-                }
+            if(!data.success) {
+                setModalText(`${data.message}`);
+                setModalShow(true);
+                return;
             }
-        } catch(err: any) {
-            console.error(err);
-            setModalText(err.response?.data?.message);
+
+            setModalText(`${data.message}`);
             setModalShow(true);
+            return; 
+        } catch(err: any) {
+            console.error(err.response?.data?.message);
+            setModalShow(true);
+            setModalText(err.response?.data?.message);
             return;
         }
     };
@@ -125,7 +138,7 @@ const PasswordFindForm = () => {
                         placeholder="'-'구분없이 입력"
                         type='tel'
                         label="휴대폰 번호"
-                        value={userPhoneNumber}
+                        value={formatPhoneNumber(userPhoneNumber)}
                         onChange={handleChangeUserPhoneNumber}
                     />
                     <FindInput 
