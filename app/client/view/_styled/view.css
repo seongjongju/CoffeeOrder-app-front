@@ -186,7 +186,8 @@
     gap: 7px;
 }
 
-.order-bar__btns button {
+.order-bar__btns button,
+.order-bar__btns a {
     font-size: 14px;
     font-weight: 500;
     height: 40px;
@@ -201,6 +202,9 @@
 }
 
 .order-bar__button--order {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: #2B1B16;
     color: #fff;
     width: calc(100% - 87px);

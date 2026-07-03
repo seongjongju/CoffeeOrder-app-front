@@ -10,6 +10,7 @@ import { formatPrice } from '@/app/util/format';
 import { addCartApi } from '@/features/clientApi/cartApi';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAppSelector } from '@/store/hook';
+import { useRouter } from 'next/navigation';
 interface OptionProps {
     viewProduct: {
         img: ProductImgType
@@ -25,9 +26,12 @@ const OrderBar = memo(({
     lightly, 
     addState 
 }: OptionProps) => {
+    const router = useRouter();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow(); //모달창
     const user = useAppSelector(state => state.auth.user); //유저 정보
     const [totalCount, setTotalCount] = useState<number>(1);
+
+    console.log(user)
 
     //옵션 합산금액
     const addPriceSum = useMemo(() => {
@@ -184,6 +188,18 @@ const OrderBar = memo(({
                     </button>
                     <button 
                         className='order-bar__button--order'
+                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                            e.preventDefault();
+                            const querys = [
+                                {
+                                    totalPrice: calcPrice,
+                                    lightly: lightly,
+                                    options: addState,
+                                }
+                            ];
+
+                            router.push(`/client/pay?order=single&items=${JSON.stringify(querys)}`);
+                        }}
                     >
                         주문하기
                     </button>

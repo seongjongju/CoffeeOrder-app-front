@@ -9,8 +9,10 @@ import Modal from '@/shared/client/components/modal/Modal';
 import CartItemNone from './CartItemNone';
 import { useAppSelector } from '@/store/hook';
 import { formatPrice } from '@/app/util/format';
+import { useRouter } from 'next/navigation';
 
 const CartList = () => {
+    const router = useRouter();
     const { modalShow, setModalShow, modalText, setModalText } = useModalShow();
     const { carts } = useCartQuery(); //카트 전체 조회
     const user = useAppSelector(state => state.auth.user); //유저 목록
@@ -68,6 +70,10 @@ const CartList = () => {
                                 <button 
                                     className='common-button' 
                                     style={{ marginTop: "10px" }}
+                                    onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
+                                        e.preventDefault();
+                                        router.push(`/client/pay?order=multi&items=${JSON.stringify(userCarts)}`);
+                                    }}
                                 >
                                     주문하기 <span className='totla-length'>총 {count}개 {formatPrice(price)}원</span>
                                 </button>

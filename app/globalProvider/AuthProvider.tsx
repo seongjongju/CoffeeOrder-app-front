@@ -1,6 +1,6 @@
 'use client';
 import { meApi } from '@/features/clientApi/authApi';
-import { loginSuccess } from '@/store/auth/authSlice';
+import { loginSuccess, logout } from '@/store/auth/authSlice';
 import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -15,6 +15,9 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
 
             try{
                 const data = await meApi();
+
+                console.log(data)
+                
                 dispatch(loginSuccess(data));
                 return;
             } catch(err: any) {

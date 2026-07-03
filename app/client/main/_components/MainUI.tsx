@@ -16,6 +16,10 @@ const MainUI = () => {
             <Suggestion />
 
             <div className='inner'>
+                <h2 className='main-title'>할인권!!</h2> 
+            </div>
+
+            <div className='inner'>
                 <h2 className='main-title'>최근 주문한 메뉴!!</h2> 
             </div>
             <LatelyOrder />

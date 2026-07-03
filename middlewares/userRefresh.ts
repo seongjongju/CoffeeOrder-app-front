@@ -53,7 +53,8 @@ export async function userRefresh(request: NextRequest) {
         //타입 지정
         const jwtPayload = payload as {
             _id: string;
-            userId: string;
+            id: string;
+            name: string;
             email: string;
             phoneNumber: string;
             birth: string;
@@ -63,7 +64,8 @@ export async function userRefresh(request: NextRequest) {
         const accessToken = await new SignJWT(
             {
                 _id: jwtPayload._id,
-                userId: jwtPayload.userId,
+                id: jwtPayload.id,
+                name: jwtPayload.name,
                 email: jwtPayload.email,
                 phoneNumber: jwtPayload.phoneNumber,
                 birth: jwtPayload.birth,
@@ -91,6 +93,6 @@ export async function userRefresh(request: NextRequest) {
         return res;
     } catch(err) {
         console.error(err);
-        return NextResponse.redirect(new URL("/client/intro?error=token_expired", request.url));
+        return NextResponse.json({ error: '유효하지 않은 토큰' }, { status: 401 });
     }
 };

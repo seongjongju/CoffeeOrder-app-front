@@ -60,9 +60,7 @@ export default async function RootLayout({
         <QueryProvider>
           <HydrationBoundary state={dehydrate(queryClient)}>
             <ClientLayout>
-              <AuthProvider>
                 {children}
-              </AuthProvider>
             </ClientLayout>
           </HydrationBoundary>
         </QueryProvider>

@@ -11,6 +11,7 @@ export const getTitle = (path: string, searchParams: ReadonlyURLSearchParams) =>
     if(path === '/client/user_find/password_find') return '비밀번호 재설정';
     if(path === '/client/mypage') return '마이페이지';
     if(path === '/client/cart') return '장바구니';
+    if(path === '/client/pay') return '결제하기';
     if(path === '/order/orderHistory') return '주문내역';
     if(searchParams.get('category')) return searchParams.get('category');
     return '';

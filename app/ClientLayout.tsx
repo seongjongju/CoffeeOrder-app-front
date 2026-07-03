@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Header from './client/inc/header/Header';
 import AdminHeader from './admin/inc/admin_header/AdminHeader';
 import LoadingUi from '@/shared/client/components/loading/LoadingUi';
+import AuthProvider from './globalProvider/AuthProvider';
 
 const queryClient = new QueryClient();
 
@@ -43,13 +44,15 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <PersistGate persistor={persistor}>
-                        {
-                            isAdminLoginPage ? null 
-                            : isAdminPage ? <AdminHeader /> 
-                            : <Header />
-                        }
-                        
-                        {children}
+                        <AuthProvider>
+                            {
+                                isAdminLoginPage ? null 
+                                : isAdminPage ? <AdminHeader /> 
+                                : <Header />
+                            }
+                            
+                            {children}
+                        </AuthProvider>
                     </PersistGate>
                 </Provider>
             </QueryClientProvider>
