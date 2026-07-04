@@ -1,10 +1,13 @@
 import React from 'react';
-import './_styled/pay.css';
+import '@/shared/client/styled/order/order.css';
+import PayInterface from './_components/PayInterface';
 
 const PayPage = () => {
     return (
-        <main className='main'>
-            
+        <main className='main order-main'>
+            <div className='inner'>
+                <PayInterface />
+            </div>
         </main>
     );
 };

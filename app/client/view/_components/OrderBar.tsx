@@ -31,8 +31,6 @@ const OrderBar = memo(({
     const user = useAppSelector(state => state.auth.user); //유저 정보
     const [totalCount, setTotalCount] = useState<number>(1);
 
-    console.log(user)
-
     //옵션 합산금액
     const addPriceSum = useMemo(() => {
         return addState.map(add => add.addPrice).reduce((acc, current) => acc + current, 0);
@@ -192,9 +190,14 @@ const OrderBar = memo(({
                             e.preventDefault();
                             const querys = [
                                 {
+                                    _id: `${user.userId}-${user.userName}` ,
+                                    userId: user.userId,
+                                    userName: user.userName,
+                                    productName: viewProduct.productName,
+                                    price: viewProduct.price,
                                     totalPrice: calcPrice,
                                     lightly: lightly,
-                                    options: addState,
+                                    addPrice: addState,
                                 }
                             ];
 

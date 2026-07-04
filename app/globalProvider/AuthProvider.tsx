@@ -15,9 +15,7 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
 
             try{
                 const data = await meApi();
-
-                console.log(data)
-                
+                                
                 dispatch(loginSuccess(data));
                 return;
             } catch(err: any) {
