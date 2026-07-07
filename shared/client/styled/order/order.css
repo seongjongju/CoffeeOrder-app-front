@@ -11,6 +11,7 @@
     background: #f5f5f5;
     max-height: 100vh;
     min-height: 100vh;
+    position: relative;
 }
 
 .order {
@@ -127,8 +128,15 @@
     color: #222;
 }
 
+.pay-btn {
+    margin-top: auto;
+}
 
-
+.pay-btn span {
+    font-size: 12px;
+    color: #fff;
+    opacity: 0.7;
+}
 
 .order-view {
     padding: 10px;

@@ -84,39 +84,6 @@ const OrderBar = memo(({
         }
     }, [calcPrice, lightly, addState, setModalShow, setModalText]);
 
-    //결제
-    /* const handleSinglePayment = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-
-        try {
-            const createResponse = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/create`, {
-                userId: users.user?.id, 
-                items: [{ menuId, menuName, img, price, count, options: { lightly, shot, syrup, whipping } }]
-            });
-
-            const { orderId, amount } = createResponse.data;
-
-            if (typeof window !== "undefined") {
-                const pay_obj: any = window;
-                const { AUTHNICE } = pay_obj;
-                console.log("AUTHNICE", AUTHNICE);
-                AUTHNICE.requestPay({
-                    clientId: process.env.NEXT_PUBLIC_NICEPAY_CLIENT_ID,
-                    method: 'card',
-                    orderId,
-                    amount,
-                    goodsName: menuName,
-                    returnUrl: `${process.env.NEXT_PUBLIC_API_URL}/api/payment/nice-approve`,
-                    fnError: (result: any) => {
-                        alert('고객용메시지 : ' + result.errorMsg + '\n개발자확인용 : ' + result.msg);
-                    }
-                });
-            }
-        } catch (error: any) {
-            console.error(error.response?.data?.message);
-        }
-    }; */
-
     return (
         <div className='order-bar'>
             <div className='order-bar__options'>
@@ -193,15 +160,17 @@ const OrderBar = memo(({
                                     _id: `${user.userId}-${user.userName}` ,
                                     userId: user.userId,
                                     userName: user.userName,
+                                    img: viewProduct.img,
                                     productName: viewProduct.productName,
                                     price: viewProduct.price,
                                     totalPrice: calcPrice,
+                                    totalCount: totalCount,
                                     lightly: lightly,
                                     addPrice: addState,
                                 }
                             ];
 
-                            router.push(`/client/pay?order=single&items=${JSON.stringify(querys)}`);
+                            router.push(`/client/pay/payment?order=single&items=${JSON.stringify(querys)}`);
                         }}
                     >
                         주문하기

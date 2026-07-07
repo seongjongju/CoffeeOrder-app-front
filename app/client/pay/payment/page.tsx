@@ -2,7 +2,7 @@ import React from 'react';
 import '@/shared/client/styled/order/order.css';
 import PayInterface from './_components/PayInterface';
 
-const PayPage = () => {
+const PaymentPage = () => {
     return (
         <main className='main order-main'>
             <div className='inner'>
@@ -12,4 +12,4 @@ const PayPage = () => {
     );
 };
 
-export default PayPage;
+export default PaymentPage;

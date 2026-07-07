@@ -1,0 +1,37 @@
+.coupon-title {
+    font-size: 14px;
+    color: #2B1B16;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.coupon {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, .15);
+    margin-bottom: 15px;
+}
+
+.coupon__btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    padding: 0 1em;
+    height: 40px;
+    background: #fff;
+    color: #333;
+}
+
+.coupon__li {
+    font-size: 14px;
+    color: #333;
+    padding: 0 1em;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    background: #fff;
+    cursor: pointer;
+}
+

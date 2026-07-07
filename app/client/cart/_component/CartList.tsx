@@ -72,7 +72,7 @@ const CartList = () => {
                                     style={{ marginTop: "10px" }}
                                     onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
                                         e.preventDefault();
-                                        router.push(`/client/pay?order=multi&items=${JSON.stringify(userCarts)}`);
+                                        router.push(`/client/pay/payment?order=multi&items=${JSON.stringify(userCarts)}`);
                                     }}
                                 >
                                     주문하기 <span className='totla-length'>총 {count}개 {formatPrice(price)}원</span>
