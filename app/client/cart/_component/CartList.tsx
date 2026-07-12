@@ -10,6 +10,7 @@ import CartItemNone from './CartItemNone';
 import { useAppSelector } from '@/store/hook';
 import { formatPrice } from '@/app/util/format';
 import { useRouter } from 'next/navigation';
+import { payCreateApi } from '@/features/clientApi/payApy';
 
 const CartList = () => {
     const router = useRouter();
@@ -34,6 +35,27 @@ const CartList = () => {
             return;
         }
     }, []);
+
+    //주문서 핸들러(장바구니)
+    const addPayment = async (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        try {
+            const data = await payCreateApi(userCarts);
+
+            if(data.status === "fail") {
+                console.log(data.message);
+                return;
+            }
+            console.log(data.message);
+            router.push(`/client/pay/payment?order=multi&orderId=${data.orderId}`);
+            return;
+        } catch(err:any) {
+            console.error(err.response?.data?.message);
+            setModalShow(true);
+            setModalText(err.response?.data?.message);
+            return;
+        }
+    };
     
     return (
         <div className={`inner cart-inner ${userCarts.length === 0 ? "cart-null" : ""}`}>
@@ -70,10 +92,7 @@ const CartList = () => {
                                 <button 
                                     className='common-button' 
                                     style={{ marginTop: "10px" }}
-                                    onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
-                                        e.preventDefault();
-                                        router.push(`/client/pay/payment?order=multi&items=${JSON.stringify(userCarts)}`);
-                                    }}
+                                    onClick={addPayment}
                                 >
                                     주문하기 <span className='totla-length'>총 {count}개 {formatPrice(price)}원</span>
                                 </button>

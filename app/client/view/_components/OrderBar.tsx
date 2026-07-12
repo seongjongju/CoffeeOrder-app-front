@@ -1,4 +1,5 @@
 'use client';
+import { nanoid } from 'nanoid'
 import Image from 'next/image';
 import plusIco from '@/public/icons/view_plus.svg';
 import minusIco from '@/public/icons/view_minus.svg';
@@ -11,6 +12,8 @@ import { addCartApi } from '@/features/clientApi/cartApi';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAppSelector } from '@/store/hook';
 import { useRouter } from 'next/navigation';
+import { Item } from '@/app/types/pay/pay';
+import { payCreateApi } from '@/features/clientApi/payApy';
 interface OptionProps {
     viewProduct: {
         img: ProductImgType
@@ -26,6 +29,7 @@ const OrderBar = memo(({
     lightly, 
     addState 
 }: OptionProps) => {
+    const id = nanoid();
     const router = useRouter();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow(); //모달창
     const user = useAppSelector(state => state.auth.user); //유저 정보
@@ -83,6 +87,42 @@ const OrderBar = memo(({
             return;
         }
     }, [calcPrice, lightly, addState, setModalShow, setModalText]);
+
+    //주문서 핸들러(단일)
+    const addPayment = async (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        try {
+            const items = [
+                {
+                    _id: id ,
+                    userId: user.userId,
+                    userName: user.userName,
+                    img: viewProduct.img,
+                    productName: viewProduct.productName,
+                    price: viewProduct.price,
+                    totalPrice: calcPrice,
+                    totalCount: totalCount,
+                    lightly: lightly,
+                    addPrice: addState,
+                }
+            ];
+
+            const data = await payCreateApi(items);
+
+            if(data.status === "fail") {
+                console.log(data.message);
+                return;
+            }
+            console.log(data.message);
+            router.push(`/client/pay/payment?order=single&orderId=${data.orderId}`);
+            return;
+        } catch(err:any) {
+            console.error(err.response?.data?.message);
+            setModalShow(true);
+            setModalText(err.response?.data?.message);
+            return;
+        }
+    };
 
     return (
         <div className='order-bar'>
@@ -153,25 +193,7 @@ const OrderBar = memo(({
                     </button>
                     <button 
                         className='order-bar__button--order'
-                        onClick={(e:React.MouseEvent<HTMLButtonElement>) => {
-                            e.preventDefault();
-                            const querys = [
-                                {
-                                    _id: `${user.userId}-${user.userName}` ,
-                                    userId: user.userId,
-                                    userName: user.userName,
-                                    img: viewProduct.img,
-                                    productName: viewProduct.productName,
-                                    price: viewProduct.price,
-                                    totalPrice: calcPrice,
-                                    totalCount: totalCount,
-                                    lightly: lightly,
-                                    addPrice: addState,
-                                }
-                            ];
-
-                            router.push(`/client/pay/payment?order=single&items=${JSON.stringify(querys)}`);
-                        }}
+                        onClick={addPayment}
                     >
                         주문하기
                     </button>
