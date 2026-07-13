@@ -46,6 +46,8 @@ const OrderBar = memo(({
         return (basePrice + addPriceSum) * totalCount;
     }, [viewProduct.price, addPriceSum, totalCount]);
 
+    console.log(calcPrice)
+
     const totalIncrement = useCallback(() => {
         setTotalCount(prev => prev + 1);
     }, []);
@@ -114,7 +116,7 @@ const OrderBar = memo(({
                 return;
             }
             console.log(data.message);
-            router.push(`/client/pay/payment?order=single&orderId=${data.orderId}`);
+            router.push(`/client/pay/payment?orderId=${data.orderId}`);
             return;
         } catch(err:any) {
             console.error(err.response?.data?.message);

@@ -20,6 +20,8 @@ const CartList = () => {
 
     const userCarts = carts.filter(cart => cart.userId === user.userId); //로그인 된 유저의 장바구니 목록
 
+    console.log(userCarts);
+
     //장바구니 전체 삭제 핸들러
     const queryClient = useQueryClient();
     const allDeleteCartItem = useCallback(async (e:React.MouseEvent<HTMLButtonElement>) => {
@@ -47,7 +49,7 @@ const CartList = () => {
                 return;
             }
             console.log(data.message);
-            router.push(`/client/pay/payment?order=multi&orderId=${data.orderId}`);
+            router.push(`/client/pay/payment?orderId=${data.orderId}`);
             return;
         } catch(err:any) {
             console.error(err.response?.data?.message);

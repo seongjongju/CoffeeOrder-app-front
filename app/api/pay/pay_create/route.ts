@@ -1,19 +1,20 @@
 import { connectDB } from "@/app/lib/database";
+import { Item } from "@/app/types/pay/pay";
 import { NextRequest, NextResponse } from "next/server";
 
 const dbName = process.env.DB_NAME;
 
 export async function POST(request:NextRequest) {
     const body = await request.json();
-    const {orderItems} = body;
-
-    console.log("결제 정보", orderItems);
-    console.log("-----------------------------");
+    const orderItems: Item[] = body.orderItems;
 
     try{
         if(!orderItems) {
-        return NextResponse.json({error: "결제 오류", message: "결제 오류! 관리자에게 문의해주세요."}, {status: 401});
+            return NextResponse.json({error: "결제 오류", message: "결제 오류! 관리자에게 문의해주세요."}, {status: 401});
         }
+
+        //amount 
+        const amount = orderItems.map(mount => mount.totalPrice).reduce((acc, current) => acc + current, 0);
 
         const db = (await connectDB).db(dbName);
         //주문 아이디를 위한 자동 카운팅
@@ -25,12 +26,11 @@ export async function POST(request:NextRequest) {
 
         let newOrderId = counter?.total; 
 
-        //여기서 amount 계산 후 DB에 자리 만들어 놓기
-
         //결제 상태 = pending
         await db.collection('payments').insertOne({
             orderId: `ORD-${newOrderId}`,
             status: 'pending',
+            amount: amount,
             items: orderItems,
             createAt: new Date()
         });

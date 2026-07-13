@@ -3,11 +3,16 @@ import { formatPrice } from '@/app/util/format';
 import Coupon from '@/shared/client/components/coupon/Coupon';
 import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
-import { Item } from '@/app/types/pay/pay';
+import { Item, paymentData } from '@/app/types/pay/pay';
 import { payCreateApi } from '@/features/clientApi/payApy';
 
-const PayInterface = () => {
-    const order = useSearchParams().get('order');
+interface paymentInterfaceProps {
+    paymentData: paymentData;
+};
+
+const PayInterface = ({paymentData}: paymentInterfaceProps) => {
+    console.log(paymentData)
+
     const items = useSearchParams().get('items');
 
     const orderItems:Item[] = items ? JSON.parse(items) : []; //주문 정보 배열
@@ -15,8 +20,6 @@ const PayInterface = () => {
     const [finalPrice, setFinalPrice] = useState<number>(
         orderItems.map((item:Item) => item.totalPrice).reduce((acc: number, cur: number) => acc + cur, 0)
     ); //최종 금액(쿠폰 연산 전)
-
-    console.log(orderItems)
 
     //결제
     const handlePay = async () => {
@@ -62,7 +65,7 @@ const PayInterface = () => {
             }}
         >
             {
-                orderItems.map((item: Item) => (
+                paymentData.items.map((item: Item) => (
                     <div 
                         key={item._id}
                         className='order__item'
@@ -123,7 +126,7 @@ const PayInterface = () => {
                     handlePay()
                 }}
             >
-                <span>최종 결제 금액 : </span>{formatPrice(finalPrice)}원 <span>결제하기</span>
+                <span>최종 결제 금액 : </span>{formatPrice(paymentData.amount)}원 <span>결제하기</span>
             </button>
         </div>
     );

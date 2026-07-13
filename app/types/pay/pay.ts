@@ -16,3 +16,12 @@ export interface Item {
         publicId: string;
     };
 };
+
+export type paymentData = {
+    amount: number;
+    createAt: string;
+    items: Item[];
+    orderId: string;
+    status: string;
+    _id: string;
+};
