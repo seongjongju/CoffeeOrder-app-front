@@ -108,3 +108,12 @@ li {
     font-size: 14px;
 }
 
+.common-cancel-button {
+    width: 100%;
+    height: 48px;
+    background-color: #ddd;
+    color: #222;
+    border-radius: 5px;
+    font-size: 14px;
+}
+

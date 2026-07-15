@@ -35,3 +35,13 @@
     justify-content: center;
     align-items: center;
 }
+
+.modal-info p {
+    text-align: center;
+    word-break: keep-all;
+}
+
+/* 컨핌창 */
+.modal-btns {
+    display: flex;
+}

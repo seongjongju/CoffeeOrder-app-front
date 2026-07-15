@@ -128,8 +128,11 @@
     color: #222;
 }
 
-.pay-btn {
+.pay-btns {
     margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .pay-btn span {

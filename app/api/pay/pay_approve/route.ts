@@ -20,21 +20,45 @@ export async function POST(request: NextRequest) {
 
         const db = (await connectDB).db(dbName);
 
-        //여기서 pending상태에 결제 데이터를 가져와 amount가격을 비교 후 처리
+        //pending 상태의 결제 데이터 조회
+        const selectAmount = await db.collection('payments').findOne({ 
+            orderId: orderId, 
+            status: 'pending' 
+        });
 
-        if(authResultCode !== "0000") {
+        if (!selectAmount) {
+            return NextResponse.redirect(new URL("/client/pay/pay_fail?error=주문조회실패&status=fail&message=유효한 결제 대기 내역을 찾을 수 없습니다.", request.url));
+        }
+
+        // 금액 비교 검증
+        if (Number(selectAmount.amount) !== Number(amount)) {
             await db.collection('payments').updateOne(
-                {orderId: orderId},
+                { orderId: orderId },
                 {
                     $set: { 
                         status: "fail",
-                        createAt: new Date()
+                        createdAt: new Date()
+                    } 
+                }
+            );
+            return NextResponse.redirect(new URL("/client/pay/pay_fail?error=금액 불일치&status=fail&message=결제 금액이 일치하지 않아 처리가 취소되었습니다.", request.url));
+        }
+
+        //인증 결과 코드 확인
+        if (authResultCode !== "0000") {
+            await db.collection('payments').updateOne(
+                { orderId: orderId },
+                {
+                    $set: { 
+                        status: "fail",
+                        createdAt: new Date()
                     } 
                 }
             );
             return NextResponse.redirect(new URL("/client/pay/pay_fail?error=결제실패&status=fail&message=오류로 인해 결제에 실패하였습니다.", request.url));
-        };
+        }
 
+        //나이스페이먼츠 승인 API 호출
         const response = await fetch(`${process.env.NEXT_PUBLIC_NICEPAY_URL}/${tid}`, {
             method: "POST",
             headers: {
@@ -46,25 +70,28 @@ export async function POST(request: NextRequest) {
 
         const resultData = await response.json();
 
+        //최종 결제 승인 실패 시 처리
         if (!response.ok || resultData.resultCode !== "0000") {
             await db.collection('payments').updateOne(
-                {orderId: orderId},
+                { orderId: orderId },
                 {
                     $set: { 
                         status: "fail",
-                        createAt: new Date()
+                        createdAt: new Date()
                     } 
                 }
             );
             return NextResponse.redirect(new URL(`/client/pay/pay_fail?error=결제실패&status=fail&message=${resultData.resultMsg}`, request.url));
         }
 
+        //결제 성공 완료 처리
         await db.collection('payments').updateOne(
-            {orderId: orderId},
+            { orderId: orderId },
             {
                 $set: { 
                     status: "paid",
-                    createAt: new Date()
+                    tid: tid,
+                    createdAt: new Date()
                 } 
             }
         );
@@ -74,4 +101,4 @@ export async function POST(request: NextRequest) {
         console.error("POST 데이터 처리 중 에러:", err);
         return NextResponse.json({ status: "fail", message: "에러 발생" }, { status: 500 });
     }
-}
+};

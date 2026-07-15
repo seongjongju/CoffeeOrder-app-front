@@ -4,13 +4,15 @@ import Coupon from '@/shared/client/components/coupon/Coupon';
 import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import { Item, paymentData } from '@/app/types/pay/pay';
-import { payCreateApi } from '@/features/clientApi/payApy';
+import useConfilmShow from '@/features/hooks/confirm/useConfilmShow';
+import Confirm from '@/shared/client/components/confirm/Confirm';
 
 interface paymentInterfaceProps {
     paymentData: paymentData;
 };
 
 const PayInterface = ({paymentData}: paymentInterfaceProps) => {
+    const {confilmShow, setConfilmShow, confilmText, setConfilmText} = useConfilmShow();
     console.log(paymentData)
 
     const items = useSearchParams().get('items');
@@ -24,23 +26,20 @@ const PayInterface = ({paymentData}: paymentInterfaceProps) => {
     //결제
     const handlePay = async () => {
         try{
-            const data = await payCreateApi(orderItems);
-
-            const payPrice = data?.items.map((item:Item) => item.totalPrice).reduce((acc: number, cur: number) => acc + cur, 0);
-            const payProductName = data?.items.length > 1 ? 
-                            `${orderItems[0].productName} 외 ${data.items.length - 1}개` :
-                            orderItems[0].productName;
+            //제품이 2개 이상일 때 제품명 파라미터
+            const payProductName = paymentData?.items.length > 1 ? 
+                            `${paymentData.items[0].productName} 외 ${paymentData.items.length - 1}개` :
+                            paymentData.items[0].productName;
 
             if(typeof window !== "undefined" ) {
                 const pay_obj : any = window ;
                 const { AUTHNICE } = pay_obj
-                console.log(AUTHNICE)
 
                 AUTHNICE.requestPay({
                     clientId: process.env.NEXT_PUBLIC_NICEPAY_CLIENT_ID,
                     method: 'card',
-                    orderId: data.orderId,
-                    amount: payPrice,
+                    orderId: paymentData.orderId,
+                    amount: paymentData.amount,
                     goodsName: payProductName,
                     returnUrl: `${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/pay/pay_approve`, //API를 호출할 Endpoint 입력
                     fnError: function (result: any) {
@@ -54,6 +53,14 @@ const PayInterface = ({paymentData}: paymentInterfaceProps) => {
             console.error(err.response?.data?.message);
             return;
         }
+    };
+
+    //결제 취소
+    const handlePayCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        setConfilmShow(true);
+        setConfilmText("정말 결제를 취소하시겠습니까? 취소하시면 진행 중이던 주문이 초기화되어 처음부터 다시 결제를 진행하셔야 합니다.");
     };
 
     return (
@@ -119,15 +126,35 @@ const PayInterface = ({paymentData}: paymentInterfaceProps) => {
 
             <Coupon />
 
-            <button 
-                className='common-button pay-btn'
-                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                    e.preventDefault();
-                    handlePay()
-                }}
-            >
-                <span>최종 결제 금액 : </span>{formatPrice(paymentData.amount)}원 <span>결제하기</span>
-            </button>
+            <div className='pay-btns'>
+                <button 
+                    className='common-button pay-btn'
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                        e.preventDefault();
+                        handlePay()
+                    }}
+                >
+                    <span>최종 결제 금액 : </span>{formatPrice(paymentData.amount)}원 <span>결제하기</span>
+                </button>
+                <button 
+                    className='common-cancel-button'
+                    onClick={handlePayCancel}
+                >
+                    취소
+                </button>
+            </div> {/* .pay-btns  :end */}
+
+            {
+                confilmShow &&
+                (
+                    <Confirm 
+                        confilmShow={confilmShow}
+                        setConfilmShow={setConfilmShow}
+                        confilmText={confilmText}
+                        setConfilmText={setConfilmText}
+                    />
+                )
+            }
         </div>
     );
 };

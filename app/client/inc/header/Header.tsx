@@ -80,19 +80,28 @@ const Header = () => {
                         style={{
                             justifyContent: "space-between"
                         }}
-                    >
-                        <button 
-                            className='back-button'
-                            onClick={() => router.back()}
-                        >
-                            <Image src={BackIco} alt='뒤로가기' />
-                        </button>
+                    >   
+                        {
+                            pathName.includes('/payment') ? 
+                            (
+                                <div></div>
+                            ) :
+                            (
+                                <button 
+                                    className='back-button'
+                                    onClick={() => router.back()}
+                                >
+                                    <Image src={BackIco} alt='뒤로가기' />
+                                </button>
+                            )
+                        }
                         <h2 className='app-bar-title'>
                             {getTitle(pathName, searchParams)}
                         </h2>
                         {
                             !pathName.includes('/auth') &&
-                            !pathName.includes('/user_find') ?
+                            !pathName.includes('/user_find') &&
+                            !pathName.includes('/payment') ?
                             (
                                 <div className='header-util'>
                                     <Link href={'/client/cart'} style={{ position: "relative" }}>
