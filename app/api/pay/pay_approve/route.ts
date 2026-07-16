@@ -9,6 +9,9 @@ const secretKey = process.env.NEXT_PUBLIC_NICEPAY_SECRET_KEY;
 
 export async function POST(request: NextRequest) {
     try {
+        const { searchParams } = new URL(request.url);
+        const orderType = searchParams.get('orderType');
+
         const formData = await request.formData();
 
         const authResultCode = formData.get("authResultCode") as string;
@@ -21,7 +24,7 @@ export async function POST(request: NextRequest) {
         const db = (await connectDB).db(dbName);
 
         //pending 상태의 결제 데이터 조회
-        const selectAmount = await db.collection('payments').findOne({ 
+        const selectAmount = await db.collection('payments_temp').findOne({ 
             orderId: orderId, 
             status: 'pending' 
         });
@@ -32,7 +35,7 @@ export async function POST(request: NextRequest) {
 
         // 금액 비교 검증
         if (Number(selectAmount.amount) !== Number(amount)) {
-            await db.collection('payments').updateOne(
+            await db.collection('payments_temp').updateOne(
                 { orderId: orderId },
                 {
                     $set: { 
@@ -46,7 +49,7 @@ export async function POST(request: NextRequest) {
 
         //인증 결과 코드 확인
         if (authResultCode !== "0000") {
-            await db.collection('payments').updateOne(
+            await db.collection('payments_temp').updateOne(
                 { orderId: orderId },
                 {
                     $set: { 
@@ -72,7 +75,7 @@ export async function POST(request: NextRequest) {
 
         //최종 결제 승인 실패 시 처리
         if (!response.ok || resultData.resultCode !== "0000") {
-            await db.collection('payments').updateOne(
+            await db.collection('payments_temp').updateOne(
                 { orderId: orderId },
                 {
                     $set: { 
@@ -85,16 +88,24 @@ export async function POST(request: NextRequest) {
         }
 
         //결제 성공 완료 처리
-        await db.collection('payments').updateOne(
-            { orderId: orderId },
-            {
-                $set: { 
-                    status: "paid",
-                    tid: tid,
-                    createdAt: new Date()
-                } 
-            }
-        );
+        await db.collection('payments').insertOne({
+            orderId: orderId,
+            userId: selectAmount.userId,
+            items: selectAmount.items,
+            amount: amount,
+            tid: tid,
+            orderType: orderType,
+            status: "paid",
+            createdAt: new Date()
+        });
+
+        //결제 성공 시 대기방 콜렉션의 주문서를 지워준다.
+        await db.collection('payments_temp').deleteOne({ orderId: orderId });
+
+        //장바구니 결제 시, 장바구니를 비워준다.
+        if(orderType === "cart") {
+            await db.collection('carts').deleteMany({userId: selectAmount.userId});
+        }
 
         return NextResponse.redirect(new URL(`/client/pay/pay_success`, request.url));
     } catch (err) {

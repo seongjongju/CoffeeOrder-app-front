@@ -1,6 +1,5 @@
 'use client';
 import { formatPrice } from '@/app/util/format';
-import Coupon from '@/shared/client/components/coupon/Coupon';
 import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import { Item, paymentData } from '@/app/types/pay/pay';
@@ -12,6 +11,7 @@ interface paymentInterfaceProps {
 };
 
 const PayInterface = ({paymentData}: paymentInterfaceProps) => {
+    const orderType = useSearchParams().get('orderType'); //orderType 확인
     const {confilmShow, setConfilmShow, confilmText, setConfilmText} = useConfilmShow();
     console.log(paymentData)
 
@@ -41,7 +41,8 @@ const PayInterface = ({paymentData}: paymentInterfaceProps) => {
                     orderId: paymentData.orderId,
                     amount: paymentData.amount,
                     goodsName: payProductName,
-                    returnUrl: `${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/pay/pay_approve`, //API를 호출할 Endpoint 입력
+                    notificationUrl: `https://myserver.com/api/pay/pay_webhook?orderType=${orderType}`,
+                    returnUrl: `${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/pay/pay_approve?orderType=${orderType}`, //API를 호출할 Endpoint 입력
                     fnError: function (result: any) {
                         alert('고객용메시지 : ' + result.errorMsg + '\n개발자확인용 : ' + result.msg);
                     }
@@ -124,8 +125,6 @@ const PayInterface = ({paymentData}: paymentInterfaceProps) => {
                 ))
             }
 
-            <Coupon />
-
             <div className='pay-btns'>
                 <button 
                     className='common-button pay-btn'
@@ -152,6 +151,7 @@ const PayInterface = ({paymentData}: paymentInterfaceProps) => {
                         setConfilmShow={setConfilmShow}
                         confilmText={confilmText}
                         setConfilmText={setConfilmText}
+                        orderId={paymentData.orderId}
                     />
                 )
             }

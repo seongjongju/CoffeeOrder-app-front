@@ -18,9 +18,17 @@ if(process.env.NODE_ENV === 'development') {
 connectDB.then(async (client) => {
     const db = client.db(process.env.DB_NAME);
 
+    //TTL
     await db.collection('users').createIndex(
         { id: 1 },
         { unique: true }
+    );
+
+    await db.collection('payments_temp').createIndex(
+        { createdAt: 1 }, 
+        { 
+            expireAfterSeconds: 7200, // 만료 시간 (2시간)
+        }
     );
 });
 

@@ -49,7 +49,7 @@ const CartList = () => {
                 return;
             }
             console.log(data.message);
-            router.push(`/client/pay/payment?orderId=${data.orderId}`);
+            router.push(`/client/pay/payment?orderId=${data.orderId}&orderType=cart`);
             return;
         } catch(err:any) {
             console.error(err.response?.data?.message);

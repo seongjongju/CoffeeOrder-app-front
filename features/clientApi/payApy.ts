@@ -20,3 +20,15 @@ export const payGetApi = async (orderId: string) => {
     const data = await res.data;
     return data;
 };
+
+//결제 취소
+export const payCancelApi = async (orderId: string) => {
+    const res = await api.patch('/pay/cancel_pay',
+        {
+            orderId
+        }
+    );
+
+    const data = await res.data;
+    return data;
+};

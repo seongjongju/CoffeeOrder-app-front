@@ -13,7 +13,7 @@ export async function GET(request:NextRequest) {
         }
 
         const db = (await connectDB).db(dbName);
-        const paymentData = await db.collection("payments").findOne({ orderId: orderId });
+        const paymentData = await db.collection("payments_temp").findOne({ orderId: orderId });
 
         return NextResponse.json({ success: true, message: "결제정보 불러오기 성공", data: paymentData });
     }catch(err) {

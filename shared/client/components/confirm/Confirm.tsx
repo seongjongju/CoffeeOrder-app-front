@@ -4,19 +4,27 @@ import Button from '../button/Button';
 import '@/shared/client/styled/modal/modal.css';
 import CancelButton from '../button/CancelButton';
 import { usePathname, useRouter } from 'next/navigation';
+import { payCancelApi } from '@/features/clientApi/payApy';
 
 interface ConfilmProps {
     confilmShow: boolean;
     setConfilmShow: React.Dispatch<React.SetStateAction<boolean>>;
     confilmText: string;
     setConfilmText: React.Dispatch<React.SetStateAction<string>>;
+    orderId?: string;
 };
 
-const Confirm = ({confilmShow, setConfilmShow, confilmText, setConfilmText}:ConfilmProps) => {
+const Confirm = ({
+    confilmShow, 
+    setConfilmShow, 
+    confilmText, 
+    setConfilmText,
+    orderId
+}:ConfilmProps) => {
     const pathName = usePathname();
     const router = useRouter();
 
-    const confilmOk = (e:React.MouseEvent<HTMLButtonElement>) => {
+    const confilmOk = async (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if(confilmShow) {
             setConfilmShow(false);
@@ -24,7 +32,25 @@ const Confirm = ({confilmShow, setConfilmShow, confilmText, setConfilmText}:Conf
         };
 
         if(pathName.includes('/payment')) {
-            router.back();
+            if (!orderId || typeof orderId !== 'string') {
+                console.error("올바른 orderId가 아닙니다.");
+                return;
+            }
+
+            try{
+                const data = await payCancelApi(orderId);
+                if(!data.success) {
+                    console.error(data.message);
+                    return;
+                }
+
+                console.log(data.message);
+                router.back();
+                return;    
+            }catch(err: any) {
+                console.error(err.response?.data?.message);
+                return;
+            }
         }
     }; 
 

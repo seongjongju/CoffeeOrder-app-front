@@ -116,7 +116,7 @@ const OrderBar = memo(({
                 return;
             }
             console.log(data.message);
-            router.push(`/client/pay/payment?orderId=${data.orderId}`);
+            router.push(`/client/pay/payment?orderId=${data.orderId}&orderType=direct`);
             return;
         } catch(err:any) {
             console.error(err.response?.data?.message);

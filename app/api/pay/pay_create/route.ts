@@ -30,7 +30,7 @@ export async function POST(request:NextRequest) {
         const userId = orderItems[0].userId;
 
         //결제 상태 = pending
-        await db.collection('payments').insertOne({
+        await db.collection('payments_temp').insertOne({
             orderId: `ORD-${newOrderId}`,
             userId: userId,
             status: 'pending',
