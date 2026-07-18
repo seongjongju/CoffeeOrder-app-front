@@ -1,4 +1,5 @@
 import { connectDB } from "@/app/lib/database";
+import { ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 const dbName = process.env.DB_NAME;
@@ -40,6 +41,46 @@ export async function POST(request: NextRequest) {
         }
 
         if (resultCode === "0000") {
+            //결제 성공 시 사용재고를 차감한다.
+            const bulkOps = [];
+
+            for (const item of selectAmount.items) {
+                const totalCount = Number(item.totalCount); 
+                
+                if (item.usedInventorys) {
+                    for (const inventory of item.usedInventorys) {
+                        //재고 수량이 부족할 시
+                        const realInv = await db.collection('inventory').findOne({ 
+                            _id: new ObjectId(inventory._id) 
+                        });
+
+                        if(realInv?.quantity <= 0 || realInv?.quantity < totalCount) {
+                            await db.collection('payments_temp').updateOne(
+                                { orderId: orderId },
+                                {
+                                    $set: { 
+                                        status: "fail",
+                                        createdAt: new Date()
+                                    } 
+                                }
+                            );
+                            return NextResponse.redirect(new URL(`/client/pay/pay_fail?error=결제실패&status=fail&message=${realInv?.inventoryName}의 재고 부족으로 인해 결제에 실패하였습니다. 관리자에게 문의해주세요.`, request.url));
+                        }
+
+                        bulkOps.push({
+                            updateOne: {
+                                filter: { _id: new ObjectId(inventory._id) }, 
+                                update: { $inc: { quantity: -totalCount } } 
+                            }
+                        });
+                    }
+                }
+            }
+
+            if (bulkOps.length > 0) {
+                await db.collection('inventory').bulkWrite(bulkOps);
+            }
+
             // payments 컬렉션으로 이관
             await db.collection('payments').insertOne({
                 orderId: orderId,
@@ -71,6 +112,6 @@ export async function POST(request: NextRequest) {
 
     } catch (err) {
         console.error("Webhook 처리 중 치명적 에러 발생:", err);
-        return NextResponse.json({ result: "FAIL", message: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json({ result: "FAIL", message: "Internal Server Error", error: err }, { status: 500 });
     }
 }

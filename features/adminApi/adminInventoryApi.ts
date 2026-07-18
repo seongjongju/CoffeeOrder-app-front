@@ -5,7 +5,7 @@ import { baseUrl, baseUrl_1 } from "./base";
 export const inventoryRegiApi = async (
     inventoryName: string,
     category: string,
-    quantity: string
+    quantity: string | number
 ) => {
     const url = `${baseUrl}/admin_inventory_regi`;
     const options = {
@@ -84,7 +84,7 @@ export const inventoryUpdateApi = async (
     _id: string,
     inventoryName: string,
     category: string,
-    quantity: string
+    quantity: string | number
 ) => {
     const url = `${baseUrl}/admin_inventory_update`;
     const options = {

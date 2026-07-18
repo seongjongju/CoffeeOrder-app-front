@@ -30,17 +30,17 @@ const InventoryUpdateModal = memo(({
 
         if(!invenName || !invenCategory || !invenQuantity) return;
 
-        if(invenName.trim() === "" || invenCategory === "") {
+        if(invenName.trim() === "") {
             alert("값을 모두 입력해주세요.");
             return;
         }
 
-        if(Number(invenQuantity) === 0) {
+        if(invenQuantity === 0) {
             alert("수량은 1개 이상 필수 입니다.");
             return;
         }
 
-        if(Number(invenQuantity.replaceAll(',', '')) > 100) {
+        if(invenQuantity > 100) {
             alert("수량은 100개가 최대입니다.");
             return;
         }
@@ -115,11 +115,11 @@ const InventoryUpdateModal = memo(({
                 <div className='admin-modal__write'> 
                     <label htmlFor="" className='admin-modal__label'>재고수량</label>
                     <input 
-                        type="text" 
+                        type="number" 
                         placeholder={invenQuantity?.toString()}
                         value={invenQuantity}
                         onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
-                            setInvenQuantity(formatNumber(e.target.value));
+                            setInvenQuantity(e.target.valueAsNumber);
                         }}
                         className='admin-modal__number'
                     />

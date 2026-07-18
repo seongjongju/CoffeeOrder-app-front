@@ -20,7 +20,7 @@ const CartList = () => {
 
     const userCarts = carts.filter(cart => cart.userId === user.userId); //로그인 된 유저의 장바구니 목록
 
-    console.log(userCarts);
+    console.log(userCarts)
 
     //장바구니 전체 삭제 핸들러
     const queryClient = useQueryClient();

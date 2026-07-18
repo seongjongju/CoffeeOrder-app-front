@@ -8,6 +8,7 @@ export async function POST(request:NextRequest) {
     const {
         userId,
         userName,
+        productCode,
         img,
         productName,
         price,
@@ -15,10 +16,11 @@ export async function POST(request:NextRequest) {
         totalCount,
         lightly,
         addPrice,
+        usedInventorys
     } = body;
 
     try{
-        if(!productName) {
+        if(!productName || !productCode) {
             return NextResponse.json({ error: "값이 없거나 잘못된 접근", message: "값이 없거나 잘못된 접근입니다." }, {status: 400});
         }
 
@@ -30,13 +32,15 @@ export async function POST(request:NextRequest) {
         await db.collection('carts').insertOne({
             userId: userId,
             userName: userName,
+            productCode: productCode,
             img: img,
             productName: productName,
             price: price,
             totalPrice: totalPrice,
             totalCount: totalCount,
             lightly: lightly,
-            addPrice: addPrice
+            addPrice: addPrice,
+            usedInventorys: usedInventorys
         });
 
         return NextResponse.json({ success: true, message: "장바구니에 추가되었습니다." }, {status: 200});

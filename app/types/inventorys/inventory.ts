@@ -2,9 +2,9 @@
 export type Category = {
     inventorys: Array<{
         _id: string;
-        inventoryName: string,
-        category: string,
-        quantity: string | number
+        inventoryName: string;
+        category: string;
+        quantity: number;
     }>;
 };
 
@@ -13,6 +13,6 @@ export type Inventory = {
         _id: string;
         inventoryName: string;
         category: string;
-        quantity: string;
+        quantity: number;
     }>;
 };

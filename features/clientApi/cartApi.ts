@@ -5,25 +5,34 @@ import { api, api_1 } from "./base";
 export const addCartApi = async (
     userId: string,
     userName: string,
+    productCode: string,
     img: ProductImgType,
     productName: string,
     price: string,
     totalPrice:number,
     totalCount: number,
     lightly: boolean,
-    addPrice: OptionState
+    addPrice: OptionState,
+    usedInventorys: Array<{
+        _id: string;
+        category: string;
+        inventoryName: string;
+        quantity: number;
+    }>
 ) => {
     const res = await api.post('/cart/add_cart',
         {
             userId, 
             userName, 
+            productCode,
             img, 
             productName, 
             price, 
             totalPrice, 
             totalCount, 
             lightly, 
-            addPrice 
+            addPrice,
+            usedInventorys
         }
     );
 

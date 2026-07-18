@@ -16,9 +16,16 @@ import { Item } from '@/app/types/pay/pay';
 import { payCreateApi } from '@/features/clientApi/payApy';
 interface OptionProps {
     viewProduct: {
+        productCode: string;
         img: ProductImgType
         productName: string;
         price: string;
+        usedInventorys: Array<{
+            _id: string;
+            category: string;
+            inventoryName: string;
+            quantity: number;
+        }>
     };
     lightly: boolean;
     addState: OptionState;
@@ -46,8 +53,6 @@ const OrderBar = memo(({
         return (basePrice + addPriceSum) * totalCount;
     }, [viewProduct.price, addPriceSum, totalCount]);
 
-    console.log(calcPrice)
-
     const totalIncrement = useCallback(() => {
         setTotalCount(prev => prev + 1);
     }, []);
@@ -63,13 +68,15 @@ const OrderBar = memo(({
             const data = await addCartApi(
                 user.userId,
                 user.userName,
+                viewProduct.productCode,
                 viewProduct.img,
                 viewProduct.productName,
                 viewProduct.price,
                 calcPrice, 
                 totalCount,
                 lightly, 
-                addState
+                addState,
+                viewProduct.usedInventorys,
             );
 
             setModalShow(true);
@@ -99,6 +106,7 @@ const OrderBar = memo(({
                     _id: id ,
                     userId: user.userId,
                     userName: user.userName,
+                    productCode: viewProduct.productCode,
                     img: viewProduct.img,
                     productName: viewProduct.productName,
                     price: viewProduct.price,
@@ -106,6 +114,7 @@ const OrderBar = memo(({
                     totalCount: totalCount,
                     lightly: lightly,
                     addPrice: addState,
+                    usedInventorys: viewProduct.usedInventorys,
                 }
             ];
 

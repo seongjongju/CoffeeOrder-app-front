@@ -4,6 +4,7 @@ export type Cart = {
     userId: string;
     userName: string;
     _id: string;
+    productCode: string;
     img: ProductImgType;
     productName: string;
     price: string;
@@ -11,6 +12,12 @@ export type Cart = {
     totalCount: number;
     lightly: boolean;
     addPrice: OptionState;
+    usedInventorys: Array<{
+        _id: string;
+        category: string;
+        inventoryName: string;
+        quantity: string;
+    }>
 };
 
 //카트 조회 타입

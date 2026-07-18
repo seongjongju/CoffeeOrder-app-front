@@ -12,8 +12,8 @@ interface ModalProps {
     invenName: string;
     setInvenCate: Dispatch<SetStateAction<string>>;
     invenCate: string;
-    setInvenQuantity: Dispatch<SetStateAction<string>>;
-    invenQuantity: string;
+    setInvenQuantity: Dispatch<SetStateAction<number>>;
+    invenQuantity: number;
 };
 
 const InventoryRegiModal = memo(({ 
@@ -38,12 +38,12 @@ const InventoryRegiModal = memo(({
             return;
         }
 
-        if(Number(invenQuantity) === 0) {
+        if(invenQuantity === 0) {
             alert("수량은 1개 이상 필수 입니다.");
             return;
         }
 
-        if(Number(invenQuantity.replaceAll(',', '')) > 100) {
+        if(invenQuantity > 100) {
             alert("수량은 100개가 최대입니다.");
             return;
         }
@@ -63,7 +63,7 @@ const InventoryRegiModal = memo(({
             //초기값으로 되돌린다.
             setInvenName("");
             setInvenCate("");
-            setInvenQuantity("0");
+            setInvenQuantity(0);
 
             //모달창 종료
             alert(`${data.message}`);
@@ -83,7 +83,7 @@ const InventoryRegiModal = memo(({
                 className='dim'
                 onClick={() => {
                     setModalToggle("");
-                    setInvenQuantity("0");
+                    setInvenQuantity(0);
                 }}
             ></div>
             <div 
@@ -130,11 +130,11 @@ const InventoryRegiModal = memo(({
                         재고수량<span style={{color: "#ff0000"}}>*</span>
                     </label>
                     <input 
-                        type="text" 
+                        type="number" 
                         className='admin-modal__number'
                         value={invenQuantity}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setInvenQuantity(formatNumber(e.target.value));
+                            setInvenQuantity(e.target.valueAsNumber);
                         }}
                     />
                 </div> {/* .admin-modal__write : end */}
