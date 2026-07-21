@@ -13,15 +13,6 @@ interface paymentInterfaceProps {
 const PayInterface = ({paymentData}: paymentInterfaceProps) => {
     const orderType = useSearchParams().get('orderType'); //orderType 확인
     const {confilmShow, setConfilmShow, confilmText, setConfilmText} = useConfilmShow();
-    console.log(paymentData)
-
-    const items = useSearchParams().get('items');
-
-    const orderItems:Item[] = items ? JSON.parse(items) : []; //주문 정보 배열
-
-    const [finalPrice, setFinalPrice] = useState<number>(
-        orderItems.map((item:Item) => item.totalPrice).reduce((acc: number, cur: number) => acc + cur, 0)
-    ); //최종 금액(쿠폰 연산 전)
 
     //결제
     const handlePay = async () => {

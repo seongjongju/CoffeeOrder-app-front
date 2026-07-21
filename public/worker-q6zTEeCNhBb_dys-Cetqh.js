@@ -1,0 +1,1 @@
+self.addEventListener("notificationclick",n=>{n.notification.close(),n.waitUntil(clients.matchAll({type:"window",includeUncontrolled:!0}).then(i=>{const t=n.notification.data.url;for(const n of i)if(n.url===t&&"focus"in n)return n.focus();if(clients.openWindow)return clients.openWindow(t)}))});

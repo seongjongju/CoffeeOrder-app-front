@@ -8,7 +8,7 @@
 
 html {
     /* height: 100vh; */
-    background-color: #f5f5f5;
+    background-color: #888;
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
 }
@@ -115,4 +115,9 @@ li {
     color: #222;
     border-radius: 5px;
     font-size: 14px;
+}
+
+/* 나이스 페이먼츠 */
+#newPayIframe {
+    background-color: #fff !important;
 }

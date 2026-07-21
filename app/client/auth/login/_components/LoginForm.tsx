@@ -69,6 +69,11 @@ const LoginForm = () => {
                 return;
             }; 
 
+            //알림 허용 여부
+            if ('Notification' in window) {
+                await Notification.requestPermission();
+            }
+
             const loginData = await meApi();
             dispatch(loginSuccess(loginData));
             router.push('/');

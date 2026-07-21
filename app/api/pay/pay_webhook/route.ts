@@ -100,6 +100,8 @@ export async function POST(request: NextRequest) {
             if(orderType === "cart") {
                 await db.collection('carts').deleteMany({userId: selectAmount.userId});
             }
+
+            
         } else {
             await db.collection('payments_temp').updateOne(
                 { orderId: orderId },

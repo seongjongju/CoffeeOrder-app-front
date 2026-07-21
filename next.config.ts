@@ -9,13 +9,13 @@ const withPWA = withPWAInit({
   register: true,
   skipWaiting: true,
   disable: isDev, 
+  customWorkerDir: 'worker/index.js',
   buildExcludes: [
     /app-build-manifest\.json$/, 
     /react-loadable-manifest\.json$/,
     /build-manifest\.json$/,
     /middleware-manifest\.json$/
   ],
-  runtimeCaching,
 });
 
 const nextConfig: NextConfig = {
