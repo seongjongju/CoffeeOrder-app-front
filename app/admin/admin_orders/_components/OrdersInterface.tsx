@@ -2,21 +2,22 @@
 import ReactDatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale/ko'; 
-import { Members } from '@/app/types/members/member';
-import { memberCategory } from '@/app/util/admin/category';
-import MemberList from '@/shared/admin/components/list/MemberList';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { orderCategory } from '@/app/util/admin/category';
+import useOrderQuery from '@/features/hooks/query/useOrderQuery';
+import OrdersList from '@/shared/admin/components/list/OrdersList';
 import React, { useRef, useState } from 'react';
+import { useRouter, useSearchParams } from "next/navigation";
 import { formatCreatedAt } from "@/app/util/format";
+import { Orders } from "@/app/types/orders/orders";
 
-export interface MembersProps {
-    members: Members['members'];
+export interface OrdersProps {
+    orders: Orders['result'];
     params?: string;
     firstDateParams?: string;
     lastDateParams?:string;
 }
 
-const MembersInterface = ({ members, params }: MembersProps) => {
+const OrdersInterface = ({orders, params}: OrdersProps) => {
     const router = useRouter();
     const firstDateParams =  useSearchParams().get('startDate') || ""; //시작날짜
     const lastDateParams =  useSearchParams().get('endDate') || ""; //끝 날짜
@@ -37,17 +38,17 @@ const MembersInterface = ({ members, params }: MembersProps) => {
                         setLastDate(new Date());
 
                         if(e.target.value === "") {
-                            router.push(`/admin/admin_users`);
+                            router.push(`/admin/admin_orders`);
                             return;
                         }
 
-                        router.push(`/admin/admin_users?cate=${e.target.value}`);
+                        router.push(`/admin/admin_orders?cate=${e.target.value}`);
                     }}
                 >
                     <option value="">전체</option>
                     {
-                        memberCategory.map((cate) => (
-                            <option value={cate.cate} key={cate.id}>{cate.cate}</option>
+                        orderCategory.map((cate) => (
+                            <option key={cate.id}>{cate.cate}</option>
                         ))
                     }
                 </select>
@@ -55,8 +56,8 @@ const MembersInterface = ({ members, params }: MembersProps) => {
                     <input 
                         type="text" 
                         className='admin-form__input'
-                        placeholder={`${params !== undefined ? params + "을 입력하세요." : "카테고리를 선택하세요."}`}
-                        value={search}
+                        placeholder={`${params !== undefined ? params + "을 입력하세요." : "카테고리를 선택하세요."}`} 
+                        value={search}    
                         onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
                             //카테고리를 선택하지 않았다면 카테고리 select로 포커스
                             if(params === undefined) {
@@ -66,7 +67,7 @@ const MembersInterface = ({ members, params }: MembersProps) => {
                             }
 
                             setSearch(e.target.value);
-                        }}                        
+                        }}      
                     />
                     <button 
                         className='admin-form__search'
@@ -79,7 +80,7 @@ const MembersInterface = ({ members, params }: MembersProps) => {
 
                             //첫 번째 기간 쿼리스트링이 없다면
                             if(!firstDateParams) {
-                                router.push(`/admin/admin_users?cate=${params}&q=${search}`);
+                                router.push(`/admin/admin_orders?cate=${params}&q=${search}`);
                                 return;
                             }
 
@@ -87,12 +88,12 @@ const MembersInterface = ({ members, params }: MembersProps) => {
                             //카테고리가 있다면 카테고리 별 기간 검색
                             if(params === undefined) {
                                 router.push(`
-                                    /admin/admin_users?startDate=${formatCreatedAt(firstDateParams)}&endDate=${formatCreatedAt(lastDateParams)}
+                                    /admin/admin_orders?startDate=${formatCreatedAt(firstDateParams)}&endDate=${formatCreatedAt(lastDateParams)}
                                 `);
                                 return;
                             } else {
                                 router.push(`
-                                    /admin/admin_users?cate=${params}&startDate=${formatCreatedAt(firstDateParams)}&endDate=${formatCreatedAt(lastDateParams)}&q=${search}
+                                    /admin/admin_orders?cate=${params}&startDate=${formatCreatedAt(firstDateParams)}&endDate=${formatCreatedAt(lastDateParams)}&q=${search}
                                 `);
                                 return; 
                             }
@@ -102,7 +103,7 @@ const MembersInterface = ({ members, params }: MembersProps) => {
                     </button>
                 </div>
                 <div className='admin-form__write date'>
-                    <label>가입일:</label>
+                    <label>주문일시:</label>
                     <ReactDatePicker 
                         showIcon 
                         locale={ko}
@@ -115,11 +116,11 @@ const MembersInterface = ({ members, params }: MembersProps) => {
 
                             //카테고리가 없다면 전체 기간 필터링
                             if(params === undefined) {
-                                router.push(`/admin/admin_users?startDate=${formatCreatedAt(date)}`);
+                                router.push(`/admin/admin_orders?startDate=${formatCreatedAt(date)}`);
                                 return;
                             }
 
-                            router.push(`/admin/admin_users?cate=${params}&startDate=${formatCreatedAt(date)}`);
+                            router.push(`/admin/admin_orders?cate=${params}&startDate=${formatCreatedAt(date)}`);
                         }}
                         selectsStart
                         startDate={firstDate}
@@ -135,11 +136,11 @@ const MembersInterface = ({ members, params }: MembersProps) => {
                             setLastDate(date);
                             //카테고리가 없다면 전체 기간 필터링
                             if(params === undefined) {
-                                router.push(`/admin/admin_users?startDate=${formatCreatedAt(firstDate)}&endDate=${formatCreatedAt(date)}`);
+                                router.push(`/admin/admin_orders?startDate=${formatCreatedAt(firstDate)}&endDate=${formatCreatedAt(date)}`);
                                 return;
                             }
 
-                            router.push(`/admin/admin_users?cate=${params}&startDate=${formatCreatedAt(firstDate)}&endDate=${formatCreatedAt(date)}`);
+                            router.push(`/admin/admin_orders?cate=${params}&startDate=${formatCreatedAt(firstDate)}&endDate=${formatCreatedAt(date)}`);
                         }}
                         selectsEnd
                         startDate={firstDate}
@@ -155,8 +156,8 @@ const MembersInterface = ({ members, params }: MembersProps) => {
                     minHeight: "80vh"
                 }}
             >
-                <MemberList 
-                    members={members}   
+                <OrdersList   
+                    orders={orders}
                     params={params} 
                     firstDateParams={firstDateParams}
                     lastDateParams={lastDateParams}
@@ -166,4 +167,4 @@ const MembersInterface = ({ members, params }: MembersProps) => {
     );
 };
 
-export default MembersInterface;
+export default OrdersInterface;

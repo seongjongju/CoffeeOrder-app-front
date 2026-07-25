@@ -1,6 +1,7 @@
 export interface Item {
     _id: string;
     userId: string;
+    userName: string;
     productName: string;
     price: string;
     lightly: boolean;
@@ -20,6 +21,7 @@ export interface Item {
 
 export type paymentData = {
     userId: string;
+    userName: string;
     amount: number;
     createAt: string;
     items: Item[];

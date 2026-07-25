@@ -1,8 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import LatelyOrderList from '@/shared/admin/components/list/LatelyOrderList';
+import OrdersList from '@/shared/admin/components/list/OrdersList';
+import { orderGetApi } from '@/features/adminApi/adminOrderApi';
 
-const LatelyOrderDashBoard = () => {
+const LatelyOrderDashBoard = async () => {
+    const allOrders = await orderGetApi(); //주문 내역
+
     return (
         <div className='dashboard' style={{
             width: "33.3%", 
@@ -19,7 +23,9 @@ const LatelyOrderDashBoard = () => {
                 </Link>
             </div> {/* .admin-title-ui : end */}
 
-            <LatelyOrderList />
+            <OrdersList 
+                orders={allOrders.result}
+            />
         </div>
     );
 };

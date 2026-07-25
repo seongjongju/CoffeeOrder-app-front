@@ -35,7 +35,7 @@ const MemberList = ({members, params, firstDateParams, lastDateParams}: MembersP
             return [...dateList];
         }
 
-        const searchDateList  = searchFiltered.filter(mem => firstDateParams < formatCreatedAt(mem.createdAt) && lastDateParams > formatCreatedAt(mem.createdAt));
+        const searchDateList  = searchFiltered.filter(mem => firstDateParams <= formatCreatedAt(mem.createdAt) && lastDateParams >= formatCreatedAt(mem.createdAt));
         return [...searchDateList];
     }, [pathName, params, firstDateParams, lastDateParams, members]);
 

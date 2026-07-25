@@ -50,3 +50,14 @@ export const memberCategory = [
         cate: "이메일"
     },
 ];
+
+export const orderCategory = [
+    {
+        id: "order_cate_0",
+        cate: "이름"
+    },
+    {
+        id: "order_cate_1",
+        cate: "아이디"
+    },
+];

@@ -85,6 +85,7 @@ export async function POST(request: NextRequest) {
             await db.collection('payments').insertOne({
                 orderId: orderId,
                 userId: selectAmount.userId,
+                userName: selectAmount.userName,
                 items: selectAmount.items,
                 amount: amount,
                 tid: tid,

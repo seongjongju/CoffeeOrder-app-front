@@ -1,6 +1,7 @@
 /*************************** admin 헤더 */
 #admin-header {
     height: 60px;
+    max-width: 100%;
     background: #2B1B16;
     position: fixed;
     z-index: 99;
