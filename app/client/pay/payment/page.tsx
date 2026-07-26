@@ -9,11 +9,11 @@ const PaymentPage = async ({ searchParams }: {searchParams: Promise<{ orderId: s
 
     return (
         <main className='main order-main'>
-            <div className='inner'>
+            <nav className='inner'>
                 <PayInterface 
                     paymentData={paymentData.data}
                 />
-            </div>
+            </nav>
         </main>
     );
 };

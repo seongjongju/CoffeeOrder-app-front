@@ -59,18 +59,18 @@ const OrdersList = ({orders, params, firstDateParams, lastDateParams}:OrdersProp
                         <th>총 결제금액</th>
                     </tr>
                     {
-                        dateFiltered?.map((order) => {                            
-                            const productName = order.items.length > 1 ? 
-                                                `${order.items[0].productName} 외 ${order.items.length - 1}개` :
-                                                order.items[0].productName;
-
+                        dateFiltered?.map((order) => {         
                             return (
-                                <tr key={order._id}>
+                                <tr 
+                                    style={{cursor: "pointer"}}
+                                    key={order._id}
+                                    
+                                >
                                     <td>{order.orderId}</td>
                                     <td>{formatCreatedAt(order.createdAt)}</td>
                                     <td>{order.userName}</td>
                                     <td>{order.userId}</td>
-                                    <td>{productName}</td>
+                                    <td>{order.productName}</td>
                                     <td>{formatPrice(order.amount)}원</td>
                                 </tr>
                             )

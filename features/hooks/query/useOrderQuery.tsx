@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useOrderQuery = () => {
     const orderQuery = useQuery<Orders>({
-        queryKey: ['products'],
+        queryKey: ['orders'],
         queryFn: orderGetApi,
     });
 

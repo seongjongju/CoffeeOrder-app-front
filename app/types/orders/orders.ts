@@ -6,6 +6,7 @@ export type OrderItem = {
     userId: string;
     userName: string;
     amount: number;
+    productName: string;
     items: Item[];
     orderType: string;
     status: string;

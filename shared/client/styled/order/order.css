@@ -9,9 +9,9 @@
 
 .order-main {
     background: #f5f5f5;
-    max-height: 100vh;
     min-height: 100vh;
     position: relative;
+    padding-bottom: 0;
 }
 
 .order {
@@ -109,18 +109,21 @@
     color: #444;
 }
 
-/* .order__btns {
+.order__btns {
     display: flex;
     align-items: center;
     gap: 7px;
-} */
+}
 
 .order__button {
-    width: 100%;
+    width: 50%;
     height: 38px;
     border-radius: 5px;
     font-weight: 500;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .order__button.view {
@@ -227,4 +230,33 @@
     color: #fff;
     border: none;
     border-radius: 4px;
+}
+
+/* 주문내역이 없을 시 */
+.order-null {
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin-top: -80px;
+}
+
+.order-null .order-inner {
+    display: none;
+}
+
+.order-null__ui {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 44px;
+}
+
+.order-null__text {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2B1B16;
+    text-align: center;
+    margin-top: 10px;
 }

@@ -95,7 +95,13 @@ const Header = () => {
                                 (
                                     <button 
                                         className='back-button'
-                                        onClick={() => router.back()}
+                                        onClick={() => {
+                                            if(pathName === '/client/order/order_history') {
+                                                router.push('/');
+                                            } else {
+                                                router.back();
+                                            }
+                                        }}
                                     >
                                         <Image src={BackIco} alt='뒤로가기' />
                                     </button>

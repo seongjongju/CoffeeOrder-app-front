@@ -88,6 +88,7 @@ export async function POST(request: NextRequest) {
                 userName: selectAmount.userName,
                 items: selectAmount.items,
                 amount: amount,
+                productName: selectAmount.productName,
                 tid: tid,
                 orderType: orderType,
                 status: "paid",

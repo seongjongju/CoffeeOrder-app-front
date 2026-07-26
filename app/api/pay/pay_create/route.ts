@@ -28,9 +28,12 @@ export async function POST(request:NextRequest) {
 
         let newOrderId = counter?.total; 
 
-        //userId, userName 상위에 저장
+        //userId, userName, productName 상위에 저장
         const userId = orderItems[0].userId;
         const userName = orderItems[0].userName;
+        const productName = orderItems.length > 1 ?
+                            `${orderItems[0].productName} 외 ${orderItems.length - 1}개` : 
+                            orderItems[0].productName;
 
         //결제 상태 = pending
         await db.collection('payments_temp').insertOne({
@@ -38,6 +41,7 @@ export async function POST(request:NextRequest) {
             userId: userId,
             userName: userName,
             status: 'pending',
+            productName: productName,
             amount: amount,
             items: orderItems,
             createAt: new Date()

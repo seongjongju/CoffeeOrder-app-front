@@ -5,14 +5,20 @@ import Button from '@/shared/client/components/button/Button';
 import check from '@/public/icons/circle_check.svg';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+import CancelButton from '@/shared/client/components/button/CancelButton';
+import { useAppSelector } from '@/store/hook';
 
 const PaySuccess = () => {
     const router = useRouter();
+    const user = useAppSelector(state => state.auth.user); //유저 목록
     const searchParams = useSearchParams();
     const productName = searchParams.get('productName');
+    const userId = searchParams.get('userId');
     const isNotificationSent = useRef(false);
 
     useEffect(() => {
+        if(user.userId !== userId) return;
+        
         // 중복 실행 방지
         if (isNotificationSent.current) return;
 
@@ -33,11 +39,16 @@ const PaySuccess = () => {
                 });
             }, 5000);
         }
-    }, [productName]);
+    }, []);
 
     const goToHome = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         router.push('/');
+    };
+
+    const goToOrderHistory = (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        router.push('/client/order/order_history');
     };
 
     return (
@@ -48,10 +59,16 @@ const PaySuccess = () => {
                         <p className='pay-success__text'>결제가 완료되었습니다!!</p>
                         <Image src={check} alt="체크" />
                     </div>
-                    <Button 
-                        buttonText="홈으로 이동"
-                        onClick={goToHome}
-                    />
+                    <div className='pay-success__btns'>
+                        <Button 
+                            buttonText="홈으로 이동"
+                            onClick={goToHome}
+                        />
+                        <CancelButton 
+                            buttonText="주문내역으로 이동"
+                            onClick={goToOrderHistory}
+                        />
+                    </div>
                 </div>
             </nav>
         </div>

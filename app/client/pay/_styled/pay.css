@@ -56,7 +56,15 @@
     text-align: center;
 }
 
-.pay-success .common-button {
+.pay-success__btns {
     position: absolute;
     bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.pay-success .common-button {
+    
 }

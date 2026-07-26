@@ -23,6 +23,7 @@ export type paymentData = {
     userId: string;
     userName: string;
     amount: number;
+    productName: string;
     createAt: string;
     items: Item[];
     orderId: string;

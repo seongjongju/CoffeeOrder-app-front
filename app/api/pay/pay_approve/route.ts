@@ -136,6 +136,7 @@ export async function POST(request: NextRequest) {
             userName: selectAmount.userName,
             items: selectAmount.items,
             amount: amount,
+            productName: selectAmount.productName,
             tid: tid,
             orderType: orderType,
             status: "paid",
@@ -149,13 +150,8 @@ export async function POST(request: NextRequest) {
         if(orderType === "cart") {
             await db.collection('carts').deleteMany({userId: selectAmount.userId});
         }
-
-        //성공 시 쿼리스트링으로 넘길 제품명
-        const payProductName = selectAmount.items.length > 1 ? 
-                            `${selectAmount.items[0].productName} 외 ${selectAmount.items.length - 1}개` :
-                            selectAmount.items[0].productName;
         
-        return NextResponse.redirect(new URL(`/client/pay/pay_success?productName=${payProductName}`, request.url));
+        return NextResponse.redirect(new URL(`/client/pay/pay_success?userId=${selectAmount.userId}&productName=${selectAmount.productName}`, request.url));
     } catch (err) {
         console.error("POST 데이터 처리 중 에러:", err);
         return NextResponse.json({ status: "fail", message: "에러 발생", error: err }, { status: 500 });
