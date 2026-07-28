@@ -1,7 +1,6 @@
 'use client';
 import { OrdersProps } from '@/app/admin/admin_orders/_components/OrdersInterface';
 import { formatCreatedAt, formatPrice } from '@/app/util/format';
-import useOrderQuery from '@/features/hooks/query/useOrderQuery';
 import { usePathname, useSearchParams } from 'next/navigation';
 import React, { useMemo } from 'react';
 
@@ -38,6 +37,10 @@ const OrdersList = ({orders, params, firstDateParams, lastDateParams}:OrdersProp
         return [...searchDateList];
     }, [pathName, params, firstDateParams, lastDateParams, orders]);
 
+    const handleClickOrderView = (orderId: string) => {
+        window.open(`/admin/admin_orders_view/${orderId}`, '_blank', 'width=400, height=500, scrollbars=yes, resizable=no');
+    };
+
     return (
         <div
             style={{
@@ -57,14 +60,19 @@ const OrdersList = ({orders, params, firstDateParams, lastDateParams}:OrdersProp
                         <th>아이디</th>
                         <th>메뉴</th>
                         <th>총 결제금액</th>
+                        {
+                            pathName !== "/admin/admin_main" && 
+                            (
+                                <th>설정</th>  
+                            )
+                        }
+                        
                     </tr>
                     {
                         dateFiltered?.map((order) => {         
                             return (
                                 <tr 
-                                    style={{cursor: "pointer"}}
                                     key={order._id}
-                                    
                                 >
                                     <td>{order.orderId}</td>
                                     <td>{formatCreatedAt(order.createdAt)}</td>
@@ -72,6 +80,19 @@ const OrdersList = ({orders, params, firstDateParams, lastDateParams}:OrdersProp
                                     <td>{order.userId}</td>
                                     <td>{order.productName}</td>
                                     <td>{formatPrice(order.amount)}원</td>
+                                    {
+                                        pathName !== "/admin/admin_main" && 
+                                        (
+                                            <td>
+                                                <button 
+                                                    style={{color: "#4000ff"}}
+                                                    onClick={() => handleClickOrderView(order.orderId)}
+                                                >
+                                                    상세보기
+                                                </button>
+                                            </td>       
+                                        )
+                                    }
                                 </tr>
                             )
                         })

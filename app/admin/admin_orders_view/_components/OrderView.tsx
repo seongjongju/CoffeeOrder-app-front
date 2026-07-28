@@ -1,17 +1,15 @@
-'use client';
-import { OrderItem } from '@/app/types/orders/orders';
+import { OrderItem, Orders } from '@/app/types/orders/orders';
 import { formatPrice } from '@/app/util/format';
-import useOrderQuery from '@/features/hooks/query/useOrderQuery';
 import React from 'react';
 
 interface OrderViewProps {
-    orderIdParams: string;
+    orders: Orders['result'];
+    params?: string;
 };
 
-const OrderViewList = ({ orderIdParams }: OrderViewProps) => {
-    const {orders} = useOrderQuery();
-    const findOrdersItems = orders.find((order: OrderItem) => order.orderId === orderIdParams)?.items;
-
+const OrderView = ({orders, params}: OrderViewProps) => {
+    const findOrdersItems = orders.find((order: OrderItem) => order.orderId === params)?.items;
+    
     return (
         <ul>
             {
@@ -71,4 +69,4 @@ const OrderViewList = ({ orderIdParams }: OrderViewProps) => {
     );
 };
 
-export default OrderViewList;
+export default OrderView;

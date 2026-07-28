@@ -4,10 +4,11 @@ import "../_styled/admin_inc.css";
 import Link from 'next/link';
 import AdminLnb from '../admin_lnb/AdminLnb';
 import { adminLogoutApi } from '@/features/adminApi/adminAuthApi';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const AdminHeader = () => {
     const router = useRouter(); 
+    const pathName = usePathname();
 
     const adminLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -23,6 +24,9 @@ const AdminHeader = () => {
             return;
         }
     };
+
+    //주문내역 상세보기 페이지에서는 헤더 UI를 보여주지 않음
+    if(pathName.includes('/admin/admin_orders_view')) return null;
 
     return (
         <>
