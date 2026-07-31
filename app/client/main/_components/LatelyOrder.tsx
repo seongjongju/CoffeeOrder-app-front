@@ -11,11 +11,35 @@ const LatelyOrder = () => {
     const {orders} = useOrderQuery();
     const user = useAppSelector(state => state.auth.user); //유저 목록
     const userOrders = orders.filter(order => order.userId === user.userId);
+    const directOrder = userOrders.filter(order => order.items.length === 1); //단일상품만
+
+    //중복 처리
+    const uniqueOrders: (typeof userOrders[0])[] = [];
+
+    directOrder.forEach(order => {
+        const item = order.items[0];
+
+        const currentOptions = JSON.stringify(item.addPrice || []);
+
+        const isExist = uniqueOrders.some(addedOrder => {
+            const addedItem = addedOrder.items[0];
+            const addedOptions = JSON.stringify(addedItem.addPrice || []);
+
+            return (
+            addedItem.productCode === item.productCode &&
+            addedOptions === currentOptions
+            );
+        });
+
+        if (!isExist) {
+            uniqueOrders.push(order);
+        }
+    });
 
     return (
         <>
             {
-                userOrders.length > 0 &&
+                uniqueOrders.length > 0 &&
                 (
                     <div className='inner'>
                         <h2 className='main-title'>최근 주문한 메뉴!!</h2> 
@@ -31,19 +55,14 @@ const LatelyOrder = () => {
                 }}
             >
                 {
-                    userOrders.map((item) => {
-                        const img = item.items[0].img.publicId;
+                    uniqueOrders.slice(0, 9).map((item) => {
                         return (
                             <SwiperSlide
                                 key={item.orderId}
                             >
                                 <OrderHistoryItem 
                                     key={item._id}
-                                    orderId={item.orderId}
-                                    date={item.createdAt}
-                                    img={img}
-                                    productName={item.productName}
-                                    amount={item.amount}
+                                    item={item}
                                 />
                             </SwiperSlide>
                         )

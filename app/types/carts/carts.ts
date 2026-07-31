@@ -1,23 +1,31 @@
 import { OptionState, ProductImgType } from "../products/product";
 
 export type Cart = {
+    _id: string;
     userId: string;
     userName: string;
-    _id: string;
-    productCode: string;
-    img: ProductImgType;
     productName: string;
+    productCode: string;
     price: string;
+    lightly: boolean;
+    addPrice: Array<{
+        id: string;
+        count: number;
+        label: string;
+    }>;
     totalPrice: number;
     totalCount: number;
-    lightly: boolean;
-    addPrice: OptionState;
     usedInventorys: Array<{
         _id: string;
-        category: string;
         inventoryName: string;
-        quantity: string;
-    }>
+        category: string;
+        quantity: number;
+    }>;
+    img: {
+        format: string;
+        imgName: string;
+        publicId: string;
+    };
 };
 
 //카트 조회 타입

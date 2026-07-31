@@ -42,6 +42,8 @@ const OrderBar = memo(({
     const user = useAppSelector(state => state.auth.user); //유저 정보
     const [totalCount, setTotalCount] = useState<number>(1);
 
+    console.log(viewProduct)
+
     //옵션 합산금액
     const addPriceSum = useMemo(() => {
         return addState.map(add => add.addPrice).reduce((acc, current) => acc + current, 0);

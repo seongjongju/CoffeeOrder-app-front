@@ -7,6 +7,10 @@ export type OrderItem = {
     userName: string;
     amount: number;
     productName: string;
+    productCode: string;
+    price: string;
+    totalPrice: number;
+    totalCount: number;
     items: Item[];
     orderType: string;
     status: string;

@@ -3,6 +3,7 @@ export interface Item {
     userId: string;
     userName: string;
     productName: string;
+    productCode: string;
     price: string;
     lightly: boolean;
     addPrice: Array<{
@@ -12,6 +13,12 @@ export interface Item {
     }>;
     totalPrice: number;
     totalCount: number;
+    usedInventorys: Array<{
+        _id: string;
+        inventoryName: string;
+        category: string;
+        quantity: number;
+    }>;
     img: {
         format: string;
         imgName: string;

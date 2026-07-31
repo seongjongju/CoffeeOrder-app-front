@@ -15,18 +15,13 @@ const OrderHistoryList = () => {
             {
                 userOrders.length > 0 ?
                 (
-                    <ul>
+                    <ul style={{paddingBottom: "20px"}}>
                         {
                             userOrders.map((item) => {
-                                const img = item.items[0].img.publicId;
                                 return (
                                     <OrderHistoryItem 
                                         key={item._id}
-                                        orderId={item.orderId}
-                                        date={item.createdAt}
-                                        img={img}
-                                        productName={item.productName}
-                                        amount={item.amount}
+                                        item={item}
                                     />
                                 )
                             })
