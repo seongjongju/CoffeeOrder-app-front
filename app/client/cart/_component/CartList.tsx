@@ -9,11 +9,9 @@ import Modal from '@/shared/client/components/modal/Modal';
 import CartItemNone from './CartItemNone';
 import { useAppSelector } from '@/store/hook';
 import { formatPrice } from '@/app/util/format';
-import { useRouter } from 'next/navigation';
-import { payCreateApi } from '@/features/clientApi/payApy';
+import usePayment from '@/features/hooks/pay/usePayment';
 
 const CartList = () => {
-    const router = useRouter();
     const { modalShow, setModalShow, modalText, setModalText } = useModalShow();
     const { carts } = useCartQuery(); //카트 전체 조회
     const user = useAppSelector(state => state.auth.user); //유저 목록
@@ -36,26 +34,8 @@ const CartList = () => {
         }
     }, []);
 
-    //주문서 핸들러(장바구니)
-    const addPayment = async (e:React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        try {
-            const data = await payCreateApi(userCarts);
-
-            if(data.status === "fail") {
-                console.log(data.message);
-                return;
-            }
-            console.log(data.message);
-            router.push(`/client/pay/payment?orderId=${data.orderId}&orderType=cart`);
-            return;
-        } catch(err:any) {
-            console.error(err.response?.data?.message);
-            setModalShow(true);
-            setModalText(err.response?.data?.message);
-            return;
-        }
-    };
+    //결제 커스텀 훅
+    const {addPayment} = usePayment(userCarts, "cart");
     
     return (
         <div className={`inner cart-inner ${userCarts.length === 0 ? "cart-null" : ""}`}>

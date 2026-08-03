@@ -1,12 +1,10 @@
 'use client';
 import React, { useMemo, useState } from 'react';
-import Link from 'next/link';
 import { ProductGetType } from '@/app/types/products/product';
 import { CldImage } from 'next-cloudinary';
 import { formatNumber } from '@/app/util/format';
 import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
 import ProductUpdateModal from '@/app/admin/admin_products/_components/ProductUpdateModal';
-import { Inventory } from '@/app/types/inventorys/inventory';
 import { productAllDeleteApi, productDeleteApi } from '@/features/adminApi/adminProductApi';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ProductProps } from '@/app/admin/admin_products/_components/ProductsInterface';

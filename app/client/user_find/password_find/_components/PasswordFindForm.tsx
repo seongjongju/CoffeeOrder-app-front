@@ -8,7 +8,6 @@ import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
 import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
-import { userFindApi } from '@/features/services/userFind/userFind.services';
 import { resetPasswordApi } from '@/features/clientApi/authApi';
 import { useAppSelector } from '@/store/hook';
 import { formatPhoneNumber } from '@/app/util/format';

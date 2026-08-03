@@ -1,12 +1,12 @@
 'use client';
 import { OrderItem } from '@/app/types/orders/orders';
 import { formatCreatedAt, formatPrice } from '@/app/util/format';
-import { payCreateApi } from '@/features/clientApi/payApy';
 import useModalShow from '@/features/hooks/modal/useModalShow';
+import usePayment from '@/features/hooks/pay/usePayment';
 import Modal from '@/shared/client/components/modal/Modal';
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 interface OrderHistoryItemProps {
@@ -15,46 +15,26 @@ interface OrderHistoryItemProps {
 
 const OrderHistoryItem = ({item}: OrderHistoryItemProps) => {
     const pathName = usePathname();
-    const router = useRouter();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow(); //모달창
 
-    //주문서 핸들러(단일)
-    const addPayment = async (e:React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        try {
-            const items = [
-                {
-                    _id: item._id ,
-                    userId: item.userId,
-                    userName: item.userName,
-                    productCode: item.items[0].productCode,
-                    img: item.items[0].img,
-                    productName: item.productName,
-                    price: item.items[0].price,
-                    totalPrice: item.items[0].totalPrice,
-                    totalCount: item.items[0].totalCount,
-                    lightly: item.items[0].lightly,
-                    addPrice: item.items[0].addPrice,
-                    usedInventorys: item.items[0].usedInventorys,
-                }
-            ];
-
-            const data = await payCreateApi(items);
-
-            if(data.status === "fail") {
-                console.log(data.message);
-                return;
-            }
-            console.log(data.message);
-            router.push(`/client/pay/payment?orderId=${data.orderId}&orderType=reorder`);
-            return;
-        } catch(err:any) {
-            console.error(err.response?.data?.message);
-            setModalShow(true);
-            setModalText(err.response?.data?.message);
-            return;
+    //결제 커스텀 훅
+    const items = [
+        {
+            _id: item._id ,
+            userId: item.userId,
+            userName: item.userName,
+            productCode: item.items[0].productCode,
+            img: item.items[0].img,
+            productName: item.productName,
+            price: item.items[0].price,
+            totalPrice: item.items[0].totalPrice,
+            totalCount: item.items[0].totalCount,
+            lightly: item.items[0].lightly,
+            addPrice: item.items[0].addPrice,
+            usedInventorys: item.items[0].usedInventorys,
         }
-    };
+    ];
+    const {addPayment} = usePayment(items, "reorder");
 
     return (
         <div className='order__item'>
@@ -92,6 +72,12 @@ const OrderHistoryItem = ({item}: OrderHistoryItemProps) => {
                 ) : 
                 (
                     <div className='order__btns'> 
+                        <Link 
+                            href={`/client/order/order_view/${item.orderId}`}
+                            className='order__button view'
+                        >
+                            상세보기
+                        </Link>
                         <button
                             className='common-button order__button'
                             onClick={addPayment}

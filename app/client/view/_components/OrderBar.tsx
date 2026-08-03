@@ -11,9 +11,7 @@ import { formatPrice } from '@/app/util/format';
 import { addCartApi } from '@/features/clientApi/cartApi';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAppSelector } from '@/store/hook';
-import { useRouter } from 'next/navigation';
-import { Item } from '@/app/types/pay/pay';
-import { payCreateApi } from '@/features/clientApi/payApy';
+import usePayment from '@/features/hooks/pay/usePayment';
 interface OptionProps {
     viewProduct: {
         productCode: string;
@@ -37,12 +35,9 @@ const OrderBar = memo(({
     addState 
 }: OptionProps) => {
     const id = nanoid();
-    const router = useRouter();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow(); //모달창
     const user = useAppSelector(state => state.auth.user); //유저 정보
     const [totalCount, setTotalCount] = useState<number>(1);
-
-    console.log(viewProduct)
 
     //옵션 합산금액
     const addPriceSum = useMemo(() => {
@@ -54,6 +49,25 @@ const OrderBar = memo(({
         const basePrice = Number(viewProduct.price.replaceAll(',', ''));
         return (basePrice + addPriceSum) * totalCount;
     }, [viewProduct.price, addPriceSum, totalCount]);
+
+    //결제 커스텀 훅
+    const items = [
+        {
+            _id: id,
+            userId: user.userId,
+            userName: user.userName,
+            productCode: viewProduct.productCode,
+            img: viewProduct.img,
+            productName: viewProduct.productName,
+            price: viewProduct.price,
+            totalPrice: calcPrice,
+            totalCount: totalCount,
+            lightly: lightly,
+            addPrice: addState,
+            usedInventorys: viewProduct.usedInventorys,
+        }
+    ];
+    const {addPayment} = usePayment(items, "direct");
 
     const totalIncrement = useCallback(() => {
         setTotalCount(prev => prev + 1);
@@ -98,44 +112,6 @@ const OrderBar = memo(({
             return;
         }
     }, [calcPrice, lightly, addState, setModalShow, setModalText]);
-
-    //주문서 핸들러(단일)
-    const addPayment = async (e:React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        try {
-            const items = [
-                {
-                    _id: id ,
-                    userId: user.userId,
-                    userName: user.userName,
-                    productCode: viewProduct.productCode,
-                    img: viewProduct.img,
-                    productName: viewProduct.productName,
-                    price: viewProduct.price,
-                    totalPrice: calcPrice,
-                    totalCount: totalCount,
-                    lightly: lightly,
-                    addPrice: addState,
-                    usedInventorys: viewProduct.usedInventorys,
-                }
-            ];
-
-            const data = await payCreateApi(items);
-
-            if(data.status === "fail") {
-                console.log(data.message);
-                return;
-            }
-            console.log(data.message);
-            router.push(`/client/pay/payment?orderId=${data.orderId}&orderType=direct`);
-            return;
-        } catch(err:any) {
-            console.error(err.response?.data?.message);
-            setModalShow(true);
-            setModalText(err.response?.data?.message);
-            return;
-        }
-    };
 
     return (
         <div className='order-bar'>

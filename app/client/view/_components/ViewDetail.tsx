@@ -5,11 +5,7 @@ interface ProductDetailProps {
     productInfos: Array<ProductType>;
 };
 
-
 const ViewDetail = ({ productInfos }: ProductDetailProps) => {
-
-    //console.log(productInfos)
-
     return (
         <div className='view-detail'>
             <p className='view-title'>상세정보</p>
