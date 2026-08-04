@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { nanoid } from 'nanoid';
 
 interface AlertItem {
-    alertId: string;
-    menuName: string;
+    userId: string;
+    text: string;
 };
 
 interface AlertState {
@@ -13,6 +14,7 @@ const initialState: AlertState = {
     items: []
 };
 
+const id = nanoid();
 
 const alertSlice = createSlice({
     name: 'alert',
@@ -20,6 +22,7 @@ const alertSlice = createSlice({
     reducers: {
         addToAlert: (state, action) => {
             state.items.push({
+                _id: id,
                 ...action.payload
             })
         },

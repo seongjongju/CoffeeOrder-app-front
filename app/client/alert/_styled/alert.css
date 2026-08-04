@@ -1,0 +1,30 @@
+.alert__li {
+    display: flex;
+    align-items: flex-start;
+    gap: .5em;
+    font-size: 18px;
+    color: #2B1B16;
+    line-height: 1.4;
+    letter-spacing: -.5px;
+    margin-bottom: .5em;
+    word-break: keep-all;
+}
+
+.alert__li:last-child {
+    margin-bottom: 0;
+}
+
+.alert__icon {
+    width: 1.7em;
+}
+
+.alert-none-text {
+    font-size: 18px;
+    color: #666;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+}

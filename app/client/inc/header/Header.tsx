@@ -14,12 +14,13 @@ import Link from 'next/link';
 import CategorySideGnb from '@/shared/client/components/side/CategorySideGnb';
 import useCartQuery from '@/features/hooks/query/useCartQuery';
 import { useAppSelector } from '@/store/hook';
+import useAlert from '@/features/hooks/alert/useAlert';
 
 const Header = () => {
     const [categorySideOn, setCategorySideOn] = useState<boolean>(false); //사이드 gnb (카테고리)
     const {carts} = useCartQuery() // 장바구니 리액트쿼리 커스텀 훅
     const user = useAppSelector(state => state.auth.user); //유저 목록
-    //const {alertItems} = useAlert();
+    const {userAlerts} = useAlert(); //해당 유저의 알람 내역
     const pathName = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -55,13 +56,13 @@ const Header = () => {
                                 </Link>
                                 <Link
                                     style={{ position: "relative" }}
-                                    href={''}
+                                    href={'/client/alert'}
                                 >
                                     <span 
                                         style={{ background: "#ff0000" }}
                                         className='quantity'
                                     >
-                                        {/* {alertItems.length} */}
+                                        {userAlerts.length}
                                     </span>
                                     <img src={alert.src} alt='알림' />
                                 </Link>
@@ -116,14 +117,14 @@ const Header = () => {
                                             <img src={cart.src} alt='장바구니' />
                                         </Link>
                                         <Link
-                                            href={''}
+                                            href={'/client/alert'}
                                             style={{ position: "relative" }}
                                         >
                                             <span 
                                                 style={{ background: "#ff0000" }}
                                                 className='quantity'
                                             >
-                                                {/* {alertItems.length} */}
+                                                {userAlerts.length}
                                             </span>
                                             <img src={alert.src} alt='알림' />
                                         </Link>

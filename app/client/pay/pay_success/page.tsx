@@ -6,10 +6,13 @@ import check from '@/public/icons/circle_check.svg';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import CancelButton from '@/shared/client/components/button/CancelButton';
-import { useAppSelector } from '@/store/hook';
+import { useAppDispatch, useAppSelector } from '@/store/hook';
+import { addToAlert } from '@/store/alert/alertSlice';
 
 const PaySuccess = () => {
     const router = useRouter();
+    const dispatch = useAppDispatch();
+
     const user = useAppSelector(state => state.auth.user); //유저 목록
     const searchParams = useSearchParams();
     const productName = searchParams.get('productName');
@@ -31,12 +34,24 @@ const PaySuccess = () => {
                 icon: '/icons/icon-192.png',
             });
 
+            //알람 내역에 추가
+            dispatch(addToAlert({
+                userId: userId,
+                text: `${productName} 주문이 완료되었습니다.`,
+            }));
+
             // 2차 알림: 5초 뒤 실행
             setTimeout(() => {
                 new Notification('픽업 안내', {
                     body: `${productName} 준비되었습니다! 픽업해 주세요.`,
                     icon: '/icons/icon-192.png',
                 });
+
+                //알람 내역에 추가
+                dispatch(addToAlert({
+                    userId: userId,
+                    text: `${productName} 준비되었습니다! 픽업해 주세요.`,
+                }));
             }, 5000);
         }
     }, []);

@@ -14,5 +14,6 @@ export const getTitle = (path: string, searchParams: ReadonlyURLSearchParams) =>
     if(path === '/client/pay/payment') return '결제하기';
     if(path.includes('/order')) return '주문내역';
     if(searchParams.get('category')) return searchParams.get('category');
+    if(path === '/client/alert') return '알림';
     return '';
 };
