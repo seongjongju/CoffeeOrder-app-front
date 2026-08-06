@@ -4,6 +4,8 @@ import { ProductGetType, ProductState, ProductUpdateState } from '@/app/types/pr
 import { productCategory } from '@/app/util/admin/category';
 import { formatNumber } from '@/app/util/format';
 import { productUpdateApi } from '@/features/adminApi/adminProductApi';
+import useLoading from '@/features/hooks/loading/useLoading';
+import AdminLoadingUI from '@/shared/admin/components/loading/AdminLoadingUI';
 import { CldImage, CldUploadWidget } from 'next-cloudinary';
 import { useRouter } from 'next/navigation';
 import React, { Dispatch, memo, SetStateAction, useReducer, useState } from 'react';
@@ -37,6 +39,7 @@ const ProductUpdateModal = memo(({
     products,
     inventorys,
 }: UpdateProps) => {
+    const {isLoading, setIsLoading} = useLoading();
     const router = useRouter();
 
     //현재 선택된 행
@@ -162,6 +165,8 @@ const ProductUpdateModal = memo(({
         }
 
         try {
+            setIsLoading(true);
+
             const data = await productUpdateApi(
                 prdCode,
                 updateImg,
@@ -186,6 +191,8 @@ const ProductUpdateModal = memo(({
             console.error(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);
             return;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -395,6 +402,15 @@ const ProductUpdateModal = memo(({
                     </button>
                 </form>
             </div> {/* .product-regi-modal : end */}
+
+            {
+                isLoading &&
+                (
+                    <AdminLoadingUI 
+                        isLoading={isLoading}
+                    />
+                ) 
+            }
         </>
     );
 });

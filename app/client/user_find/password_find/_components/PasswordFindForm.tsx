@@ -11,8 +11,11 @@ import { useRouter } from 'next/navigation';
 import { resetPasswordApi } from '@/features/clientApi/authApi';
 import { useAppSelector } from '@/store/hook';
 import { formatPhoneNumber } from '@/app/util/format';
+import useLoading from '@/features/hooks/loading/useLoading';
+import SpinerButton from '@/shared/client/components/button/SpinerButton';
 
 const PasswordFindForm = () => {
+    const {isLoading, setIsLoading} = useLoading();
     const user = useAppSelector(state => state.auth.user);
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
     const [userId, setUserId] = useState<string>('');
@@ -92,6 +95,8 @@ const PasswordFindForm = () => {
 
         //유저 인증정보를 서버로 전송
         try {
+            setIsLoading(true);
+
             const data = await resetPasswordApi(
                 userId, 
                 userPhoneNumber,
@@ -112,6 +117,8 @@ const PasswordFindForm = () => {
             setModalShow(true);
             setModalText(err.response?.data?.message);
             return;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -154,8 +161,9 @@ const PasswordFindForm = () => {
                         value={newPwdCheck}
                         onChange={handleChangeNewPwdCheck}
                     />
-                    <Button 
-                        buttonText='확인'
+                   <SpinerButton 
+                        isLoading={isLoading}
+                        buttonText='비밀번호 재설정'
                     />
                 </form>
             </div>

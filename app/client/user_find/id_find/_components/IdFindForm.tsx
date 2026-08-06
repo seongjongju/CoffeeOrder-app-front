@@ -10,8 +10,11 @@ import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
 import { useRouter } from 'next/navigation';
 import { findIdApi } from '@/features/clientApi/authApi';
+import useLoading from '@/features/hooks/loading/useLoading';
+import SpinerButton from '@/shared/client/components/button/SpinerButton';
 
 const IdFindForm = () => {
+    const {isLoading, setIsLoading} = useLoading();
     const [findIdInput, setFindIdInput] = useState('');
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
     const router = useRouter();
@@ -36,6 +39,8 @@ const IdFindForm = () => {
         };
 
         try {
+            setIsLoading(true);
+
             const data = await findIdApi(findIdInput);
             router.push(`/client/user_find/id_find_result?userId=${data.userId}`);
             return;
@@ -44,7 +49,9 @@ const IdFindForm = () => {
             setModalText(err.response?.data?.message);
             setModalShow(true);
             return;
-        } 
+        }  finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -65,7 +72,8 @@ const IdFindForm = () => {
                         value={findIdInput}
                         onChange={handleChangeFindId}
                     />
-                    <Button 
+                    <SpinerButton 
+                        isLoading={isLoading}
                         buttonText='아이디 찾기'
                     />
                 </form>

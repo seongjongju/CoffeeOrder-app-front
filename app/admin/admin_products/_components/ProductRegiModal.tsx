@@ -4,6 +4,8 @@ import { ProductState, ProductType } from '@/app/types/products/product';
 import { productCategory } from '@/app/util/admin/category';
 import { formatNumber } from '@/app/util/format';
 import { productRegiApi } from '@/features/adminApi/adminProductApi';
+import useLoading from '@/features/hooks/loading/useLoading';
+import AdminLoadingUI from '@/shared/admin/components/loading/AdminLoadingUI';
 import { CldImage, CldUploadWidget, CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import { useRouter } from 'next/navigation';
 import React, { Dispatch, memo, SetStateAction, useReducer, useState } from 'react';
@@ -46,6 +48,7 @@ const ProductRegiModal = memo(({
     modalToggle, 
     inventorys 
 }: ModalProps) => {
+    const {isLoading, setIsLoading} = useLoading();
     const router = useRouter();
 
     const [img, setImg] = useState<{ imgName: string; format: string; publicId: string }>({
@@ -100,6 +103,8 @@ const ProductRegiModal = memo(({
         }
 
         try {   
+            setIsLoading(true);
+
             const data = await productRegiApi(
                 img,
                 productName.trim(),
@@ -127,6 +132,8 @@ const ProductRegiModal = memo(({
             console.error(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);
             return;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -348,6 +355,15 @@ const ProductRegiModal = memo(({
                     </button>
                 </form>
             </div> {/* .product-regi-modal : end */}
+
+            {
+                isLoading &&
+                (
+                    <AdminLoadingUI 
+                        isLoading={isLoading}
+                    />
+                ) 
+            }
         </>
     );
 });

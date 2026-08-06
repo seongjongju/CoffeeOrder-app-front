@@ -4,10 +4,13 @@ import InventoryUpdateModal from '@/app/admin/admin_inventory/_components/Invent
 import { Inventory } from '@/app/types/inventorys/inventory';
 import { inventoryAllDeleteApi, inventoryDeleteApi } from '@/features/adminApi/adminInventoryApi';
 import useAdminModal from '@/features/hooks/admin/modal/useAdminModal';
+import useLoading from '@/features/hooks/loading/useLoading';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
+import AdminLoadingUI from '../loading/AdminLoadingUI';
 
-const InventoryList = ({ inventorys, params }: InventoryProps) => {   
+const InventoryList = ({ inventorys, params }: InventoryProps) => {
+    const {isLoading, setIsLoading} = useLoading();   
     const router = useRouter();
     const pathName = usePathname();
     const searchParams =  useSearchParams().get('q') || ""; //검색어
@@ -72,6 +75,8 @@ const InventoryList = ({ inventorys, params }: InventoryProps) => {
     //단일 삭제
     const handleClickInvenDelete = async (_id: string) => {
         try{
+            setIsLoading(true);
+
             const data = await inventoryDeleteApi(_id);
 
             if(!data.success) {
@@ -86,12 +91,16 @@ const InventoryList = ({ inventorys, params }: InventoryProps) => {
             console.log(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);
             return;
+        } finally {
+            setIsLoading(false);
         }
     };
 
     //일괄 삭제
     const handleClickInvenAllDelete = async () => {
         try{
+            setIsLoading(true);
+
             const data = await inventoryAllDeleteApi(inventoryArray);
 
             if(!data.success) {
@@ -107,6 +116,8 @@ const InventoryList = ({ inventorys, params }: InventoryProps) => {
             console.log(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);
             return;
+        } finally {
+            setIsLoading(false);
         }
     };
     
@@ -233,6 +244,15 @@ const InventoryList = ({ inventorys, params }: InventoryProps) => {
                         일괄삭제
                     </button>
                 )
+            }
+
+            {
+                isLoading &&
+                (
+                    <AdminLoadingUI 
+                        isLoading={isLoading}
+                    />
+                ) 
             }
         </div>
     );

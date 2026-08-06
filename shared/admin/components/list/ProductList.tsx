@@ -8,8 +8,11 @@ import ProductUpdateModal from '@/app/admin/admin_products/_components/ProductUp
 import { productAllDeleteApi, productDeleteApi } from '@/features/adminApi/adminProductApi';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ProductProps } from '@/app/admin/admin_products/_components/ProductsInterface';
+import useLoading from '@/features/hooks/loading/useLoading';
+import AdminLoadingUI from '../loading/AdminLoadingUI';
 
 const ProductList = ({inventorys, products, params}: ProductProps) => {
+    const {isLoading, setIsLoading} = useLoading();
     const router = useRouter();
     const pathName = usePathname();
     const {setModalToggle, modalToggle} = useAdminModal(); //모달창 토글 커스텀 훅
@@ -37,6 +40,8 @@ const ProductList = ({inventorys, products, params}: ProductProps) => {
     //제품 단일 삭제
     const handleCLickProductDelete = async (productCode: string) => {
         try{
+            setIsLoading(true);
+
             const data = await productDeleteApi(productCode);
 
             if(!data.success) {
@@ -51,6 +56,8 @@ const ProductList = ({inventorys, products, params}: ProductProps) => {
             console.error(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);
             return;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -89,6 +96,8 @@ const ProductList = ({inventorys, products, params}: ProductProps) => {
     //일괄 삭제 서브밋
     const handleClickProductAllDelete = async () => {
         try{
+            setIsLoading(true);
+
             const data = await productAllDeleteApi(productArray);
 
             if(!data.success) {
@@ -104,6 +113,8 @@ const ProductList = ({inventorys, products, params}: ProductProps) => {
             console.log(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);
             return;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -232,6 +243,15 @@ const ProductList = ({inventorys, products, params}: ProductProps) => {
             >
                 일괄삭제
             </button>
+
+            {
+                isLoading &&
+                (
+                    <AdminLoadingUI 
+                        isLoading={isLoading}
+                    />
+                ) 
+            }
         </div>
 
     );

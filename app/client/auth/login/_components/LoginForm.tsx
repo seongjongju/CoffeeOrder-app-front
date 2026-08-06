@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import FormField from '@/shared/client/components/formField/FormField';
-import Button from '@/shared/client/components/button/Button';
 import Link from 'next/link';
 import { validations } from '@/app/util/client/Validation';
 import { useRouter } from 'next/navigation';
@@ -12,8 +11,13 @@ import Modal from '@/shared/client/components/modal/Modal';
 import { loginApi, meApi } from '@/features/clientApi/authApi';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '@/store/auth/authSlice';
+import useLoading from '@/features/hooks/loading/useLoading';
+import SpinerButton from '@/shared/client/components/button/SpinerButton';
 
 const LoginForm = () => {
+    const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
+    const {isLoading, setIsLoading} = useLoading();
+    const router = useRouter();
     const dispatch = useDispatch();
     const [userId, setUserId] = useState('');
     const [userPwd, setUserPwd] = useState('');
@@ -21,8 +25,6 @@ const LoginForm = () => {
         idErrorMsg: '',
         passwordErrorMsg: ''
     });
-    const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
-    const router = useRouter();
 
     const loginUserId = (e:React.ChangeEvent<HTMLInputElement>) => {
         setUserId(e.target.value);
@@ -62,6 +64,8 @@ const LoginForm = () => {
         }
 
         try{
+            setIsLoading(true);
+
             const data = await loginApi(userId, userPwd);
             if(!data.success) {
                 setModalText(`${data.message}`);
@@ -83,7 +87,9 @@ const LoginForm = () => {
             setModalText(err.response?.data?.message);
             setModalShow(true);
             return;
-        };
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -115,9 +121,12 @@ const LoginForm = () => {
                         onBlur={passwordUserIdRegex} 
                         errMessage={loginErrorMsg.passwordErrorMsg}
                     />
-                    <Button 
+
+                    <SpinerButton 
+                        isLoading={isLoading}
                         buttonText='로그인'
                     />
+
                     <div className='auth-links'>
                         <Link href={'/client/user_find/id_find'} >아이디 찾기 및 비밀번호 재설정</Link>
                         <span>/</span>

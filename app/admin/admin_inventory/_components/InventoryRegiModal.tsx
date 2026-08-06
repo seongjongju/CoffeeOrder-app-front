@@ -1,7 +1,8 @@
 'use client';
 import { categorys } from '@/app/util/admin/category';
-import { formatNumber } from '@/app/util/format';
 import { inventoryRegiApi } from '@/features/adminApi/adminInventoryApi';
+import useLoading from '@/features/hooks/loading/useLoading';
+import AdminLoadingUI from '@/shared/admin/components/loading/AdminLoadingUI';
 import { useRouter } from 'next/navigation';
 import React, { Dispatch, memo, SetStateAction } from 'react';
 
@@ -26,9 +27,8 @@ const InventoryRegiModal = memo(({
     setInvenQuantity,
     invenQuantity,
 }: ModalProps) => {
+    const {isLoading, setIsLoading} = useLoading();
     const router = useRouter();
-
-    console.log(invenQuantity)
 
     const handleInvenSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -38,7 +38,7 @@ const InventoryRegiModal = memo(({
             return;
         }
 
-        if(invenQuantity === 0) {
+        if(invenQuantity <= 0) {
             alert("수량은 1개 이상 필수 입니다.");
             return;
         }
@@ -49,6 +49,8 @@ const InventoryRegiModal = memo(({
         }
 
         try{
+            setIsLoading(true);
+
             const data = await inventoryRegiApi(
                 invenName.trim(),
                 invenCate,
@@ -74,6 +76,8 @@ const InventoryRegiModal = memo(({
             console.error(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);
             return;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -132,6 +136,8 @@ const InventoryRegiModal = memo(({
                     <input 
                         type="number" 
                         className='admin-modal__number'
+                        min={1}
+                        max={100}
                         value={invenQuantity}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             setInvenQuantity(e.target.valueAsNumber);
@@ -146,6 +152,15 @@ const InventoryRegiModal = memo(({
                     등록하기
                 </button>
             </div> {/* .admin-modal : end */}
+
+            {
+                isLoading &&
+                (
+                    <AdminLoadingUI 
+                        isLoading={isLoading}
+                    />
+                ) 
+            }
         </>
     );
 });

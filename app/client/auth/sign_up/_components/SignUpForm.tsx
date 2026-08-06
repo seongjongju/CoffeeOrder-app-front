@@ -1,7 +1,6 @@
 'use client';
 import useSignUpInputState from '@/features/hooks/signUp/useSignUpInputState';
 import useSignUpValidation from '@/features/hooks/signUp/useSignUpValidation';
-import Button from '@/shared/client/components/button/Button';
 import CertificationFormField from '@/shared/client/components/formField/CertificationFormField';
 import FormField from '@/shared/client/components/formField/FormField';
 import useModalShow from '@/features/hooks/modal/useModalShow';
@@ -11,15 +10,16 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { authCodeReduplicationApi, idReduplicationApi, memberResisterApi, sendEmailApi } from '@/features/clientApi/authApi';
 import { formatPhoneNumber } from '@/app/util/format';
+import useLoading from '@/features/hooks/loading/useLoading';
+import SpinerButton from '@/shared/client/components/button/SpinerButton';
 
 const SignUpForm = () => {
+    const {isLoading, setIsLoading} = useLoading();
+    const router = useRouter();
     const {signUpState, signUpInputChange, signUpInputReset} = useSignUpInputState();
     const {signUpErrorMsg, onBlur} = useSignUpValidation(signUpState);
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
-    const [isIdChecked, setIsIdChecked] = useState(false);
     const [isCertificationChecked, setIsCertificationChecked] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
 
     //아이디 중복검사
     const idDuplicationCheck = async (e:React.MouseEvent<HTMLButtonElement>) => {
@@ -110,6 +110,8 @@ const SignUpForm = () => {
         e.preventDefault();
 
         try {
+            setIsLoading(true);
+
             const data = await memberResisterApi(
                 signUpState.id,
                 signUpState.password,
@@ -131,7 +133,9 @@ const SignUpForm = () => {
             setModalText(err.response?.data?.message);
             setModalShow(true);
             return;
-        };
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -210,7 +214,8 @@ const SignUpForm = () => {
                     errMessage={signUpErrorMsg.birthErrorMessage}
                 />
                 <div className='next-button-container'>
-                    <Button 
+                    <SpinerButton 
+                        isLoading={isLoading}
                         buttonText='가입하기'
                     />
                 </div>

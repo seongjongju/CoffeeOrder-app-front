@@ -3,6 +3,8 @@ import { Inventory } from '@/app/types/inventorys/inventory';
 import { categorys } from '@/app/util/admin/category';
 import { formatNumber } from '@/app/util/format';
 import { inventoryUpdateApi } from '@/features/adminApi/adminInventoryApi';
+import useLoading from '@/features/hooks/loading/useLoading';
+import AdminLoadingUI from '@/shared/admin/components/loading/AdminLoadingUI';
 import { useRouter } from 'next/navigation';
 import React, { Dispatch, memo, SetStateAction, useState } from 'react';
 
@@ -19,6 +21,7 @@ const InventoryUpdateModal = memo(({
     modalToggle,
     invenId,
 }: UpdateProps) => {
+    const {isLoading, setIsLoading} = useLoading();
     const [invenName, setInvenName] = useState(inventorys.find(iv => iv._id === invenId)?.inventoryName);
     const [invenCategory, setInvenCategory] = useState(inventorys.find(iv => iv._id === invenId)?.category);
     const [invenQuantity, setInvenQuantity] = useState(inventorys.find(iv => iv._id === invenId)?.quantity);
@@ -46,6 +49,8 @@ const InventoryUpdateModal = memo(({
         }
 
         try{
+            setIsLoading(true);
+
             const data = await inventoryUpdateApi(
                 invenId,
                 invenName.trim(),
@@ -67,6 +72,8 @@ const InventoryUpdateModal = memo(({
             console.error(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);
             return;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -132,6 +139,15 @@ const InventoryUpdateModal = memo(({
                     수정하기
                 </button>
             </div> {/* .admin-modal : end */}
+
+            {
+                isLoading &&
+                (
+                    <AdminLoadingUI 
+                        isLoading={isLoading}
+                    />
+                ) 
+            }
         </>
     );
 });
