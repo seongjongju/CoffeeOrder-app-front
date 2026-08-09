@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 const dbName = process.env.DB_NAME;
 
+export const dynamic = 'force-dynamic';
+
 export async function DELETE(request:NextRequest) {
     const body = await request.json();
     const {inventoryArray} = body;
