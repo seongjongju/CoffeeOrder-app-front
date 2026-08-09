@@ -21,3 +21,10 @@ export type OrderItem = {
 export type Orders = {
     result: OrderItem[];
 };
+
+export interface OrdersProps {
+    orders: Orders['result'];
+    params?: string;
+    firstDateParams?: string;
+    lastDateParams?:string;
+}

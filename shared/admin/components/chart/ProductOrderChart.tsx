@@ -1,55 +1,84 @@
 'use client';
-import React from 'react';
+
+import React, { memo, useEffect, useMemo, useRef } from 'react';
 import { Chart } from 'chart.js/auto';
-import { useEffect, useRef } from 'react';
+import { OrdersProps } from '@/app/types/orders/orders';
+import { ProductGetType } from '@/app/types/products/product';
 
-const ProductOrderChart = () => {
-    const canvasEl = useRef(null);
+interface ProductOrderChartProps {
+    orders: OrdersProps['orders'];
+    products: ProductGetType['products'];
+}
 
+const ProductOrderChart = memo(({ orders, products }: ProductOrderChartProps) => {
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+    const { labels, quantities } = useMemo(() => {
+        const labels = products.map(product => product.productName);
+
+        const totalQuantityMap = new Map<string, number>();
+
+        orders.forEach(order => {
+            order.items.forEach(item => {
+                const currentQty = totalQuantityMap.get(item.productName) || 0;
+
+                const itemQuantity = item.totalCount ?? 1; 
+
+                totalQuantityMap.set(item.productName, currentQty + itemQuantity);
+            });
+        });
+
+        const quantities = labels.map(name => totalQuantityMap.get(name) || 0);
+
+        return { labels, quantities };
+    }, [products, orders]);
+
+    // 3. Chart.js 인스턴스 생성 및 Cleanup 처리
     useEffect(() => {
-        if (canvasEl.current !== null) {
-            //인스턴스 요소
-            const ctx = canvasEl.current;
+        if (!canvasRef.current) return;
 
-            //데이터 라벨
-            const labels = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'];
+        const ctx = canvasRef.current;
 
-            //실제 데이터
-            const data = {
+        const chartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
                 labels: labels,
                 datasets: [
                     {
-                        data: [2, 0, 9, 0, 6, 0, 0, 3, 3, 16],
-                        fill: false,
+                        label: '주문 수량',
+                        data: quantities, 
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1,
-                        tension: 0.1,
                     },
                 ],
-            };
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                        },
+                    },
+                },
+            },
+        });
 
-            //차트 인스턴스
-            const productOrderChart = new Chart(ctx, {
-                type: 'bar',
-                data: data,
-                options: {
-                    plugins: {
-                        legend: {
-                            display: false,
-                        }
-                    }
-                }
-            });
-            
+        return () => {
+            chartInstance.destroy();
+        };
+    }, [labels, quantities]);
 
-            return function cleanup() {
-                productOrderChart.destroy();
-            };
-        }
-    });
+    return <canvas ref={canvasRef} />;
+});
 
-    return (
-        <canvas ref={canvasEl} />
-    );
-};
+ProductOrderChart.displayName = 'ProductOrderChart';
 
 export default ProductOrderChart;

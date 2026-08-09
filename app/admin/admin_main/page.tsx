@@ -6,6 +6,8 @@ import LatelyOrderDashBoard from './_components/LatelyOrderDashBoard';
 import InventoryDashBoard from './_components/InventoryDashBoard';
 
 const adminMainPage = () => {
+    
+
     return (
         <main className='admin-main'>
             <h2 className='admin-title'>대쉬보드</h2>

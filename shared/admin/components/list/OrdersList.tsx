@@ -1,5 +1,5 @@
 'use client';
-import { OrdersProps } from '@/app/admin/admin_orders/_components/OrdersInterface';
+import { OrdersProps } from '@/app/types/orders/orders';
 import { formatCreatedAt, formatPrice } from '@/app/util/format';
 import { usePathname, useSearchParams } from 'next/navigation';
 import React, { useMemo } from 'react';

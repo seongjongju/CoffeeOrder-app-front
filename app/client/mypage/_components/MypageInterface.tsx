@@ -10,6 +10,7 @@ import Modal from '@/shared/client/components/modal/Modal';
 import { logoutApi } from '@/features/clientApi/authApi';
 import { logout } from '@/store/auth/authSlice';
 import { formatPhoneNumber } from '@/app/util/format';
+import { allDeleteAlert } from '@/store/alert/alertSlice';
 
 const MypageInterface = () => {
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
@@ -28,6 +29,7 @@ const MypageInterface = () => {
 
             setModalText(data.message);   
             dispatch(logout());         
+            dispatch(allDeleteAlert());
             return;
         } catch(error: any) {
             console.error(error.response?.data?.message);

@@ -8,14 +8,7 @@ import OrdersList from '@/shared/admin/components/list/OrdersList';
 import React, { useRef, useState } from 'react';
 import { useRouter, useSearchParams } from "next/navigation";
 import { formatCreatedAt } from "@/app/util/format";
-import { Orders } from "@/app/types/orders/orders";
-
-export interface OrdersProps {
-    orders: Orders['result'];
-    params?: string;
-    firstDateParams?: string;
-    lastDateParams?:string;
-}
+import { OrdersProps } from "@/app/types/orders/orders";
 
 const OrdersInterface = ({orders, params}: OrdersProps) => {
     const router = useRouter();

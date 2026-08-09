@@ -40,6 +40,12 @@
     font-size: 14px;
 }
 
+.admin-title-ui__select {
+    width: 150px;
+    height: 38px;
+    padding: 0 10px;
+}
+
 /*** 공통 테이블 ***/
 .admin-table {
     width: 100%;

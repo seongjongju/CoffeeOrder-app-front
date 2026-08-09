@@ -1,15 +1,17 @@
+import { OrdersProps } from '@/app/types/orders/orders';
+import { orderGetApi } from '@/features/adminApi/adminOrderApi';
 import SalesChart from '@/shared/admin/components/chart/SalesChart';
 import Link from 'next/link';
 import React from 'react';
 
-const SalesDashBoard = () => {
+const SalesDashBoard = async () => {
+    const allOrders = await orderGetApi(); //주문 내역
+
     return (
         <div className='dashboard' style={{width: "50%"}}>
-            <div className='admin-title-ui'>
-                <h3 className='admin-title-ui__title'>달별 매출</h3>
-            </div> {/* .admin-title-ui : end */}
-
-            <SalesChart />
+            <SalesChart 
+                orders={allOrders.result}
+            />
         </div>
     );
 };
