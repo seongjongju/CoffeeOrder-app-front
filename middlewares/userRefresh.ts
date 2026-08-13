@@ -4,9 +4,6 @@ import { jwtVerify, SignJWT } from "jose";
 const accessTokenKey = process.env.JWT_ACCESS_SECRET;
 const refreshTokenKey = process.env.JWT_REFRESH_SECRET;
 
-//도메인 주소
-const domain = process.env.NEXT_PUBLIC_FRONT_API_URL;
-
 export async function userRefresh(request: NextRequest) {  
     const pathname = request.nextUrl.pathname;
 
@@ -27,7 +24,7 @@ export async function userRefresh(request: NextRequest) {
 
     //사용자 리프레쉬 토큰 검사
     if(!refreshToken) {
-        return NextResponse.redirect(new URL(`${domain}/client/intro?error=token_expired`, request.nextUrl));
+        return NextResponse.redirect(new URL(`/client/intro?error=token_expired`, request.nextUrl));
     }
 
     //사용자가 refresh_token이 검증되면, 새로운 access_token을 발급한다.

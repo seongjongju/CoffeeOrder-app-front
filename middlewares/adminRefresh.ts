@@ -4,9 +4,6 @@ import { jwtVerify, SignJWT } from "jose";
 const accessTokenKey = process.env.JWT_ADMIN_ACCESS_SECRET;
 const refreshTokenKey = process.env.JWT_ADMIN_REFRESH_SECRET;
 
-//도메인 주소
-const domain = process.env.NEXT_PUBLIC_FRONT_API_URL;
-
 export async function adminRefresh(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
         if (!pathname.startsWith("/admin")) {
@@ -22,7 +19,7 @@ export async function adminRefresh(request: NextRequest) {
 
     //어드민 리프레쉬 토큰 검사
     if(!adminRefreshToken) {
-        return NextResponse.redirect(new URL(`${domain}/admin/admin_login?error=token_expired`, request.nextUrl));
+        return NextResponse.redirect(new URL(`/admin/admin_login?error=token_expired`, request.nextUrl));
     }
 
     //어드민이 refresh_token이 검증되면, 새로운 access_token을 발급한다.
@@ -83,6 +80,6 @@ export async function adminRefresh(request: NextRequest) {
         return res;
     } catch(err) {
         console.error(err);
-        return NextResponse.redirect(new URL(`${domain}/admin/admin_login?error=token_expired`, request.nextUrl));
+        return NextResponse.redirect(new URL(`/admin/admin_login?error=token_expired`, request.nextUrl));
     }
 };

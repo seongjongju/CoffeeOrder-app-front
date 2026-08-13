@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-//도메인 주소
-const domain = process.env.NEXT_PUBLIC_FRONT_API_URL;
-
 export async function authority(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
 
@@ -16,14 +13,14 @@ export async function authority(request: NextRequest) {
         }
 
         if(!adminToken) {
-            return NextResponse.redirect(new URL(`${domain}/admin/admin_login?error=login_required`, request.nextUrl));
+            return NextResponse.redirect(new URL(`/admin/admin_login?error=login_required`, request.nextUrl));
         }
     }
 
     //사용자 페이지
     if (!token && pathname === "/") {
         return NextResponse.redirect(
-            new URL(`${domain}/client/intro?error=login_required`, request.nextUrl)
+            new URL(`/client/intro?error=login_required`, request.nextUrl)
         );
     }
 
@@ -37,7 +34,7 @@ export async function authority(request: NextRequest) {
         }
 
         if(!token) {
-            return NextResponse.redirect(new URL(`${domain}/client/intro?error=login_required`, request.nextUrl))
+            return NextResponse.redirect(new URL(`/client/intro?error=login_required`, request.nextUrl))
         }
     }
 
