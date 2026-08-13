@@ -64,7 +64,6 @@ export async function POST(request: NextRequest) {
                                     } 
                                 }
                             );
-                            return NextResponse.redirect(new URL(`/client/pay/pay_fail?error=결제실패&status=fail&message=${realInv?.inventoryName}의 재고 부족으로 인해 결제에 실패하였습니다. 관리자에게 문의해주세요.`, request.nextUrl));
                         }
 
                         bulkOps.push({

@@ -6,14 +6,12 @@
 }
 
 header {
-    padding-top: env(safe-area-inset-top);
     position: fixed;
     width: 100%;
     max-width: 600px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 99;
-    background-color: #fff;
 }
 
 header.is-admin {

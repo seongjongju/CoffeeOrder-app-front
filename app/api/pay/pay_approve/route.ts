@@ -9,6 +9,9 @@ const dbName = process.env.DB_NAME;
 const clientId = process.env.NEXT_PUBLIC_NICEPAY_CLIENT_ID;
 const secretKey = process.env.NEXT_PUBLIC_NICEPAY_SECRET_KEY;
 
+//도메인 주소
+const domain = process.env.NEXT_PUBLIC_FRONT_API_URL;
+
 export async function POST(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.nextUrl);
@@ -32,7 +35,7 @@ export async function POST(request: NextRequest) {
         });
 
         if (!selectAmount) {
-            return NextResponse.redirect(new URL("/client/pay/pay_fail?error=주문조회실패&status=fail&message=유효한 결제 대기 내역을 찾을 수 없습니다.", request.nextUrl));
+            return NextResponse.redirect(new URL(`${domain}/client/pay/pay_fail?error=주문조회실패&status=fail&message=유효한 결제 대기 내역을 찾을 수 없습니다.`, request.nextUrl));
         }
 
         // 금액 비교 검증
@@ -46,7 +49,7 @@ export async function POST(request: NextRequest) {
                     } 
                 }
             );
-            return NextResponse.redirect(new URL("/client/pay/pay_fail?error=금액 불일치&status=fail&message=결제 금액이 일치하지 않아 처리가 취소되었습니다.", request.nextUrl));
+            return NextResponse.redirect(new URL(`${domain}/client/pay/pay_fail?error=금액 불일치&status=fail&message=결제 금액이 일치하지 않아 처리가 취소되었습니다.`, request.nextUrl));
         }
 
         //인증 결과 코드 확인
@@ -60,7 +63,7 @@ export async function POST(request: NextRequest) {
                     } 
                 }
             );
-            return NextResponse.redirect(new URL("/client/pay/pay_fail?error=결제실패&status=fail&message=오류로 인해 결제에 실패하였습니다.", request.nextUrl));
+            return NextResponse.redirect(new URL(`${domain}/client/pay/pay_fail?error=결제실패&status=fail&message=오류로 인해 결제에 실패하였습니다.`, request.nextUrl));
         }
 
         //나이스페이먼츠 승인 API 호출
@@ -86,7 +89,7 @@ export async function POST(request: NextRequest) {
                     } 
                 }
             );
-            return NextResponse.redirect(new URL(`/client/pay/pay_fail?error=결제실패&status=fail&message=${resultData.resultMsg}`, request.nextUrl));
+            return NextResponse.redirect(new URL(`${domain}/client/pay/pay_fail?error=결제실패&status=fail&message=${resultData.resultMsg}`, request.nextUrl));
         }
 
         //결제 성공 시 사용재고를 차감한다.
@@ -112,7 +115,7 @@ export async function POST(request: NextRequest) {
                                 } 
                             }
                         );
-                        return NextResponse.redirect(new URL(`/client/pay/pay_fail?error=결제실패&status=fail&message=${realInv?.inventoryName}의 재고 부족으로 인해 결제에 실패하였습니다. 관리자에게 문의해주세요.`, request.nextUrl));
+                        return NextResponse.redirect(new URL(`${domain}/client/pay/pay_fail?error=결제실패&status=fail&message=${realInv?.inventoryName}의 재고 부족으로 인해 결제에 실패하였습니다. 관리자에게 문의해주세요.`, request.nextUrl));
                     }
 
                     bulkOps.push({
@@ -151,7 +154,7 @@ export async function POST(request: NextRequest) {
             await db.collection('carts').deleteMany({userId: selectAmount.userId});
         }
         
-        return NextResponse.redirect(new URL(`/client/pay/pay_success?userId=${selectAmount.userId}&productName=${selectAmount.productName}`, request.nextUrl));
+        return NextResponse.redirect(new URL(`${domain}/client/pay/pay_success?userId=${selectAmount.userId}&productName=${selectAmount.productName}`, request.nextUrl));
     } catch (err) {
         console.error("POST 데이터 처리 중 에러:", err);
         return NextResponse.json({ status: "fail", message: "에러 발생", error: err }, { status: 500 });
