@@ -2,14 +2,15 @@ import '@/shared/client/styled/formField/formField.css';
 import React from 'react';
 
 export interface findProps {
-    placeholder: string,
-    type: string,
-    label: string,
-    value: string,
+    placeholder: string;
+    type: string;
+    autoComplete: string;
+    label: string;
+    value: string;
     onChange: (e:React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const FindInput = ({ placeholder, type, label, value, onChange }: findProps) => {
+const FindInput = ({ placeholder, type, autoComplete, label, value, onChange }: findProps) => {
     return (
         <div className='form-field-container'>
             <label className='label'>
@@ -20,6 +21,7 @@ const FindInput = ({ placeholder, type, label, value, onChange }: findProps) => 
                 className='form-field-input' 
                 placeholder={placeholder} 
                 type={type} 
+                autoComplete={autoComplete}
                 value={value}
                 onChange={onChange}
             />

@@ -24,7 +24,7 @@ export async function userRefresh(request: NextRequest) {
 
     //사용자 리프레쉬 토큰 검사
     if(!refreshToken) {
-        return NextResponse.redirect(new URL("/client/intro?error=token_expired", request.url));
+        return NextResponse.redirect(new URL("/client/intro?error=token_expired", request.nextUrl));
     }
 
     //사용자가 refresh_token이 검증되면, 새로운 access_token을 발급한다.

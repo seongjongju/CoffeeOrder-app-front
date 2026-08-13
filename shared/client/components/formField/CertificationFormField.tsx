@@ -2,7 +2,7 @@ import React from 'react';
 import '@/shared/client/styled/formField/formField.css';
 import { FormFieldProps } from './FormField';
 
-const CertificationFormField = ({ label, placeholder, type, buttonText, onChange, value, onClick}:FormFieldProps) => {
+const CertificationFormField = ({ label, placeholder, type, autoComplete, buttonText, onChange, value, onClick}:FormFieldProps) => {
     return (
         <div className='form-field-container'>
             <label className='label'>
@@ -12,6 +12,7 @@ const CertificationFormField = ({ label, placeholder, type, buttonText, onChange
                 <input
                     className='form-field-input' 
                     type={type}
+                    autoComplete={autoComplete}
                     placeholder={placeholder}
                     onChange={onChange}
                     value={value}

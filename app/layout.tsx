@@ -9,7 +9,6 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import { productGetApi } from "@/features/adminApi/adminProductApi";
 import QueryProvider from "./globalProvider/QueryProvider";
 import { getCartApi } from "@/features/clientApi/cartApi";
-import AuthProvider from "./globalProvider/AuthProvider";
 import { orderGetApi } from "@/features/adminApi/adminOrderApi";
 
 const geistSans = Geist({
