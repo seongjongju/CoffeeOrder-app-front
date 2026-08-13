@@ -15,6 +15,7 @@ import useLoading from '@/features/hooks/loading/useLoading';
 import SpinerButton from '@/shared/client/components/button/SpinerButton';
 
 const PasswordFindForm = () => {
+    const router = useRouter();
     const {isLoading, setIsLoading} = useLoading();
     const user = useAppSelector(state => state.auth.user);
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
@@ -111,6 +112,8 @@ const PasswordFindForm = () => {
 
             setModalText(`${data.message}`);
             setModalShow(true);
+
+            router.push('/');
             return; 
         } catch(err: any) {
             console.error(err.response?.data?.message);

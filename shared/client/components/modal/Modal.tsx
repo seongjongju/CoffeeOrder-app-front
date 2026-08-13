@@ -25,9 +25,6 @@ const Modal = ({ modalShow, setModalShow, modalText, setModalText } : ModalProps
         if(pathName.includes('/mypage')) {
             router.push('/client/intro');
             return;
-        } else if(pathName.includes('/password_find')) {
-            router.push('/');
-            return;
         }
     }; 
 
