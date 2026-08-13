@@ -25,7 +25,7 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
         };
 
         userInfo();
-    }, [dispatch]);
+    }, []);
 
     return (
         <>

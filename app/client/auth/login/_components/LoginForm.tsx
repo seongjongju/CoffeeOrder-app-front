@@ -81,6 +81,7 @@ const LoginForm = () => {
             const loginData = await meApi();
             dispatch(loginSuccess(loginData));
             router.push('/');
+            router.refresh();
             return;
         } catch(err: any) {
             console.error(err);
