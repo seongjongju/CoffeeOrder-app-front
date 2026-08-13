@@ -144,6 +144,7 @@ const SignUpForm = () => {
                 <CertificationFormField
                     label='아이디'
                     type='text'
+                    autoComplete='username'
                     placeholder='abc123'
                     buttonText='중복확인'
                     value={signUpState.id}
@@ -153,6 +154,7 @@ const SignUpForm = () => {
                 <FormField 
                     label='비밀번호'
                     type='password'
+                    autoComplete='new-password'
                     placeholder='영문 + 숫자 + 기호 총 8자리'
                     value={signUpState.password}
                     onChange={(e) => signUpInputChange(e, 'password')}
@@ -162,6 +164,7 @@ const SignUpForm = () => {
                 <FormField 
                     label='비밀번호 확인'
                     type='password'
+                    autoComplete='new-password'
                     placeholder='비밀번호 확인'
                     value={signUpState.passwordCheck}
                     onChange={(e) => signUpInputChange(e, 'passwordCheck')}
@@ -171,6 +174,7 @@ const SignUpForm = () => {
                 <FormField 
                     label='이름'
                     type='text'
+                    autoComplete='name'
                     placeholder='실명을 입력하세요'
                     value={signUpState.name}
                     onChange={(e) => signUpInputChange(e, 'name')}
@@ -180,6 +184,7 @@ const SignUpForm = () => {
                 <FormField 
                     label='휴대폰 번호'
                     type='tel'
+                    autoComplete='tel'
                     placeholder='‘-’구분없이 입력'
                     value={formatPhoneNumber(signUpState.phoneNumber)}
                     onChange={(e) => signUpInputChange(e, 'phoneNumber')}
@@ -189,6 +194,7 @@ const SignUpForm = () => {
                 <CertificationFormField 
                     label='이메일'
                     type='email'
+                    autoComplete='email'
                     placeholder='이메일 주소 입력'
                     buttonText='인증번호 발송'
                     value={signUpState.email}
@@ -198,6 +204,7 @@ const SignUpForm = () => {
                 <CertificationFormField 
                     label='인증번호'
                     type='text'
+                    autoComplete='one-time-code'
                     placeholder='인증번호 입력 숫자 6자리'
                     buttonText='인증번호 확인'
                     value={signUpState.certificationNumber}
@@ -207,6 +214,7 @@ const SignUpForm = () => {
                 <FormField 
                     label='생년월일'
                     type='text'
+                    autoComplete='off'
                     placeholder='8자리 입력'
                     value={signUpState.birth}
                     onChange={(e) => signUpInputChange(e, 'birth')}

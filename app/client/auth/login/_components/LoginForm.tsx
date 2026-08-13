@@ -106,6 +106,7 @@ const LoginForm = () => {
                     <FormField 
                         label='아이디'
                         type='text'
+                        autoComplete='off'
                         placeholder='아이디 입력'
                         value={userId}
                         onChange={loginUserId}
@@ -115,6 +116,7 @@ const LoginForm = () => {
                     <FormField 
                         label='비밀번호'
                         type='password'
+                        autoComplete='current-password'
                         placeholder='비밀번호 입력'
                         value={userPwd}
                         onChange={loginUserPassword}

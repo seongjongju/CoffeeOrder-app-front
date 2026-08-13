@@ -136,6 +136,7 @@ const PasswordFindForm = () => {
                     <FindInput 
                         placeholder='아이디 입력'
                         type='text'
+                        autoComplete='off'
                         label='아이디'
                         value={userId}
                         onChange={handleChangeUserId}
@@ -143,6 +144,7 @@ const PasswordFindForm = () => {
                     <FindInput 
                         placeholder="'-'구분없이 입력"
                         type='tel'
+                        autoComplete='tel'
                         label="휴대폰 번호"
                         value={formatPhoneNumber(userPhoneNumber)}
                         onChange={handleChangeUserPhoneNumber}
@@ -150,6 +152,7 @@ const PasswordFindForm = () => {
                     <FindInput 
                         label='새 비밀번호'
                         type='password'
+                        autoComplete='new-password'
                         placeholder='새 비밀번호 입력'
                         value={newPwd}
                         onChange={handleChangeNewPwd}
@@ -157,11 +160,12 @@ const PasswordFindForm = () => {
                     <FindInput 
                         label='새 비밀번호 확인'
                         type='password'
+                        autoComplete='new-password'
                         placeholder='새 비밀번호 재입력'
                         value={newPwdCheck}
                         onChange={handleChangeNewPwdCheck}
                     />
-                   <SpinerButton 
+                    <SpinerButton 
                         isLoading={isLoading}
                         buttonText='비밀번호 재설정'
                     />

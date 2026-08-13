@@ -6,6 +6,7 @@ export interface FormFieldProps {
     label: string;
     placeholder: string;
     type: string;
+    autoComplete: string;
     buttonText?: string;
     onChange: (e:React.ChangeEvent<HTMLInputElement>) => void;
     value: string;
@@ -14,7 +15,7 @@ export interface FormFieldProps {
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-const FormField = ({ label, placeholder, type, onChange, value, errMessage, onBlur}:FormFieldProps) => {
+const FormField = ({ label, placeholder, type, autoComplete, onChange, value, errMessage, onBlur}:FormFieldProps) => {
     const pathName = usePathname();
     return (
         <div className='form-field-container'>
@@ -24,6 +25,7 @@ const FormField = ({ label, placeholder, type, onChange, value, errMessage, onBl
             </label>
             <input 
                 className='form-field-input'
+                autoComplete={autoComplete}
                 type={type}
                 placeholder={placeholder}
                 onChange={onChange}

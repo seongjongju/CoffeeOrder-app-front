@@ -13,14 +13,14 @@ export async function authority(request: NextRequest) {
         }
 
         if(!adminToken) {
-            return NextResponse.redirect(new URL("/admin/admin_login?error=login_required", request.url));
+            return NextResponse.redirect(new URL("/admin/admin_login?error=login_required", request.nextUrl));
         }
     }
 
     //사용자 페이지
     if (!token && pathname === "/") {
         return NextResponse.redirect(
-            new URL("/client/intro?error=login_required", request.url)
+            new URL("/client/intro?error=login_required", request.nextUrl)
         );
     }
 
@@ -34,7 +34,7 @@ export async function authority(request: NextRequest) {
         }
 
         if(!token) {
-            return NextResponse.redirect(new URL("/client/intro?error=login_required", request.url))
+            return NextResponse.redirect(new URL("/client/intro?error=login_required", request.nextUrl))
         }
     }
 
