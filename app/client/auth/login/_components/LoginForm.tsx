@@ -80,6 +80,7 @@ const LoginForm = () => {
 
             const loginData = await meApi();
             dispatch(loginSuccess(loginData));
+            console.log("실행");
             router.push('/');
             router.refresh();
             return;
