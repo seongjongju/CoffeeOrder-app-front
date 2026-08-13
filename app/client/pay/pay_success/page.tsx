@@ -54,7 +54,7 @@ const PaySuccess = () => {
                 }));
             }, 5000);
         }
-    }, []);
+    }, [user, userId, productName, dispatch]);
 
     const goToHome = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
