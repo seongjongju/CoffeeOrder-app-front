@@ -74,7 +74,7 @@ export async function userRefresh(request: NextRequest) {
         )
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt()
-        .setExpirationTime("5s")
+        .setExpirationTime("1h")
         .sign(accessSecret);
 
         const res = NextResponse.next();
@@ -86,7 +86,7 @@ export async function userRefresh(request: NextRequest) {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'lax',
-                maxAge: 5,
+                maxAge: 60 * 60,
                 path: '/',
             }
         );
