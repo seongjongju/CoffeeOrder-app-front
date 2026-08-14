@@ -5,12 +5,11 @@ import BigMascot from '@/public/icons/big_mascot.png';
 import "./_styled/intro.css";
 import React, { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useAppSelector } from '@/store/hook';
+import Header from '../inc/header/Header';
 
 const IntroPage = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    /* const auth = useAppSelector(state => state.auth); */
 
     //리다이렉트 처리
     useEffect(() => {

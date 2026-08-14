@@ -36,7 +36,7 @@ export async function authority(request: NextRequest) {
         }
 
         if(!token) {
-            return NextResponse.redirect(new URL(`/client/intro?error=login_required`, request.nextUrl))
+            return NextResponse.redirect(new URL(`/client/intro?error=token_expired`, request.nextUrl))
         }
     }
 
