@@ -61,7 +61,7 @@ export async function adminRefresh(request: NextRequest) {
         )
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt()
-        .setExpirationTime("1h")
+        .setExpirationTime("5s")
         .sign(accessSecret);
 
         const res = NextResponse.next();
@@ -73,9 +73,12 @@ export async function adminRefresh(request: NextRequest) {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'lax',
-                maxAge: 60 * 60
+                maxAge: 5,
+                path: '/',
             }
         );
+
+        request.cookies.set('admin_access_token', accessToken);
 
         return res;
     } catch(err) {
