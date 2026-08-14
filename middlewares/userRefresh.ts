@@ -96,6 +96,6 @@ export async function userRefresh(request: NextRequest) {
         return res;
     } catch(err) {
         console.error(err);
-        return NextResponse.json({ error: '유효하지 않은 토큰' }, { status: 401 });
+        return NextResponse.redirect(new URL(`/client/intro?error=token_expired`, request.nextUrl));
     }
 };
