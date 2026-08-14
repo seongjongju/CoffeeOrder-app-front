@@ -41,7 +41,7 @@ export async function POST(request :NextRequest) {
             },
             accessTokenKey!,
             {
-                expiresIn:'1h',
+                expiresIn:'5s',
             }
         );
 
@@ -68,7 +68,7 @@ export async function POST(request :NextRequest) {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'lax',
-                maxAge: 60 * 60
+                maxAge: 5
             }
         );
 
