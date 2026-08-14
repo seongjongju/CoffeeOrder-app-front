@@ -18,10 +18,12 @@ export async function authority(request: NextRequest) {
     }
 
     //사용자 페이지
-    if (!token && pathname === "/") {
-        return NextResponse.redirect(
-            new URL(`/client/intro?error=login_required`, request.nextUrl)
-        );
+    if (pathname === "/") {
+        if (!token) {
+            return NextResponse.redirect(
+                new URL(`/client/intro?error=login_required`, request.nextUrl));
+        }
+        return; 
     }
 
     if(pathname.startsWith("/client")) {

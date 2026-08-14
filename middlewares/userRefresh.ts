@@ -7,7 +7,7 @@ const refreshTokenKey = process.env.JWT_REFRESH_SECRET;
 export async function userRefresh(request: NextRequest) {  
     const pathname = request.nextUrl.pathname;
 
-    if (!pathname.startsWith("/client")) {
+    if (!pathname.startsWith("/client") && pathname !== "/") {
         return;
     }
 
