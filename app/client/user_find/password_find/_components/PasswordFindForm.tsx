@@ -112,8 +112,7 @@ const PasswordFindForm = () => {
 
             setModalText(`${data.message}`);
             setModalShow(true);
-
-            router.push('/');
+            
             return; 
         } catch(err: any) {
             console.error(err.response?.data?.message);
