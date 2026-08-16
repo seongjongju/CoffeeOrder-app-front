@@ -21,9 +21,26 @@ export async function PATCH(request:NextRequest) {
             return NextResponse.json({ error: "요청 값이 올바르지 않거나, 없음", message: "필수 입력 값을 확인해주세요." }, {status: 400});
         }
 
-        //비밀번호가 현재 비밀번호와 같더라도 무조건 변경
         const db = (await connectDB).db(dbName);
 
+        //핸드폰 번호가 users에 존재하는 유저 검증
+        const findUserPhoneNumber = await db.collection('users').findOne({
+            phoneNumber
+        });
+
+        if(!findUserPhoneNumber) {
+            return NextResponse.json(
+                {error: "유저 정보 불일치", message: "해당 정보의 유저가 존재하지 않습니다. 아이디 혹은 연락처를 확인해주세요."}
+            );
+        }
+
+        if(findUserPhoneNumber.id !== userId) {
+            return NextResponse.json(
+                {error: "유저 정보 불일치", message: "해당 정보의 유저가 존재하지 않습니다. 아이디 혹은 연락처를 확인해주세요."}
+            );
+        }
+
+        //비밀번호가 현재 비밀번호와 같더라도 무조건 변경
         //비밀번호 해시값
         const hashPassword = await bcrypt.hash(newPassword, 10);
 

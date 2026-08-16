@@ -10,7 +10,6 @@ import { resetPasswordApi } from '@/features/clientApi/authApi';
 import { formatPhoneNumber } from '@/app/util/format';
 import useLoading from '@/features/hooks/loading/useLoading';
 import SpinerButton from '@/shared/client/components/button/SpinerButton';
-import { useSearchParams } from 'next/navigation';
 
 interface resetPwdInputs {
     userId: string;
@@ -20,8 +19,6 @@ interface resetPwdInputs {
 };
 
 const PasswordFindForm = () => {
-    const searchParams = useSearchParams();
-    const findUserId = searchParams.get('userId');
     const {isLoading, setIsLoading} = useLoading();
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
 
@@ -32,11 +29,6 @@ const PasswordFindForm = () => {
         newPwdCheck: "",
     });
 
-    // const [userId, setUserId] = useState<string>('');
-    // const [userPhoneNumber, setUserPhoneNumber] = useState<string>('');
-    // const [newPwd, setNewPwd] = useState<string>('');
-    // const [newPwdCheck, setNewPwdCheck] = useState<string>('');
-
     //인풋 입력
     const handleChangeInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target.name;
@@ -46,26 +38,6 @@ const PasswordFindForm = () => {
             [target]: target === "userPhoneNumber" ? e.target.value.replace(/\D/g, '').slice(0, 11) : e.target.value
         }));
     };
-
-    //아이디 입력
-    // const handleChangeUserId = (e:React.ChangeEvent<HTMLInputElement>) => {
-    //     setUserId(e.target.value);
-    // };
-
-    // //휴대폰 번호 입력
-    // const handleChangeUserPhoneNumber = (e:React.ChangeEvent<HTMLInputElement>) => {
-    //     setUserPhoneNumber(e.target.value.replace(/\D/g, '').slice(0, 11));
-    // };
-
-    // //새 비밀번호 작성
-    // const handleChangeNewPwd = (e:React.ChangeEvent<HTMLInputElement>) => {
-    //     setNewPwd(e.target.value);
-    // };
-
-    // //새 비밀번호 확인
-    // const handleChangeNewPwdCheck = (e:React.ChangeEvent<HTMLInputElement>) => {
-    //     setNewPwdCheck(e.target.value);
-    // };
 
     //유저 정보 인증 submit
     const handleCertificationSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
@@ -103,11 +75,6 @@ const PasswordFindForm = () => {
         //새 비밀번호가 일치 하지 않을 때
         if(resetPwdInputs.newPwd !== resetPwdInputs.newPwdCheck) {
             setModalText('새 비밀번호가 일치하지 않습니다.');
-            return;
-        }
-
-        if(findUserId !== resetPwdInputs.userId) {
-            setModalText('아이디 찾기로 찾은 아이디와 다른 아이디입니다.');
             return;
         }
 

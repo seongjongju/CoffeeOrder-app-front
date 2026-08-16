@@ -1,10 +1,10 @@
 import { ProductGetType } from '@/app/types/products/product';
 import { productGetApi } from '@/features/adminApi/adminProductApi';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import React from 'react';
 
 const useProductQuery = () => {
-    const productQuery = useQuery<ProductGetType>({
+    const productQuery = useSuspenseQuery<ProductGetType>({
         queryKey: ['products'],
         queryFn: productGetApi,
     });
