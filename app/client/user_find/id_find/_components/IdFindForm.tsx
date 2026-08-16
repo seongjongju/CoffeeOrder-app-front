@@ -68,6 +68,7 @@ const IdFindForm = () => {
                     <FindInput
                         placeholder='이메일을 입력해주세요.'
                         type='email'
+                        name='email'
                         autoComplete='email'
                         label='이메일'
                         value={findIdInput}
