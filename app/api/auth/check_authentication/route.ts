@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
         });
 
         if(!emailVerifications) {
-            return NextResponse.json({ error: "인증코드가 일치하지 않습니다."}, { status: 400 });
+            return NextResponse.json({ error: "인증코드 불일치", message: "인증코드가 일치하지 않습니다."}, { status: 400 });
         }
 
         if(Date.now() > emailVerifications.expiresAt) {

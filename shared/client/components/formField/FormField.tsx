@@ -1,21 +1,9 @@
 import React from 'react';
 import '@/shared/client/styled/formField/formField.css';
 import { usePathname } from 'next/navigation';
+import { FormFields } from '../../types/common';
 
-export interface FormFieldProps {
-    label: string;
-    placeholder: string;
-    type: string;
-    autoComplete: string;
-    buttonText?: string;
-    onChange: (e:React.ChangeEvent<HTMLInputElement>) => void;
-    value: string;
-    errMessage?: string;
-    onBlur?: (e:React.FocusEvent<HTMLInputElement>) => void;
-    onClick?: React.MouseEventHandler<HTMLButtonElement>;
-};
-
-const FormField = ({ label, placeholder, type, autoComplete, onChange, value, errMessage, onBlur}:FormFieldProps) => {
+const FormField = ({ label, placeholder, type, autoComplete, onChange, value, errMessage, onBlur}:FormFields) => {
     const pathName = usePathname();
     return (
         <div className='form-field-container'>

@@ -32,6 +32,7 @@ const Header = () => {
             <header
                 className={
                     pathName === "/client/intro" || 
+                    pathName === "/client/auth/sign_up_success" ||
                     pathName === "/client/pay/pay_fail" ||
                     pathName === "/client/pay/pay_success" ? 
                     "none" : ""

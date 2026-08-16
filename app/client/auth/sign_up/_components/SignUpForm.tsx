@@ -19,9 +19,11 @@ const SignUpForm = () => {
     const {signUpState, signUpInputChange, signUpInputReset} = useSignUpInputState();
     const {signUpErrorMsg, onBlur} = useSignUpValidation(signUpState);
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
+
+    const [codeLoading, setCodeLoading] = useState<boolean>(false); //인증번호 발송 전용
     const [isCertificationChecked, setIsCertificationChecked] = useState(false);
 
-    //아이디 중복검사
+    //아이디 검사
     const idDuplicationCheck = async (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
@@ -64,6 +66,8 @@ const SignUpForm = () => {
         e.preventDefault();
 
         try {
+            setCodeLoading(true);
+
             const data = await sendEmailApi(signUpState.email);
 
             setModalText(data.message);
@@ -74,7 +78,9 @@ const SignUpForm = () => {
             setModalText(err.response.data.message);
             setModalShow(true);
             return;
-        };
+        } finally {
+            setCodeLoading(false);
+        }
     };
 
     //인증번호확인
@@ -126,7 +132,7 @@ const SignUpForm = () => {
                 setModalShow(true);
             }
 
-            router.push('/client/auth/sign_up_success')
+            router.push('/client/auth/sign_up_success');
             return;
         } catch(err: any) {
             console.error(err);
@@ -198,6 +204,7 @@ const SignUpForm = () => {
                     placeholder='이메일 주소 입력'
                     buttonText='인증번호 발송'
                     value={signUpState.email}
+                    loading={codeLoading}
                     onChange={(e) => signUpInputChange(e, 'email')}
                     onClick={sendEmail}
                 />

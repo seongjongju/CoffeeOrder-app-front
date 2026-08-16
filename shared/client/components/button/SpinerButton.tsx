@@ -3,7 +3,7 @@ import '@/shared/client/styled/common/common.css';
 
 interface SpinerButtonProps {
     isLoading: boolean;
-    buttonText: string;
+    buttonText?: string;
 };
 
 const SpinerButton = ({isLoading, buttonText}: SpinerButtonProps) => {

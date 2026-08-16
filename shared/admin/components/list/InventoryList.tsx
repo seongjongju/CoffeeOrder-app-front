@@ -72,21 +72,26 @@ const InventoryList = ({ inventorys, params }: InventoryProps) => {
         });
     };
 
-    //단일 삭제
-    const handleClickInvenDelete = async (_id: string) => {
+    //일괄 삭제
+    const handleClickInvenAllDelete = async () => {
         try{
             setIsLoading(true);
 
-            const data = await inventoryDeleteApi(_id);
+            if(window.confirm('정말 삭제하시겠습니까?')) {
+                const data = await inventoryAllDeleteApi(inventoryArray);
 
-            if(!data.success) {
+                if(!data.success) {
+                    alert(`${data.message}`);
+                    return;
+                }
+
                 alert(`${data.message}`);
+                router.refresh();
+                setAllChecked(false);
+                return;
+            } else {
                 return;
             }
-
-            alert(`${data.message}`);
-            router.refresh();
-            return;
         } catch(err: any) {
             console.log(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);
@@ -96,22 +101,24 @@ const InventoryList = ({ inventorys, params }: InventoryProps) => {
         }
     };
 
-    //일괄 삭제
-    const handleClickInvenAllDelete = async () => {
+    //단일 삭제
+    const handleClickInvenDelete = async (_id: string) => {
         try{
             setIsLoading(true);
 
-            const data = await inventoryAllDeleteApi(inventoryArray);
+            if (window.confirm('정말 삭제하시겠습니까?')) {
+                const data = await inventoryDeleteApi(_id);
 
-            if(!data.success) {
-                alert(`${data.message}`);
+                if(!data.success) {
+                    alert(`${data.message}`);
+                    return;
+                }
+
+                router.refresh();
+                return;
+            } else {
                 return;
             }
-
-            alert(`${data.message}`);
-            router.refresh();
-            setAllChecked(false);
-            return;
         } catch(err: any) {
             console.log(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);

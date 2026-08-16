@@ -1,8 +1,9 @@
 import React from 'react';
 import '@/shared/client/styled/formField/formField.css';
-import { FormFieldProps } from './FormField';
+import { FormFields } from '../../types/common';
+import SpinerButton from '../button/SpinerButton';
 
-const CertificationFormField = ({ label, placeholder, type, autoComplete, buttonText, onChange, value, onClick}:FormFieldProps) => {
+const CertificationFormField = ({ label, placeholder, type, autoComplete, buttonText, loading, onChange, value, onClick}:FormFields) => {
     return (
         <div className='form-field-container'>
             <label className='label'>
@@ -17,11 +18,28 @@ const CertificationFormField = ({ label, placeholder, type, autoComplete, button
                     onChange={onChange}
                     value={value}
                 />
+                
                 <button
+                    style={{
+                        cursor: loading ? "not-allowed" : "pointer",
+                        pointerEvents: loading ? "none" : "auto" 
+                    }} 
                     className='certification-button' 
                     onClick={onClick}
                 >
-                    {buttonText}
+                    {
+                        loading ? 
+                        (
+                            <div className='auth-dots'>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        ) :
+                        (
+                            buttonText
+                        )
+                    }
                 </button>
             </div>
             <p style={{ color: "#FF4040", fontSize: '12px', height: '17px' }}><br /></p>
