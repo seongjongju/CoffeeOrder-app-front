@@ -1,9 +1,9 @@
 import { Orders } from "@/app/types/orders/orders";
 import { orderGetApi } from "@/features/adminApi/adminOrderApi";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 const useOrderQuery = () => {
-    const orderQuery = useQuery<Orders>({
+    const orderQuery = useSuspenseQuery<Orders>({
         queryKey: ['orders'],
         queryFn: orderGetApi,
     });
