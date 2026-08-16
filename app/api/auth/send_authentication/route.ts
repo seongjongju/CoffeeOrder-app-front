@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
 
         //인증번호를 메일로 발송한다.
         let mailOptions = {
-            from: "coffeeOrder",
+            from: `CoffeeOrder <${process.env.GMAIL_USER}>`,
             to: email,
             subject: "coffeeOrder 이메일 인증번호",
             html: `

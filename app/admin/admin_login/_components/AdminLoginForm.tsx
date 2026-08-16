@@ -1,9 +1,12 @@
 'use client';
 import { adminLoginApi } from '@/features/adminApi/adminAuthApi';
+import useLoading from '@/features/hooks/loading/useLoading';
+import AdminLoadingUI from '@/shared/admin/components/loading/AdminLoadingUI';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const AdminLoginForm = () => {
+    const {isLoading, setIsLoading} = useLoading();
     const [adminIdInput, setAdminIdInput] = useState<string>('');
     const [adminPasswordInput, setAdminPasswordInput] = useState<string>('');
     const router = useRouter();
@@ -17,7 +20,7 @@ const AdminLoginForm = () => {
             router.replace('/admin/admin_login');
             return;
         } 
-    }, [])
+    }, []);
 
     const handleClickLoginSubmit = async () => {
         if(adminIdInput.trim() === "") {
@@ -31,6 +34,8 @@ const AdminLoginForm = () => {
         }
 
         try {
+            setIsLoading(true);
+
             const data = await adminLoginApi(adminIdInput, adminPasswordInput);
             if(!data.success) {
                 alert(`${data.message}`);
@@ -41,6 +46,8 @@ const AdminLoginForm = () => {
         } catch(err: any) {
             console.error(err.message);
             alert(`${err.response.data.message}`);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -77,6 +84,15 @@ const AdminLoginForm = () => {
                     로그인
                 </button>
             </form>
+
+            {
+                isLoading &&
+                (
+                    <AdminLoadingUI 
+                        isLoading={isLoading}
+                    />
+                ) 
+            }
         </main>
     );
 };

@@ -27,7 +27,7 @@ const Modal = ({ modalShow, setModalShow, modalText, setModalText } : ModalProps
             return;
         } else if(pathName.includes('/password_find')) {
             if(modalText === "비밀번호가 변경되었습니다.") {
-                router.push('/');
+                router.push('/client/auth/login');
                 return;
             }
         }

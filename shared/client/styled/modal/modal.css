@@ -39,7 +39,7 @@
 
 .modal-info p {
     text-align: center;
-    word-break: keep-all;
+    white-space: pre-wrap;
 }
 
 /* 컨핌창 */

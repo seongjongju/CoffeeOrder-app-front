@@ -42,16 +42,20 @@ const ProductList = ({inventorys, products, params}: ProductProps) => {
         try{
             setIsLoading(true);
 
-            const data = await productDeleteApi(productCode);
+            if(window.confirm('정말 삭제하시겠습니까?')) {
+                const data = await productDeleteApi(productCode);
 
-            if(!data.success) {
+                if(!data.success) {
+                    alert(`${data.message}`);
+                    return;
+                }
+
                 alert(`${data.message}`);
+                router.refresh();
+                return;
+            } else {
                 return;
             }
-
-            alert(`${data.message}`);
-            router.refresh();
-            return;
         } catch(err: any) {
             console.error(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);
@@ -98,17 +102,21 @@ const ProductList = ({inventorys, products, params}: ProductProps) => {
         try{
             setIsLoading(true);
 
-            const data = await productAllDeleteApi(productArray);
+            if(window.confirm('정말 삭제하시겠습니까?')) {
+                const data = await productAllDeleteApi(productArray);
 
-            if(!data.success) {
+                if(!data.success) {
+                    alert(`${data.message}`);
+                    return;
+                }
+
                 alert(`${data.message}`);
+                router.refresh();
+                setAllChecked(false);
+                return;
+            } else {
                 return;
             }
-
-            alert(`${data.message}`);
-            router.refresh();
-            setAllChecked(false);
-            return;
         } catch(err: any) {
             console.log(err.response?.data?.message);
             alert(`${err.response?.data?.message}`);

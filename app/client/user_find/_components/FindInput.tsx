@@ -4,13 +4,14 @@ import React from 'react';
 export interface findProps {
     placeholder: string;
     type: string;
+    name: string;
     autoComplete: string;
     label: string;
     value: string;
     onChange: (e:React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const FindInput = ({ placeholder, type, autoComplete, label, value, onChange }: findProps) => {
+const FindInput = ({ placeholder, type, autoComplete, label, value, name, onChange }: findProps) => {
     return (
         <div className='form-field-container'>
             <label className='label'>
@@ -21,6 +22,7 @@ const FindInput = ({ placeholder, type, autoComplete, label, value, onChange }: 
                 className='form-field-input' 
                 placeholder={placeholder} 
                 type={type} 
+                name={name}
                 autoComplete={autoComplete}
                 value={value}
                 onChange={onChange}

@@ -3,46 +3,69 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import mascot from '@/public/images/mascot.png';
 import FindInput from '../../_components/FindInput';
-import Button from '@/shared/client/components/button/Button';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
 import { validations } from '@/app/util/client/Validation';
-import { useRouter } from 'next/navigation';
 import { resetPasswordApi } from '@/features/clientApi/authApi';
-import { useAppSelector } from '@/store/hook';
 import { formatPhoneNumber } from '@/app/util/format';
 import useLoading from '@/features/hooks/loading/useLoading';
 import SpinerButton from '@/shared/client/components/button/SpinerButton';
+import { useSearchParams } from 'next/navigation';
+
+interface resetPwdInputs {
+    userId: string;
+    userPhoneNumber: string;
+    newPwd: string;
+    newPwdCheck: string;
+};
 
 const PasswordFindForm = () => {
-    const router = useRouter();
+    const searchParams = useSearchParams();
+    const findUserId = searchParams.get('userId');
     const {isLoading, setIsLoading} = useLoading();
-    const user = useAppSelector(state => state.auth.user);
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
-    const [userId, setUserId] = useState<string>('');
-    const [userPhoneNumber, setUserPhoneNumber] = useState<string>('');
-    const [newPwd, setNewPwd] = useState<string>('');
-    const [newPwdCheck, setNewPwdCheck] = useState<string>('');
+
+    const [resetPwdInputs, setResetPwdInputs] = useState<resetPwdInputs>({
+        userId: "",
+        userPhoneNumber: "",
+        newPwd: "",
+        newPwdCheck: "",
+    });
+
+    // const [userId, setUserId] = useState<string>('');
+    // const [userPhoneNumber, setUserPhoneNumber] = useState<string>('');
+    // const [newPwd, setNewPwd] = useState<string>('');
+    // const [newPwdCheck, setNewPwdCheck] = useState<string>('');
+
+    //인풋 입력
+    const handleChangeInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const target = e.target.name;
+
+        setResetPwdInputs((prev) => ({
+            ...prev,
+            [target]: target === "userPhoneNumber" ? e.target.value.replace(/\D/g, '').slice(0, 11) : e.target.value
+        }));
+    };
 
     //아이디 입력
-    const handleChangeUserId = (e:React.ChangeEvent<HTMLInputElement>) => {
-        setUserId(e.target.value);
-    };
+    // const handleChangeUserId = (e:React.ChangeEvent<HTMLInputElement>) => {
+    //     setUserId(e.target.value);
+    // };
 
-    //휴대폰 번호 입력
-    const handleChangeUserPhoneNumber = (e:React.ChangeEvent<HTMLInputElement>) => {
-        setUserPhoneNumber(e.target.value.replace(/\D/g, '').slice(0, 11));
-    };
+    // //휴대폰 번호 입력
+    // const handleChangeUserPhoneNumber = (e:React.ChangeEvent<HTMLInputElement>) => {
+    //     setUserPhoneNumber(e.target.value.replace(/\D/g, '').slice(0, 11));
+    // };
 
-    //새 비밀번호 작성
-    const handleChangeNewPwd = (e:React.ChangeEvent<HTMLInputElement>) => {
-        setNewPwd(e.target.value);
-    };
+    // //새 비밀번호 작성
+    // const handleChangeNewPwd = (e:React.ChangeEvent<HTMLInputElement>) => {
+    //     setNewPwd(e.target.value);
+    // };
 
-    //새 비밀번호 확인
-    const handleChangeNewPwdCheck = (e:React.ChangeEvent<HTMLInputElement>) => {
-        setNewPwdCheck(e.target.value);
-    };
+    // //새 비밀번호 확인
+    // const handleChangeNewPwdCheck = (e:React.ChangeEvent<HTMLInputElement>) => {
+    //     setNewPwdCheck(e.target.value);
+    // };
 
     //유저 정보 인증 submit
     const handleCertificationSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
@@ -51,44 +74,40 @@ const PasswordFindForm = () => {
         setModalShow(true);
 
         //아무것도 안적었을 시
-        if(userId.trim() === '' || userPhoneNumber.trim() === '' || newPwd.trim() === '') {
+        if(resetPwdInputs.userId.trim() === '' || resetPwdInputs.userPhoneNumber.trim() === '' || resetPwdInputs.newPwd.trim() === '') {
             setModalText('아이디, 휴대폰 번호, 새 비밀번호를 입력해주세요.');
             return;
         }
 
         //아이디 형식 오류
-        if(!validations.idRegex.test(userId.trim())) {
+        if(!validations.idRegex.test(resetPwdInputs.userId.trim())) {
             setModalText('아이디 형식이 올바르지 않습니다.');
             return;
         }
 
         //휴대폰 번호 형식 오류
-        if(!validations.phoneNumberRegex.test(userPhoneNumber.trim())) {
+        if(!validations.phoneNumberRegex.test(resetPwdInputs.userPhoneNumber.trim())) {
             setModalText('휴대폰 번호 형식이 올바르지 않습니다.');
             return;
         }
 
         //비밀번호 형식 오류
-        if(!validations.passwordRegex.test(newPwd.trim())) {
-            setModalText('비밀번호 형식이 올바르지 않습니다.');
+        if(!validations.passwordRegex.test(resetPwdInputs.newPwd.trim())) {
+            setModalText(`비밀번호 형식이 올바르지 않습니다.
+영문 + 숫자 + 기호 총 8자리 
+사용 가능 기호(!@#$%^&*()_+=-)`
+            );
             return;
         };
 
-        //아이디가 로컬에 저장된 아이디와 일치 하지 않을 때
-        if(user?.userId !== userId) {
-            setModalText('아이디를 확인해주세요.');
-            return;
-        }
-
-        //휴대폰 번호가 로컬에 저장된 휴대폰 번호와 일치 하지 않을 때
-        if(user?.phoneNumber !== userPhoneNumber) {
-            setModalText('휴대폰 번호를 확인해주세요.');
-            return;
-        }
-
         //새 비밀번호가 일치 하지 않을 때
-        if(newPwd !== newPwdCheck) {
+        if(resetPwdInputs.newPwd !== resetPwdInputs.newPwdCheck) {
             setModalText('새 비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        if(findUserId !== resetPwdInputs.userId) {
+            setModalText('아이디 찾기로 찾은 아이디와 다른 아이디입니다.');
             return;
         }
 
@@ -99,9 +118,9 @@ const PasswordFindForm = () => {
             setIsLoading(true);
 
             const data = await resetPasswordApi(
-                userId, 
-                userPhoneNumber,
-                newPwd
+                resetPwdInputs.userId, 
+                resetPwdInputs.userPhoneNumber,
+                resetPwdInputs.newPwd
             );  
 
             if(!data.success) {
@@ -131,41 +150,45 @@ const PasswordFindForm = () => {
                     <Image src={mascot} alt='마스코트' />
                     <p className='auth-text'>
                         비밀번호 재설정을 위해 <br />
-                        아이디를 입력해 주세요!!
+                        아이디와 연락처를 입력해 주세요!!
                     </p>
                 </div>
                 <form onSubmit={handleCertificationSubmit}>
                     <FindInput 
-                        placeholder='아이디 입력'
+                        placeholder='아이디 입력 abc123'
                         type='text'
+                        name='userId'
                         autoComplete='off'
                         label='아이디'
-                        value={userId}
-                        onChange={handleChangeUserId}
+                        value={resetPwdInputs.userId}
+                        onChange={handleChangeInputs}
                     />
                     <FindInput 
                         placeholder="'-'구분없이 입력"
                         type='tel'
+                        name='userPhoneNumber'
                         autoComplete='tel'
                         label="휴대폰 번호"
-                        value={formatPhoneNumber(userPhoneNumber)}
-                        onChange={handleChangeUserPhoneNumber}
+                        value={formatPhoneNumber(resetPwdInputs.userPhoneNumber)}
+                        onChange={handleChangeInputs}
                     />
                     <FindInput 
                         label='새 비밀번호'
                         type='password'
+                        name='newPwd'
                         autoComplete='new-password'
-                        placeholder='새 비밀번호 입력'
-                        value={newPwd}
-                        onChange={handleChangeNewPwd}
+                        placeholder='새 비밀번호 입력 영문 + 숫자 + 기호 총 8자리'
+                        value={resetPwdInputs.newPwd}
+                        onChange={handleChangeInputs}
                     />
                     <FindInput 
                         label='새 비밀번호 확인'
                         type='password'
+                        name='newPwdCheck'
                         autoComplete='new-password'
                         placeholder='새 비밀번호 재입력'
-                        value={newPwdCheck}
-                        onChange={handleChangeNewPwdCheck}
+                        value={resetPwdInputs.newPwdCheck}
+                        onChange={handleChangeInputs}
                     />
                     <SpinerButton 
                         isLoading={isLoading}
