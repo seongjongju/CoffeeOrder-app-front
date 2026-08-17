@@ -13,7 +13,7 @@ header {
     transform: translateX(-50%);
     z-index: 99;
     background-color: #fff;
-    padding-top: calcenv(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
 }
 
 header::after {
@@ -42,7 +42,6 @@ header.is-admin::after {
     padding: 0 20px;
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
     position: relative;
 }
 
