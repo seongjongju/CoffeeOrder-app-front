@@ -6,19 +6,7 @@
     font-family: 'Pretendard', sans-serif;
 }
 
-html {
-    background-color: #fff;
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-top: env(safe-area-inset-top);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-}
-
-body {
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-top: env(safe-area-inset-top);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
+html, body {
     font-family: 'Pretendard', sans-serif;
     margin: 0 auto;
     background-color: #fff;
@@ -31,6 +19,10 @@ main {
     min-height: 100dvh;
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
 }
 
 a {
