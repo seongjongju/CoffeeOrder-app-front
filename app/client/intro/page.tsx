@@ -5,7 +5,6 @@ import BigMascot from '@/public/icons/big_mascot.png';
 import "./_styled/intro.css";
 import React, { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Header from '../inc/header/Header';
 
 const IntroPage = () => {
     const router = useRouter();
