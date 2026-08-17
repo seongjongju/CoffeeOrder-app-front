@@ -12,6 +12,8 @@ header {
     left: 50%;
     transform: translateX(-50%);
     z-index: 99;
+    background-color: #fff;
+    padding-top: calcenv(safe-area-inset-top);
 }
 
 header::after {
