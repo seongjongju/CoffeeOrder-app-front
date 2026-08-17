@@ -1,6 +1,6 @@
 {
     "name": "CoffeeOrder",
-    "short_name": "PWA",
+    "short_name": "CoffeeOrder",
     "description": "커피 주문 웹앱",
     "start_url": "/",
     "scope": "/",
