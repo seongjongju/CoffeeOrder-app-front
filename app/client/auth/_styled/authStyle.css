@@ -1,5 +1,6 @@
 .auth-main {
     padding-top: 80px;
+    padding-top: calc(80px + env(safe-area-inset-top));
 }
 
 .auth-container {
