@@ -2,10 +2,7 @@
 import React from 'react';
 import '@/shared/admin/styled/admin_common.css';
 import  {  ClimbingBoxLoader  }  from  "react-spinners" ;
-
-interface IsLoadingProps {
-    isLoading: boolean;
-}
+import { IsLoadingProps } from '@/shared/types/common';
 
 const AdminLoadingUI = ({isLoading}: IsLoadingProps) => {
     return (

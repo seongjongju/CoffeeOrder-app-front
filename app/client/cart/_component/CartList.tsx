@@ -10,19 +10,26 @@ import CartItemNone from './CartItemNone';
 import { useAppSelector } from '@/store/hook';
 import { formatPrice } from '@/app/util/format';
 import usePayment from '@/features/hooks/pay/usePayment';
+import useLoading from '@/features/hooks/loading/useLoading';
+import LoadingSpiner from '@/shared/client/components/loading/LoadingSpiner';
 
 const CartList = () => {
+    const {isLoading, setIsLoading} = useLoading();
     const { modalShow, setModalShow, modalText, setModalText } = useModalShow();
     const { carts } = useCartQuery(); //카트 전체 조회
     const user = useAppSelector(state => state.auth.user); //유저 목록
-
     const userCarts = carts.filter(cart => cart.userId === user.userId); //로그인 된 유저의 장바구니 목록
+
+    //결제 커스텀 훅
+    const {addPayment} = usePayment(userCarts, "cart");
 
     //장바구니 전체 삭제 핸들러
     const queryClient = useQueryClient();
     const allDeleteCartItem = useCallback(async (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         try {
+            setIsLoading(true);
+
             await allDeleteCartApi(user.userId);
             queryClient.invalidateQueries({ queryKey: ['carts'] });
             return;
@@ -31,11 +38,18 @@ const CartList = () => {
             setModalShow(true);
             setModalText(err.response?.data?.message);
             return;
+        } finally {
+            setIsLoading(true);
         }
-    }, []);
+    }, [userCarts]);
 
-    //결제 커스텀 훅
-    const {addPayment} = usePayment(userCarts, "cart");
+    //총 결제 금액
+    const {count, price} = useMemo(() => {
+        const count = userCarts.map(item => item.totalCount).reduce((acc, cur) => acc + cur, 0);
+        const price = userCarts.map(item => item.totalPrice).reduce((acc, cur) => acc + cur, 0);
+
+        return {count, price}
+    }, [userCarts]);
     
     return (
         <div className={`inner cart-inner ${userCarts.length === 0 ? "cart-null" : ""}`}>
@@ -59,25 +73,37 @@ const CartList = () => {
                                     <CartItem 
                                         key={item._id}
                                         cartItem={item}
+                                        setIsLoading={setIsLoading}
                                     />
                                 ))
                             }
                         </div>
                         
-                        {(() => {
-                            const count = userCarts.map(item => item.totalCount).reduce((acc, cur) => acc + cur, 0);
-                            const price = userCarts.map(item => item.totalPrice).reduce((acc, cur) => acc + cur, 0);
-
-                            return (
-                                <button 
-                                    className='common-button' 
-                                    style={{ marginTop: "10px" }}
-                                    onClick={addPayment}
-                                >
-                                    주문하기 <span className='totla-length'>총 {count}개 {formatPrice(price)}원</span>
-                                </button>
-                            );
-                        })()}
+                        <button 
+                            style={{
+                                cursor: isLoading ? "not-allowed" : "pointer",
+                                pointerEvents: isLoading ? "none" : "auto", 
+                                marginTop: "10px"
+                            }} 
+                            className='common-button' 
+                            onClick={addPayment}
+                        >
+                            {
+                                isLoading ? 
+                                (
+                                    <div className='dots'>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>  
+                                ) :
+                                (
+                                    <>
+                                        주문하기 <span className='totla-length'>총 {count}개 {formatPrice(price)}원</span>
+                                    </>
+                                )
+                            }
+                        </button>
                     </>
                 )
             }

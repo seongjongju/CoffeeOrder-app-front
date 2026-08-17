@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Provider } from "react-redux";
 import { persistor, store } from "../store/store";
 import { PersistGate } from 'redux-persist/integration/react';
@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Header from './client/inc/header/Header';
 import AdminHeader from './admin/inc/admin_header/AdminHeader';
 import AuthProvider from './globalProvider/AuthProvider';
+import LoadingUi from '@/shared/client/components/loading/LoadingUi';
 
 const queryClient = new QueryClient();
 
@@ -39,21 +40,23 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
     }
 
     return (
-        <QueryClientProvider client={queryClient}>
-            <Provider store={store}>
-                <PersistGate persistor={persistor}>
-                    <AuthProvider>
-                        {
-                            isAdminLoginPage ? null 
-                            : isAdminPage ? <AdminHeader /> 
-                            : <Header />
-                        }
-                        
-                        {children}
-                    </AuthProvider>
-                </PersistGate>
-            </Provider>
-        </QueryClientProvider>
+        <Suspense fallback={<LoadingUi />}>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <PersistGate persistor={persistor}>
+                        <AuthProvider>
+                            {
+                                isAdminLoginPage ? null 
+                                : isAdminPage ? <AdminHeader /> 
+                                : <Header />
+                            }
+                            
+                            {children}
+                        </AuthProvider>
+                    </PersistGate>
+                </Provider>
+            </QueryClientProvider>
+        </Suspense>
     );
 };
 

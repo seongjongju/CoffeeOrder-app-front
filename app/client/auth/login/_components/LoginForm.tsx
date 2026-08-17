@@ -5,7 +5,6 @@ import mascot from '@/public/images/mascot.png';
 import FormField from '@/shared/client/components/formField/FormField';
 import Link from 'next/link';
 import { validations } from '@/app/util/client/Validation';
-import { useRouter } from 'next/navigation';
 import useModalShow from '@/features/hooks/modal/useModalShow';
 import Modal from '@/shared/client/components/modal/Modal';
 import { loginApi, meApi } from '@/features/clientApi/authApi';
@@ -17,7 +16,6 @@ import SpinerButton from '@/shared/client/components/button/SpinerButton';
 const LoginForm = () => {
     const {modalShow, setModalShow, modalText, setModalText} = useModalShow();
     const {isLoading, setIsLoading} = useLoading();
-    const router = useRouter();
     const dispatch = useDispatch();
     const [userId, setUserId] = useState('');
     const [userPwd, setUserPwd] = useState('');

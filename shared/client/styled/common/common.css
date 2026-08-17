@@ -7,16 +7,20 @@
 }
 
 html {
-    background-color: #888;
+    background-color: #fff;
+    padding-bottom: env(safe-area-inset-bottom);
     padding-top: env(safe-area-inset-top);
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
 }
 
 body {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
     font-family: 'Pretendard', sans-serif;
     margin: 0 auto;
-    padding-top: env(safe-area-inset-top);
     background-color: #fff;
 }
 
@@ -118,6 +122,33 @@ li {
     color: #222;
     border-radius: 5px;
     font-size: 14px;
+}
+
+.dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.dots span {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #fff;
+    position: relative;
+    bottom: 0;
+    animation: bounce .5s infinite ease-in-out;
+}
+
+.dots span:nth-child(2) {animation-delay: .1s;}
+.dots span:nth-child(3) {animation-delay: .2s;}
+
+@keyframes bounce {
+    0% {bottom: 0;}
+    50% {bottom: 5px;}
+    100% {bottom: 0;}
 }
 
 /* 나이스 페이먼츠 */

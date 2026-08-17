@@ -1,6 +1,6 @@
 import React from 'react';
 import '@/shared/client/styled/formField/formField.css';
-import { FormFields } from '../../types/common';
+import { FormFields } from '../../../types/common';
 import SpinerButton from '../button/SpinerButton';
 
 const CertificationFormField = ({ label, placeholder, type, autoComplete, buttonText, loading, onChange, value, onClick}:FormFields) => {
@@ -30,7 +30,7 @@ const CertificationFormField = ({ label, placeholder, type, autoComplete, button
                     {
                         loading ? 
                         (
-                            <div className='auth-dots'>
+                            <div className='dots'>
                                 <span></span>
                                 <span></span>
                                 <span></span>

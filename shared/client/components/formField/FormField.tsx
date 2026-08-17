@@ -1,7 +1,7 @@
 import React from 'react';
 import '@/shared/client/styled/formField/formField.css';
 import { usePathname } from 'next/navigation';
-import { FormFields } from '../../types/common';
+import { FormFields } from '../../../types/common';
 
 const FormField = ({ label, placeholder, type, autoComplete, onChange, value, errMessage, onBlur}:FormFields) => {
     const pathName = usePathname();
