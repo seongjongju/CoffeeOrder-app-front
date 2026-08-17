@@ -30,7 +30,7 @@ const CertificationFormField = ({ label, placeholder, type, autoComplete, button
                     {
                         loading ? 
                         (
-                            <div className='auth-dots'>
+                            <div className='dots'>
                                 <span></span>
                                 <span></span>
                                 <span></span>
