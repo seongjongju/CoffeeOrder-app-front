@@ -12,3 +12,8 @@ export interface FormFields {
     onBlur?: (e:React.FocusEvent<HTMLInputElement>) => void;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
+
+//로딩
+export interface IsLoadingProps {
+    isLoading: boolean;
+}

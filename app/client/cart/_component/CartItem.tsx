@@ -13,15 +13,15 @@ import { useQueryClient } from '@tanstack/react-query';
 
 interface CartItemProps {
     cartItem: Cart;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const CartItem = ({cartItem}: CartItemProps) => {
+const CartItem = ({cartItem, setIsLoading}: CartItemProps) => {
     const { modalShow, setModalShow, modalText, setModalText } = useModalShow();
     const [cartCount, setCartCount] = useState<number>(cartItem.totalCount); //장바구니 메뉴 수량 변경
     const [cartItemTotalPrice, setCartItemTotalPrice] = useState<number>(cartItem.totalPrice); //장바구니 메뉴  총가격 변경
 
     const queryClient = useQueryClient(); //리액트 쿼리
-
     //장바구니 업데이트 서브밋
     const updateCartItem = useCallback(async (name: string, _id: string) => {
         const calcCartItemPrice = cartItem.totalPrice / cartItem.totalCount;
@@ -31,6 +31,8 @@ const CartItem = ({cartItem}: CartItemProps) => {
         let nextTotalPrice = cartItemTotalPrice;
 
         try{
+            setIsLoading(true);
+
             if(name === "decrement") {
                 nextCount = Math.max(1, cartCount - 1);
                 nextTotalPrice = Math.max(calcCartItemPrice, cartItemTotalPrice - calcCartItemPrice);
@@ -61,6 +63,8 @@ const CartItem = ({cartItem}: CartItemProps) => {
         }catch(err: any) {
             console.error(err.response?.data?.message);
             return;
+        } finally {
+            setIsLoading(false);
         }
     }, [cartCount, cartItemTotalPrice, cartItem.totalPrice, cartItem.totalCount]);
 
@@ -68,6 +72,8 @@ const CartItem = ({cartItem}: CartItemProps) => {
     const deleteCartItem = useCallback(async (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         try {
+            setIsLoading(true);
+
             const data = await deleteCartApi(cartItem._id);
             if(!data.success) {
                 setModalShow(true);
@@ -82,6 +88,8 @@ const CartItem = ({cartItem}: CartItemProps) => {
             setModalShow(true);
             setModalText(err.response?.data?.message);
             return;
+        } finally {
+            setIsLoading(false);
         }
     }, []);
 

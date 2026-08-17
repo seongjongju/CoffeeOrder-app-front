@@ -18,7 +18,7 @@ const SpinerButton = ({isLoading, buttonText}: SpinerButtonProps) => {
             {
                 isLoading ? 
                 (
-                    <div className='auth-dots'>
+                    <div className='dots'>
                         <span></span>
                         <span></span>
                         <span></span>
