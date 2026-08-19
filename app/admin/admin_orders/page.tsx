@@ -8,7 +8,7 @@ const AdminOrdersPage = async ({searchParams}: {searchParams: Promise<{cate: str
     const allOrders = await orderGetApi(); //주문 내역
 
     return (
-        <main className='main admin-main'>
+        <main className='admin-main'>
             <h2 className='admin-title'>회원 주문/결제 내역</h2>
 
             <OrdersInterface 

@@ -10,7 +10,7 @@ import { productGetApi } from "@/features/adminApi/adminProductApi";
 import QueryProvider from "./globalProvider/QueryProvider";
 import { getCartApi } from "@/features/clientApi/cartApi";
 import { orderGetApi } from "@/features/adminApi/adminOrderApi";
-import SplashScreen from "@/shared/client/components/splash/SplashScreen";
+import { cookies } from "next/headers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -101,6 +101,9 @@ export default async function RootLayout({
     queryClient.prefetchQuery({ queryKey: ['orders'], queryFn: allOrders }),
   ]);
 
+  const cookieStore = await cookies();
+  const hasSeenSplash = cookieStore.get('hasSeenSplash')?.value === 'true';
+
   return (
     <html 
       lang="ko"
@@ -111,15 +114,13 @@ export default async function RootLayout({
           src="https://pay.nicepay.co.kr/v1/js/"
           strategy="beforeInteractive"
         />
-        <SplashScreen>
-          <QueryProvider>
-            <HydrationBoundary state={dehydrate(queryClient)}>
-              <ClientLayout>
-                  {children}
-              </ClientLayout>
-            </HydrationBoundary>
-          </QueryProvider>
-        </SplashScreen>
+        <QueryProvider>
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <ClientLayout initialHasSeen={hasSeenSplash}>
+                {children}
+            </ClientLayout>
+          </HydrationBoundary>
+        </QueryProvider>
       </body>
     </html>
   );

@@ -25,8 +25,10 @@ const AdminHeader = () => {
         }
     };
 
+    //관리자 로그인 페이지에서는 헤더 UI를 보여주지 않음
     //주문내역 상세보기 페이지에서는 헤더 UI를 보여주지 않음
     if(pathName.includes('/admin/admin_orders_view')) return null;
+    else if (pathName.includes('/admin/admin_login')) return null;
 
     return (
         <>

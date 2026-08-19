@@ -9,10 +9,19 @@ import Header from './client/inc/header/Header';
 import AdminHeader from './admin/inc/admin_header/AdminHeader';
 import AuthProvider from './globalProvider/AuthProvider';
 import LoadingUi from '@/shared/client/components/loading/LoadingUi';
+import SplashScreen from '@/shared/client/components/splash/SplashScreen';
+
+interface ClientLayoutProps {
+    children: React.ReactNode;
+    initialHasSeen?: boolean; 
+}
 
 const queryClient = new QueryClient();
 
-const ClientLayout = ({children}:{ children: React.ReactNode }) => {
+const ClientLayout = ({
+    children,
+    initialHasSeen
+}:ClientLayoutProps) => {
     const pathName = usePathname();
 
     useEffect(() => {
@@ -25,38 +34,43 @@ const ClientLayout = ({children}:{ children: React.ReactNode }) => {
         }
     }, []);
 
-    const isIntroPage = pathName === '/client/intro';
     const isAdminPage = pathName.includes("admin");
-    const isAdminLoginPage = pathName === '/admin/admin_login';
-
-    if (isIntroPage) {
-        return (
-            <Provider store={store}>
-                <PersistGate persistor={persistor}>
-                    {children}
-                </PersistGate>
-            </Provider>
-        );
-    }
 
     return (
-        <Suspense fallback={<LoadingUi />}>
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <PersistGate persistor={persistor}>
-                        <AuthProvider>
-                            {
-                                isAdminLoginPage ? null 
-                                : isAdminPage ? <AdminHeader /> 
-                                : <Header />
-                            }
-                            
-                            {children}
-                        </AuthProvider>
-                    </PersistGate>
-                </Provider>
-            </QueryClientProvider>
-        </Suspense>
+            <>
+                {
+                    isAdminPage ? 
+                    ( 
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={store}>
+                                <PersistGate persistor={persistor}>
+                                    <AuthProvider>
+                                        <AdminHeader /> 
+                                        {children}
+                                    </AuthProvider>
+                                </PersistGate>
+                            </Provider>
+                        </QueryClientProvider>
+                    ) :
+                    (
+                        <SplashScreen initialHasSeen={initialHasSeen}>
+                            <Suspense fallback={<LoadingUi />}>
+                                <QueryClientProvider client={queryClient}>
+                                    <Provider store={store}>
+                                        <PersistGate persistor={persistor}>
+                                            <AuthProvider>
+                                                <Header />
+                                                {children}
+                                            </AuthProvider>
+                                        </PersistGate>
+                                    </Provider>
+                                </QueryClientProvider>
+                            </Suspense>
+                        </SplashScreen>
+                    )
+                }
+            </>
+        
     );
 };
 

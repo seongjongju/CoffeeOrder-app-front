@@ -3,21 +3,20 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react'
 import BigMascot from '@/public/icons/big_mascot.png';
 import "@/app/client/intro/_styled/intro.css";
+interface SplashScreenProps {
+  children: React.ReactNode;
+  initialHasSeen?: boolean;
+}
 
-export default function SplashScreen({ children }: { children: React.ReactNode }) {
-  const [isLoading, setIsLoading] = useState(true);
+export default function SplashScreen({ children, initialHasSeen = false }: SplashScreenProps) {
+  const [isLoading, setIsLoading] = useState(!initialHasSeen);
 
   useEffect(() => {
-    const hasSeenSplash = sessionStorage.getItem('hasSeenSplash');
-
-    if (hasSeenSplash) {
-      setIsLoading(false)
-      return
-    }
+    if (initialHasSeen) return;
 
     const timer = setTimeout(() => {
-      sessionStorage.setItem('hasSeenSplash', 'true')
-      setIsLoading(false)
+      document.cookie = "hasSeenSplash=true; path=/;";
+      setIsLoading(false);
     }, 500);
 
     return () => clearTimeout(timer);

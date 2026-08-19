@@ -9,7 +9,7 @@ const AdminInventoryPage = async ({ searchParams }: { searchParams: Promise<{ ca
     const allInventory = await inventoryGetApi(); //재고
 
     return (
-        <main className='main admin-main'>
+        <main className='admin-main'>
             <h2 className='admin-title'>재고관리</h2>
 
             <InventoryInterface
