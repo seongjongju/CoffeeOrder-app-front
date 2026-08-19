@@ -33,7 +33,6 @@ const ProductOrderChart = memo(({ orders, products }: ProductOrderChartProps) =>
         return { labels, quantities };
     }, [products, orders]);
 
-    // 3. Chart.js 인스턴스 생성 및 Cleanup 처리
     useEffect(() => {
         if (!canvasRef.current) return;
 
@@ -63,6 +62,7 @@ const ProductOrderChart = memo(({ orders, products }: ProductOrderChartProps) =>
                 scales: {
                     y: {
                         beginAtZero: true,
+                        suggestedMax: 5,
                         ticks: {
                             stepSize: 1,
                         },
