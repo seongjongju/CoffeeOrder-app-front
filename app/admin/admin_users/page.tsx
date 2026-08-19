@@ -8,7 +8,7 @@ const AdminUsersPage = async ({searchParams}: {searchParams: Promise<{cate: stri
     const allMembers = await getMembersApi(); //회원 목록
     
     return (
-        <main className='main admin-main'>
+        <main className='admin-main'>
             <h2 className='admin-title'>회원목록</h2>
             
             <MembersInterface

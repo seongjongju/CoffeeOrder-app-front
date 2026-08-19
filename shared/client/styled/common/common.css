@@ -141,8 +141,3 @@ li {
     50% {bottom: 5px;}
     100% {bottom: 0;}
 }
-
-/* 나이스 페이먼츠 */
-#newPayIframe {
-    background-color: #fff !important;
-}

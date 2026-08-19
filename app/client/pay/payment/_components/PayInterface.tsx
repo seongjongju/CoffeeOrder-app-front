@@ -5,18 +5,23 @@ import React, { useState } from 'react';
 import { Item, paymentData } from '@/app/types/pay/pay';
 import useConfilmShow from '@/features/hooks/confirm/useConfilmShow';
 import Confirm from '@/shared/client/components/confirm/Confirm';
+import useLoading from '@/features/hooks/loading/useLoading';
+import LoadingSpiner from '@/shared/client/components/loading/LoadingSpiner';
 
 interface paymentInterfaceProps {
     paymentData: paymentData;
 };
 
 const PayInterface = ({paymentData}: paymentInterfaceProps) => {
+    const {isLoading, setIsLoading} = useLoading();
     const orderType = useSearchParams().get('orderType'); //orderType 확인
     const {confilmShow, setConfilmShow, confilmText, setConfilmText} = useConfilmShow();
 
     //결제
     const handlePay = async () => {
         try{
+            setIsLoading(true);
+
             //제품이 2개 이상일 때 제품명 파라미터
             const payProductName = paymentData?.items.length > 1 ? 
                             `${paymentData.items[0].productName} 외 ${paymentData.items.length - 1}개` :
@@ -36,15 +41,17 @@ const PayInterface = ({paymentData}: paymentInterfaceProps) => {
                     returnUrl: `${process.env.NEXT_PUBLIC_FRONT_API_URL}/api/pay/pay_approve?orderType=${orderType}`, //API를 호출할 Endpoint 입력
                     fnError: function (result: any) {
                         alert('고객용메시지 : ' + result.errorMsg + '\n개발자확인용 : ' + result.msg);
+                        setIsLoading(false);
                     }
                 });
             }
-
+            
             return;
         }catch(err: any) {
             console.error(err.response?.data?.message);
+            setIsLoading(false);
             return;
-        }
+        } 
     };
 
     //결제 취소
@@ -143,6 +150,15 @@ const PayInterface = ({paymentData}: paymentInterfaceProps) => {
                         confilmText={confilmText}
                         setConfilmText={setConfilmText}
                         orderId={paymentData.orderId}
+                    />
+                )
+            }
+
+            {
+                isLoading &&
+                (
+                    <LoadingSpiner 
+                        isLoading={isLoading}
                     />
                 )
             }

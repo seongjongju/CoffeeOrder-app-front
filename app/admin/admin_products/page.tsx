@@ -12,7 +12,7 @@ const AdminProductsPage = async ({ searchParams }: { searchParams: Promise<{ cat
     const allProduct = await productGetApi(); //제품
 
     return (
-        <main className='main admin-main'>
+        <main className='admin-main'>
             <h2 className='admin-title'>제품관리</h2>
 
             <ProductsInterface 
