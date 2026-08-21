@@ -53,20 +53,18 @@ const ClientLayout = ({
                         </QueryClientProvider>
                     ) :
                     (
-                        <SplashScreen initialHasSeen={initialHasSeen}>
-                            <Suspense fallback={<LoadingUi />}>
-                                <QueryClientProvider client={queryClient}>
-                                    <Provider store={store}>
-                                        <PersistGate persistor={persistor}>
-                                            <AuthProvider>
-                                                <Header />
-                                                {children}
-                                            </AuthProvider>
-                                        </PersistGate>
-                                    </Provider>
-                                </QueryClientProvider>
-                            </Suspense>
-                        </SplashScreen>
+                        <Suspense fallback={<LoadingUi />}>
+                            <QueryClientProvider client={queryClient}>
+                                <Provider store={store}>
+                                    <PersistGate persistor={persistor}>
+                                        <AuthProvider>
+                                            <Header />
+                                            {children}
+                                        </AuthProvider>
+                                    </PersistGate>
+                                </Provider>
+                            </QueryClientProvider>
+                        </Suspense>
                     )
                 }
             </>
