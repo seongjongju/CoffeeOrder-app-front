@@ -10,7 +10,6 @@ import { productGetApi } from "@/features/adminApi/adminProductApi";
 import QueryProvider from "./globalProvider/QueryProvider";
 import { getCartApi } from "@/features/clientApi/cartApi";
 import { orderGetApi } from "@/features/adminApi/adminOrderApi";
-import { cookies } from "next/headers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -101,9 +100,6 @@ export default async function RootLayout({
     queryClient.prefetchQuery({ queryKey: ['orders'], queryFn: allOrders }),
   ]);
 
-  const cookieStore = await cookies();
-  const hasSeenSplash = cookieStore.get('hasSeenSplash')?.value === 'true';
-
   return (
     <html 
       lang="ko"
@@ -116,7 +112,7 @@ export default async function RootLayout({
         />
         <QueryProvider>
           <HydrationBoundary state={dehydrate(queryClient)}>
-            <ClientLayout initialHasSeen={hasSeenSplash}>
+            <ClientLayout>
                 {children}
             </ClientLayout>
           </HydrationBoundary>
