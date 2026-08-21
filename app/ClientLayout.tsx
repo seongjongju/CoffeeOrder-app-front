@@ -9,7 +9,6 @@ import Header from './client/inc/header/Header';
 import AdminHeader from './admin/inc/admin_header/AdminHeader';
 import AuthProvider from './globalProvider/AuthProvider';
 import LoadingUi from '@/shared/client/components/loading/LoadingUi';
-import SplashScreen from '@/shared/client/components/splash/SplashScreen';
 
 interface ClientLayoutProps {
     children: React.ReactNode;
