@@ -6,6 +6,8 @@ Next.js App Router와 API Routes 기반의 모바일 커피 주문 및 관리자
 
 * 서비스 URL: https://jongju-coffee-order-app.vercel.app/
 * 관리자 페이지 URL: https://jongju-coffee-order-app.vercel.app/admin/admin_login
+> ※ 테스트 계정은 제 개인 포트폴리오 페이지에 명시되어 있습니다.
+> - 포트폴리오: https://portfolio-kappa-tan-62.vercel.app/
 * GitHub 저장소: https://github.com/seongjongju/CoffeeOrder-app
 
 ---
