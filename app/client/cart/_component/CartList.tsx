@@ -11,7 +11,6 @@ import { useAppSelector } from '@/store/hook';
 import { formatPrice } from '@/app/util/format';
 import usePayment from '@/features/hooks/pay/usePayment';
 import useLoading from '@/features/hooks/loading/useLoading';
-import LoadingSpiner from '@/shared/client/components/loading/LoadingSpiner';
 
 const CartList = () => {
     const {isLoading, setIsLoading} = useLoading();
@@ -39,9 +38,9 @@ const CartList = () => {
             setModalText(err.response?.data?.message);
             return;
         } finally {
-            setIsLoading(true);
+            setIsLoading(false);
         }
-    }, [userCarts]);
+    }, [userCarts, queryClient]);
 
     //총 결제 금액
     const {count, price} = useMemo(() => {
@@ -49,7 +48,7 @@ const CartList = () => {
         const price = userCarts.map(item => item.totalPrice).reduce((acc, cur) => acc + cur, 0);
 
         return {count, price}
-    }, [userCarts]);
+    }, [userCarts, queryClient]);
     
     return (
         <div className={`inner cart-inner ${userCarts.length === 0 ? "cart-null" : ""}`}>
