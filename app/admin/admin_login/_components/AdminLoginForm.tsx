@@ -57,6 +57,7 @@ const AdminLoginForm = () => {
                 <h1 className='admin-login__title'>Admin</h1>
                 <input 
                     type="text"
+                    autoComplete="username"
                     placeholder='아이디 입력'
                     className='admin-login__input'
                     value={adminIdInput}
@@ -66,6 +67,7 @@ const AdminLoginForm = () => {
                 />
                 <input 
                     type="password" 
+                    autoComplete='current-password'
                     placeholder='비밀번호 입력' 
                     className='admin-login__input'
                     value={adminPasswordInput}
