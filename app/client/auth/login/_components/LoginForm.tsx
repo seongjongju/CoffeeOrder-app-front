@@ -85,8 +85,6 @@ const LoginForm = () => {
             setModalText(err.response?.data?.message);
             setModalShow(true);
             return;
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -128,9 +126,23 @@ const LoginForm = () => {
                     />
 
                     <div className='auth-links'>
-                        <Link href={'/client/user_find/id_find'} >아이디 찾기 및 비밀번호 재설정</Link>
+                        <Link 
+                            style={{
+                                pointerEvents: isLoading ? "none" : "auto"
+                            }}
+                            href={'/client/user_find/id_find'} 
+                        >
+                            아이디 찾기 및 비밀번호 재설정
+                        </Link>
                         <span>/</span>
-                        <Link href={'/client/auth/policy'} >회원가입</Link>
+                        <Link 
+                            style={{
+                                pointerEvents: isLoading ? "none" : "auto"
+                            }}
+                            href={'/client/auth/policy'} 
+                        >
+                            회원가입
+                        </Link>
                     </div>
                 </form> 
             </div>

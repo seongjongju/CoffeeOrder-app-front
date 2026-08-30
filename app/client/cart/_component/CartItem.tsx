@@ -66,7 +66,7 @@ const CartItem = ({cartItem, setIsLoading}: CartItemProps) => {
         } finally {
             setIsLoading(false);
         }
-    }, [cartCount, cartItemTotalPrice, cartItem.totalPrice, cartItem.totalCount]);
+    }, [cartCount, cartItemTotalPrice, cartItem.totalPrice, cartItem.totalCount, queryClient]);
 
     //장바구니 단일 삭제 핸들러
     const deleteCartItem = useCallback(async (e:React.MouseEvent<HTMLButtonElement>) => {
@@ -91,7 +91,7 @@ const CartItem = ({cartItem, setIsLoading}: CartItemProps) => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [queryClient]);
 
     return (
         <>

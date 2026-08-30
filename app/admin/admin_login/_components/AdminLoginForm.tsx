@@ -45,7 +45,7 @@ const AdminLoginForm = () => {
             router.push('/admin/admin_main');
         } catch(err: any) {
             console.error(err.message);
-            alert(`${err.response.data.message}`);
+            alert(`${err.response?.data?.message}`);
         } finally {
             setIsLoading(false);
         }
